@@ -7,6 +7,10 @@ from django.utils.translation import gettext as _
 
 
 
+
+
+
+
 class Authenticated(BasePermission):
     def has_permission(self, request, view):
         user = request.user
