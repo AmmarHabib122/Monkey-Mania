@@ -3,9 +3,6 @@ from django.db import models
 from base import libs
 
 
-
-
-
 class Bill(models.Model):
     cash             = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
     instapay         = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
