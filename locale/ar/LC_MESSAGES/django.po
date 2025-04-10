@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-06 08:00+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: .\MonkeyMania\settings.py:100
+msgid "English"
+msgstr "إنجليزي"
+
+#: .\MonkeyMania\settings.py:101
+msgid "Arabic"
+msgstr "عربي"
+
+#: .\base\serializers\AuthSerializers.py:15
+msgid "This User is not active any more"
+msgstr "هذا المستخدم لم يعد نشطا بعد الآن"
+
+#: .\base\serializers\AuthSerializers.py:20
+#, fuzzy
+#| msgid "User Created successfully"
+msgid "Logged in successfully"
+msgstr "تم إنشاء المستخدم بنجاح"
+
+#: .\base\serializers\AuthSerializers.py:27
+msgid "Invalid Phone Number or password. Please try again."
+msgstr "رقم الهاتف أو كلمة المرور غير صالحة. يرجى المحاولة مرة أخرى."
+
+#: .\base\serializers\UserSerializers.py:53
+msgid "This username is already taken or invalid"
+msgstr "اسم المستخدم هذا مستخدم بالفعل أو غير صالح"
+
+#: .\base\serializers\UserSerializers.py:61
+msgid "This phone number is already taken or invalid"
+msgstr "رقم الهاتف هذا مستخدم بالفعل أو غير صالح"
+
+#: .\base\serializers\UserSerializers.py:70
+msgid "email must end with @gmail.com"
+msgstr "يجب أن ينتهي البريد الإلكتروني بـ @gmail.com"
+
+#: .\base\serializers\UserSerializers.py:74
+msgid "email already registered"
+msgstr "البريد الإلكتروني مسجل بالفعل"
+
+#: .\base\serializers\UserSerializers.py:86
+msgid "incorrect role"
+msgstr "الدور غير صحيح"
+
+#: .\base\serializers\UserSerializers.py:91
+msgid "Passwords do not match"
+msgstr "كلمات المرور غير متطابقة"
+
+#: .\base\serializers\UserSerializers.py:95
+msgid ""
+"Password must be at least 8 characters long and contain at least one "
+"alphabetic letter or symbol."
+msgstr ""
+"يجب أن تتكون كلمة المرور من 8 أحرف على الأقل وتحتوي على حرف أبجدي أو رمز "
+"واحد على الأقل."
+
+#: .\base\views\AuthViews.py:44
+msgid "You have been logged out successfully."
+msgstr "لقد تم تسجيل خروجك بنجاح."
+
+#: .\base\views\AuthViews.py:49
+msgid "Valid Refresh Token is Required"
+msgstr "مطلوب رمز تحديث صالح"
+
+#: .\base\views\UserViews.py:29
+msgid "User Created successfully"
+msgstr "تم إنشاء المستخدم بنجاح"
+
+#: .\base\views\UserViews.py:37
+msgid "You can not add a user with a role higher or equal to yours"
+msgstr "لا يمكنك إضافة مستخدم له دور أعلى أو مساوٍ لدورك"
