@@ -93,7 +93,7 @@ class StaffSalary(models.Model):
     shift_hours                   = models.IntegerField()
     original_salary_value         = models.DecimalField(max_digits = 15, decimal_places = 2)
     bonus_value                   = models.IntegerField()  
-    total_value                   = models.DecimalField(max_digits = 15, decimal_places = 2)
+    total_value                   = models.DecimalField(max_digits = 15, decimal_places = 2, null = True)
     created                       = models.DateTimeField(auto_now_add = True)
     updated                       = models.DateTimeField(auto_now = True)
     created_by                    = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_salaries_set')
