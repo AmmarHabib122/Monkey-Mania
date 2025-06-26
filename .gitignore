@@ -1,0 +1,17 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+env/
+
+# Django stuff
+db.sqlite3
+media/
+
+# VS Code config
+.vscode/
+
+# Optional: ignore all .pyc files in any subfolder
+**/*.pyc

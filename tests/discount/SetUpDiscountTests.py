@@ -304,7 +304,7 @@ class SetUpDataClass(TestCase):
             "name"        : 'testpromo1',
             "value"       : 0.50,
             "type"        : 'percentage',
-            "expire_date" : '2025-5-25',
+            "expire_date" : '2055-5-25',
             'branches' : [
                 1
             ]
@@ -313,7 +313,7 @@ class SetUpDataClass(TestCase):
             "name"        : 'testpromo2',
             "value"       : 0.50,
             "type"        : 'fixed',
-            "expire_date" : '2025-5-25',
+            "expire_date" : '2055-5-25',
             'branches' : [
                 1
             ]
