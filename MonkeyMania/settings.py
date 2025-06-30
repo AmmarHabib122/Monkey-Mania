@@ -1,4 +1,6 @@
-
+import os
+import dj_database_url
+from decouple import config
 from datetime import timedelta
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
@@ -8,13 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = 'django-insecure-2$(yts+r)vb$!+2ei7qjje=4xrf-xkkztkk&^shh^a$l*7b9om'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']  # Change if you bind a custom domain
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -65,10 +66,7 @@ WSGI_APPLICATION = 'MonkeyMania.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(conn_max_age=600)
 }
 
 
