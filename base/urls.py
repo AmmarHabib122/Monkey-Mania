@@ -141,8 +141,4 @@ urlpatterns = [
     path('branch_offer/<str:pk>/update/', views.Update_BranchOffer, name = 'Update_BranchOffer'),
     path('branch_offer/all/', views.List_BranchOffer, name = 'List_BranchOffer'),
     path('branch_offer/<str:pk>/', views.Get_BranchOffer, name = 'Get_BranchOffer'),
-
-    #Cashier
-    path('cashier/create/', views.Create_Cashier, name = 'Create_Cashier'),
-    path('cashier/all/', views.List_Cashier, name = 'List_Cashier'),
 ]

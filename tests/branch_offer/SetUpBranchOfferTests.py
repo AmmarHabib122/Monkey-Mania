@@ -307,18 +307,18 @@ class SetUpDataClass(TestCase):
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
         
         cls.test_branch_offer_1 = {
-            'offer' : 1,
-            'branch' : 1,
-            'price' : 300,
-            'expire_date' : '2026-5-3',
-            'products_set' : [
+            "offer" : 1,
+            "branch" : 1,
+            "price" : 300,
+            "expire_date" : "2026-5-3",
+            "products_set" : [
                 {
-                    'product' : 1,
-                    'quantity' : 2,
+                    "product" : 1,
+                    "quantity" : 2,
                 },
                 {
-                    'product' : 2,
-                    'quantity' : 1,
+                    "product" : 2,
+                    "quantity" : 1,
                 },
             ]
         }

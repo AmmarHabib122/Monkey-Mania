@@ -266,9 +266,9 @@ class SetUpDataClass(TestCase):
             'quantity' : 10,
         }
         cls.test_material_expense_2 = {
-            'material' : 2,
-            'total_price' : 100,
-            'quantity' : 5,
+            "material" : 2,
+            "total_price" : 100,
+            "quantity" : 5,
         }
 
     def setUp(self):

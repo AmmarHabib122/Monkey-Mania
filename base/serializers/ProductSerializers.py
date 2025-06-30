@@ -166,7 +166,6 @@ class BranchProductSerializer(serializers.ModelSerializer):
         data['material_consumptions_set'] = BranchProductMaterialSerializer(instance.material_consumptions_set.all(), many = True).data
         for material_data in data['material_consumptions_set']:
             branch_material = models.BranchProductMaterial.objects.get(id = material_data['id'])
-            material_data['product']      = branch_material.product.name
             material_data['material']     = branch_material.material.name
             material_data['measure_unit'] = branch_material.material.measure_unit
         return data

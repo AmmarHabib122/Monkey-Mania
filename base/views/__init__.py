@@ -8,7 +8,6 @@ from .ProductViews import *
 from .MaterialViews import *
 from .BillViews import *
 from .ProductBillViews import *
-from .CashierViews import *
 from .DiscountViews import *
 from .ExpenseViews import *
 from .SubscriptionViews import *

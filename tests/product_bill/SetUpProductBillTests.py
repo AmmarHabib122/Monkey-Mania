@@ -312,21 +312,21 @@ class SetUpDataClass(TestCase):
         cls.test_product_bill_3 = {
             "products" : [
                 {
-                    'product_type'  : 'product',
-                    'product_id'  : 1,
-                    'quantity' : 2,
-                    'notes' : 'extra sauce',
+                    "product_type"  : "product",
+                    "product_id"  : 1,
+                    "quantity" : 2,
+                    "notes" : "extra sauce"
                 },
                 {
-                    'product_type'  : 'product',
-                    'product_id'  : 2,
-                    'quantity' : 5,
-                    'notes' : 'extra sauce',
+                    "product_type"  : "product",
+                    "product_id"  : 2,
+                    "quantity" : 5,
+                    "notes" : "extra sauce"
                 },
             ],
-            'bill'         : 2,
-            'table_number' : 3,
-            'take_away'    : False,
+            "bill"         : 2,
+            "table_number" : 3,
+            "take_away"    : False
         }
 
 

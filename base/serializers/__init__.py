@@ -14,4 +14,3 @@ from .DiscountSerializers import *
 from .ExpenseSerializers import *
 from .SubscriptionSerializers import *
 from .OfferSerializers import *
-from .CashierSerializers import *

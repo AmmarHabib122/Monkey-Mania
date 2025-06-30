@@ -251,16 +251,6 @@ class SubscriptionInstanceSerializer(serializers.ModelSerializer):
         validated_data['subscription'].sold_units += 1
         validated_data['subscription'].save()
         instance = super().create(validated_data)
-
-        if instance.cash > 0:
-            bill_content_type = ContentType.objects.get_for_model(instance)
-            models.Cashier.objects.create(
-                transaction_type   = bill_content_type,  
-                transaction_id     = instance.id,
-                branch             = instance.branch,
-                value              = instance.cash,
-                created_by         = user
-            )
         return instance
     
 
@@ -275,16 +265,6 @@ class SubscriptionInstanceSerializer(serializers.ModelSerializer):
 
         if cash + visa + instapay  != instance.price:
             raise ValidationError(_("The money Paid does not equal the price of the subscription"))
-        
-        if difference_in_cash != 0:
-            subscription_content_type = ContentType.objects.get_for_model(instance)
-            models.Cashier.objects.create(
-                transaction_type   = subscription_content_type,  
-                transaction_id     = instance.id,
-                branch             = instance.branch,
-                value              = difference_in_cash,
-                created_by         = user
-            )
         return super().update(instance, validated_data)
 
 

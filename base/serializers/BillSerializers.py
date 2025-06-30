@@ -3,6 +3,7 @@ from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
 from django.utils import timezone
 from django.db import transaction
+from decimal import Decimal
 from django.contrib.contenttypes.models import ContentType
 
 

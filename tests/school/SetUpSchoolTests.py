@@ -73,9 +73,9 @@ class SetUpDataClass(TestCase):
             created_by = cls.manager_user_1
         )
         cls.test_school_1 = {
-            "name"            : 'testschool1',
-            "address"         : 'new_damietta markaizas',
-            "notes"           : 'special needs',
+            "name"            : "testschool1",
+            "address"         : "new_damietta markaizas",
+            "notes"           : "special needs",
         }
         cls.test_school_2 = {
             "name"            : 'testschool2',

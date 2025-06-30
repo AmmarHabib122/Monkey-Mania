@@ -5,6 +5,7 @@ from datetime import date
 from django.utils.dateparse import parse_date
 from django.utils import timezone
 from datetime import timedelta, time, datetime
+from decimal import Decimal
 
 
 from base import models
@@ -129,10 +130,10 @@ def calculate_time_price(spent_time, hour_price, half_hour_price):
     spent_time  = max(spent_time - 15, 0)                 #extra 15 minutes allowed for clients without charges
     hours       = spent_time // 60; 
     spent_time %= 60
-    time_price  = float(hours) * float(hour_price) 
-    time_price += float(half_hour_price) if spent_time > 0 else 0 
+    time_price  = hours * hour_price
+    time_price += half_hour_price if spent_time > 0 else 0 
     time_price  = time_price if time_price > 0 else 0
-    return time_price
+    return Decimal(time_price)
 
 
 
@@ -241,8 +242,10 @@ def get_date_range(self):
         start_date        = datetime.strptime(start_date, "%Y-%m-%d").date()
         end_date          = datetime.strptime(end_date, "%Y-%m-%d").date()
         is_date_range     = True
+        if start_date > end_date:
+            raise ValidationError(_("Start date cannot be bigger than the end date"))
     elif start_date or end_date:
         raise ValidationError(_("Start and End dates must be provided together"))
     else:
-        is_date_range = False
+        is_date_range = False         #to know that the user want all table records not filtered by date interval
     return start_date, end_date, is_date_range

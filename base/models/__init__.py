@@ -12,4 +12,3 @@ from .OfferModels import *
 from .DiscountsModels import *
 from .ExpenseModels import *
 from .SubscriptionModels import *
-from .CashierModels import *

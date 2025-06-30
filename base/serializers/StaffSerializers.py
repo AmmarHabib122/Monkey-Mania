@@ -172,8 +172,6 @@ class StaffWithdrawSerializer(serializers.ModelSerializer):
         request   = self.context['request']
         if request.user.branch    and    value.branch != request.user.branch:
             raise PermissionDenied(_("You can not add a withdraw to this staff member"))
-        if request.method.lower() != 'post':
-            raise PermissionDenied(_("You can not update the staff member"))
         return value
 
     
@@ -278,8 +276,6 @@ class StaffFineSerializer(serializers.ModelSerializer):
         request   = self.context['request']
         if request.user.branch    and    value.branch != request.user.branch:
             raise PermissionDenied(_("You can not add a fine to this staff member"))
-        if request.method.lower() != 'post':
-            raise PermissionDenied(_("You can not update the staff member"))
         return value
 
     
@@ -414,8 +410,6 @@ class StaffSalarySerializer(serializers.ModelSerializer):
         request   = self.context['request']
         if request.user.branch    and    value.branch != request.user.branch:
             raise PermissionDenied(_("You can not add a salary to this staff member"))
-        if request.method.lower() != 'post':
-            raise PermissionDenied(_("You can not update the staff member"))
         return value
 
     
