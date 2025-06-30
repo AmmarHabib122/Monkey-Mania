@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-10 17:24+0200\n"
+"POT-Creation-Date: 2025-06-30 16:02+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,19 +26,25 @@ msgstr "إنجليزي"
 msgid "Arabic"
 msgstr "عربي"
 
-#: .\base\libs\main.py:46 .\base\libs\main.py:61
+#: .\base\libs\main.py:47 .\base\libs\main.py:62
 msgid "Invalid Branch id"
 msgstr "معرف فرع غير صالح"
 
-#: .\base\libs\main.py:76
+#: .\base\libs\main.py:77
 msgid "Phone number must contain only digits."
 msgstr "يجب أن يحتوي رقم الهاتف على أرقام فقط."
 
-#: .\base\libs\main.py:78
+#: .\base\libs\main.py:79
 msgid "Phone number must be exactly 11 digits long."
 msgstr "يجب أن يكون رقم الهاتف بالضبط 11 رقمًا."
 
-#: .\base\libs\main.py:245 .\base\views\IncomeViews.py:27
+#: .\base\libs\main.py:246
+#, fuzzy
+#| msgid "Birth-Date can not be in the future."
+msgid "Start date cannot be bigger than the end date"
+msgstr "لا يمكن أن يكون تاريخ الميلاد في المستقبل."
+
+#: .\base\libs\main.py:248 .\base\views\IncomeViews.py:27
 msgid "Start and End dates must be provided together"
 msgstr "يجب توفير تواريخ البدء والنهاية معًا"
 
@@ -61,22 +67,22 @@ msgstr "هذا المستخدم لم يعد نشطا بعد الآن"
 msgid "Logged in successfully"
 msgstr "تم إنشاء المستخدم بنجاح"
 
-#: .\base\serializers\BillSerializers.py:27
+#: .\base\serializers\BillSerializers.py:28
 #: .\base\serializers\SubscriptionSerializers.py:164
 msgid "Invalid child ID."
 msgstr "معرف الطفل غير صالح."
 
-#: .\base\serializers\BillSerializers.py:28
+#: .\base\serializers\BillSerializers.py:29
 #: .\base\serializers\SubscriptionSerializers.py:165
 msgid "You must provide a valid child ID."
 msgstr "يجب عليك توفير معرف طفل صالح."
 
-#: .\base\serializers\BillSerializers.py:29
+#: .\base\serializers\BillSerializers.py:30
 #: .\base\serializers\SubscriptionSerializers.py:166
 msgid "child must be identified by an integer ID."
 msgstr "يجب تحديد الطفل من خلال معرف عدد صحيح."
 
-#: .\base\serializers\BillSerializers.py:36
+#: .\base\serializers\BillSerializers.py:37
 #: .\base\serializers\DiscountSerializers.py:19
 #: .\base\serializers\ExpenseSerializers.py:19
 #: .\base\serializers\MaterialSerializers.py:77
@@ -90,7 +96,7 @@ msgstr "يجب تحديد الطفل من خلال معرف عدد صحيح."
 msgid "Invalid branch ID."
 msgstr "معرف فرع غير صالح."
 
-#: .\base\serializers\BillSerializers.py:37
+#: .\base\serializers\BillSerializers.py:38
 #: .\base\serializers\DiscountSerializers.py:20
 #: .\base\serializers\ExpenseSerializers.py:20
 #: .\base\serializers\MaterialSerializers.py:78
@@ -103,7 +109,7 @@ msgstr "معرف فرع غير صالح."
 msgid "You must provide a valid branch ID."
 msgstr "يجب عليك توفير معرف فرع صالح."
 
-#: .\base\serializers\BillSerializers.py:38
+#: .\base\serializers\BillSerializers.py:39
 #: .\base\serializers\DiscountSerializers.py:21
 #: .\base\serializers\ExpenseSerializers.py:21
 #: .\base\serializers\OfferSerializers.py:98
@@ -114,97 +120,97 @@ msgstr "يجب عليك توفير معرف فرع صالح."
 msgid "branch must be identified by an integer ID."
 msgstr "يجب تحديد الفرع بواسطة معرف عدد صحيح."
 
-#: .\base\serializers\BillSerializers.py:95
+#: .\base\serializers\BillSerializers.py:96
 #: .\base\serializers\BranchSerializers.py:84
 #: .\base\serializers\StaffSerializers.py:54
 #: .\base\serializers\UserSerializers.py:76
 msgid "You Do Not have the permission to access this data"
 msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
 
-#: .\base\serializers\BillSerializers.py:140
+#: .\base\serializers\BillSerializers.py:141
 #: .\base\serializers\SubscriptionSerializers.py:199
 msgid "cash can not be negative"
 msgstr "لا يمكن أن يكون النقد سلبيًا"
 
-#: .\base\serializers\BillSerializers.py:145
+#: .\base\serializers\BillSerializers.py:146
 #: .\base\serializers\SubscriptionSerializers.py:204
 msgid "instapay can not be negative"
 msgstr "لا يمكن أن يكون Instapay سلبيًا"
 
-#: .\base\serializers\BillSerializers.py:150
+#: .\base\serializers\BillSerializers.py:151
 #: .\base\serializers\SubscriptionSerializers.py:209
 msgid "visa can not be negative"
 msgstr "لا يمكن أن تكون التأشيرة سلبية"
 
-#: .\base\serializers\BillSerializers.py:156
-#: .\base\serializers\BillSerializers.py:200 .\base\views\BillViews.py:77
+#: .\base\serializers\BillSerializers.py:157
+#: .\base\serializers\BillSerializers.py:201 .\base\views\BillViews.py:77
 msgid ""
 "Couldn't find a discount available to this branch with the given "
 "credentials."
 msgstr "لا يمكن العثور على خصم متاح لهذا الفرع مع بيانات الاعتماد المحددة."
 
-#: .\base\serializers\BillSerializers.py:162
+#: .\base\serializers\BillSerializers.py:163
 msgid "Time Price can not be negative"
 msgstr "لا يمكن أن يكون سعر الوقت سلبيًا"
 
-#: .\base\serializers\BillSerializers.py:164
+#: .\base\serializers\BillSerializers.py:165
 msgid "You do not have the permission to set the bill Time Price"
 msgstr "ليس لديك إذن لتحديد سعر وقت الفاتورة"
 
-#: .\base\serializers\BillSerializers.py:170
+#: .\base\serializers\BillSerializers.py:171
 msgid "Cafe Price can not be negative"
 msgstr "لا يمكن أن يكون سعر المقهى سلبيًا"
 
-#: .\base\serializers\BillSerializers.py:172
+#: .\base\serializers\BillSerializers.py:173
 msgid "You do not have the permission to set the bill Cafe Price"
 msgstr "ليس لديك إذن لتعيين سعر Bill Cafe"
 
-#: .\base\serializers\BillSerializers.py:178
+#: .\base\serializers\BillSerializers.py:179
 #: .\base\serializers\ProductBillSerializers.py:242
 msgid "You can not create a bill with a different branch"
 msgstr "لا يمكنك إنشاء فاتورة مع فرع مختلف"
 
-#: .\base\serializers\BillSerializers.py:183
+#: .\base\serializers\BillSerializers.py:184
 msgid "Children list can not be empty"
 msgstr "لا يمكن أن تكون قائمة الأطفال فارغة"
 
-#: .\base\serializers\BillSerializers.py:187
+#: .\base\serializers\BillSerializers.py:188
 #, python-brace-format
 msgid "Child {name} is currently registered in another bill"
 msgstr "الطفل {name} مسجل حاليًا في فاتورة أخرى"
 
-#: .\base\serializers\BillSerializers.py:189
+#: .\base\serializers\BillSerializers.py:190
 msgid "You tried to add the same child more than once"
 msgstr "حاولت إضافة نفس الطفل أكثر من مرة"
 
-#: .\base\serializers\BillSerializers.py:226
+#: .\base\serializers\BillSerializers.py:227
 msgid "Subscription bill cannot have more than one child"
 msgstr "لا يمكن أن يكون فاتورة الاشتراك أكثر من طفل"
 
-#: .\base\serializers\BillSerializers.py:231
+#: .\base\serializers\BillSerializers.py:232
 #, python-brace-format
 msgid "The Child {name} has no current active subscription"
 msgstr "لا يوجد لدى الطفل {name} اشتراك نشط حاليًا"
 
-#: .\base\serializers\BillSerializers.py:235
-#: .\base\serializers\BillSerializers.py:237
+#: .\base\serializers\BillSerializers.py:236
+#: .\base\serializers\BillSerializers.py:238
 #, python-brace-format
 msgid "The Child {name} is not allowed to visit this branch"
 msgstr "لا يُسمح للطفل {name} بزيارة هذا الفرع"
 
-#: .\base\serializers\BillSerializers.py:245
+#: .\base\serializers\BillSerializers.py:246
 #, python-brace-format
 msgid ""
 "There is no hour prices found for {children_count} children in this branch."
-msgstr "لا توجد أسعار ساعة موجودة للأطفال {Kids_Count} في هذا الفرع."
+msgstr "لا توجد أسعار ساعة موجودة للأطفال {children_count} في هذا الفرع."
 
-#: .\base\serializers\BillSerializers.py:265
+#: .\base\serializers\BillSerializers.py:266
 #, fuzzy
 #| msgid "email already registered"
 msgid "The bill is already closed"
 msgstr "البريد الإلكتروني مسجل بالفعل"
 
-#: .\base\serializers\BillSerializers.py:268
+#: .\base\serializers\BillSerializers.py:269
 msgid "You can not close a bill from a different branch"
 msgstr "لا يمكنك إغلاق فاتورة من فرع مختلف"
 
@@ -253,10 +259,6 @@ msgstr "يجب أن يكون عدد الأطفال فريدًا لكل فرع."
 msgid ""
 "You can not set a user from another branch to be the manager of this branch."
 msgstr "لا يمكنك تعيين مستخدم من فرع آخر ليكون مدير هذا الفرع."
-
-#: .\base\serializers\CashierSerializers.py:35
-msgid "Value cannot be negative or equal to zero"
-msgstr "لا يمكن أن تكون القيمة سالبة أو تساوي الصفر"
 
 #: .\base\serializers\ChildSerializers.py:58
 msgid ", "
@@ -312,7 +314,7 @@ msgstr "حاولت إضافة نفس الفرع أكثر من مرة"
 #: .\base\serializers\DiscountSerializers.py:76
 #, python-brace-format
 msgid "Discount allowed types are {allowed_values}."
-msgstr "أنواع الخصم المسموح بها هي {المسموح بها _values}."
+msgstr "أنواع الخصم المسموح بها هي {allowed_values}."
 
 #: .\base\serializers\DiscountSerializers.py:81
 #: .\base\serializers\SubscriptionSerializers.py:214
@@ -485,12 +487,12 @@ msgstr "تم اكتشاف العناصر التي تم إرجاعها المكر
 #: .\base\serializers\ProductBillSerializers.py:293
 #, python-brace-format
 msgid "{name} has only {available} units"
-msgstr "{name} لديه وحدات {Available} فقط"
+msgstr "{name} لديه وحدات {available} فقط"
 
 #: .\base\serializers\ProductBillSerializers.py:312
 #, python-brace-format
 msgid "{product} in offer {offer} has only {available} units available"
-msgstr "{Product} في العرض {عرض} يحتوي فقط على {متوفرة} وحدات متوفرة"
+msgstr "{product} في العرض {offer} يحتوي فقط على {available} وحدات متوفرة"
 
 #: .\base\serializers\ProductBillSerializers.py:345
 msgid "You cannot return items when creating a bill."
@@ -525,27 +527,27 @@ msgstr "لا يمكنك الوصول إلى مادة من فرع آخر"
 msgid "You Can not access a Product from another branch"
 msgstr "لا يمكنك الوصول إلى منتج من فرع آخر"
 
-#: .\base\serializers\ProductSerializers.py:179
+#: .\base\serializers\ProductSerializers.py:178
 msgid "Warning Units can not be negative."
 msgstr "وحدات التحذير لا يمكن أن تكون سلبية."
 
-#: .\base\serializers\ProductSerializers.py:184
+#: .\base\serializers\ProductSerializers.py:183
 msgid "Price can not be negative or equal to zero."
 msgstr "لا يمكن أن يكون السعر سلبيًا أو يساوي الصفر."
 
-#: .\base\serializers\ProductSerializers.py:190
+#: .\base\serializers\ProductSerializers.py:189
 msgid "You can not add a product to this branch"
 msgstr "لا يمكنك إضافة منتج إلى هذا الفرع"
 
-#: .\base\serializers\ProductSerializers.py:195
+#: .\base\serializers\ProductSerializers.py:194
 msgid "Materials must be provided."
 msgstr "يجب توفير المواد."
 
-#: .\base\serializers\ProductSerializers.py:201
+#: .\base\serializers\ProductSerializers.py:200
 msgid "You tried to add the same material more than once"
 msgstr "حاولت إضافة نفس المادة أكثر من مرة"
 
-#: .\base\serializers\ProductSerializers.py:213
+#: .\base\serializers\ProductSerializers.py:212
 msgid "This material is not valid for this branch"
 msgstr "هذه المادة غير صالحة لهذا الفرع"
 
@@ -578,20 +580,20 @@ msgid "You Do not have the permission to manipulate other branches staff"
 msgstr "ليس لديك إذن للتلاعب بموظفي الفروع الآخرين"
 
 #: .\base\serializers\StaffSerializers.py:142
-#: .\base\serializers\StaffSerializers.py:247
-#: .\base\serializers\StaffSerializers.py:321
+#: .\base\serializers\StaffSerializers.py:245
+#: .\base\serializers\StaffSerializers.py:317
 msgid "Invalid staff ID."
 msgstr "معرف الموظفين غير صالح."
 
 #: .\base\serializers\StaffSerializers.py:143
-#: .\base\serializers\StaffSerializers.py:248
-#: .\base\serializers\StaffSerializers.py:322
+#: .\base\serializers\StaffSerializers.py:246
+#: .\base\serializers\StaffSerializers.py:318
 msgid "You must provide a valid staff ID."
 msgstr "يجب عليك تقديم معرف الموظفين صالحين."
 
 #: .\base\serializers\StaffSerializers.py:144
-#: .\base\serializers\StaffSerializers.py:249
-#: .\base\serializers\StaffSerializers.py:323
+#: .\base\serializers\StaffSerializers.py:247
+#: .\base\serializers\StaffSerializers.py:319
 msgid "staff must be identified by an integer ID."
 msgstr "يجب تحديد الموظفين من خلال معرف عدد صحيح."
 
@@ -605,53 +607,47 @@ msgstr "لا يمكن أن تكون قيمة السحب سالبة أو تساو
 msgid "You can not add a withdraw to this staff member"
 msgstr "لا يمكنك إضافة مستخدم له دور أعلى أو مساوٍ لدورك"
 
-#: .\base\serializers\StaffSerializers.py:176
-#: .\base\serializers\StaffSerializers.py:282
-#: .\base\serializers\StaffSerializers.py:418
-msgid "You can not update the staff member"
-msgstr "لا يمكنك تحديث الموظف"
-
-#: .\base\serializers\StaffSerializers.py:204
+#: .\base\serializers\StaffSerializers.py:202
 msgid "You can not update a staff withdraw from another branch"
 msgstr "لا يمكنك تحديث انسحاب الموظفين من فرع آخر"
 
-#: .\base\serializers\StaffSerializers.py:274
+#: .\base\serializers\StaffSerializers.py:272
 msgid "Fine days value must be above zero and below 10"
 msgstr "يجب أن تكون قيمة الأيام الجميلة أعلى من الصفر وأقل من 10"
 
-#: .\base\serializers\StaffSerializers.py:280
+#: .\base\serializers\StaffSerializers.py:278
 msgid "You can not add a fine to this staff member"
 msgstr "لا يمكنك إضافة غرامة إلى هذا الموظف"
 
-#: .\base\serializers\StaffSerializers.py:298
+#: .\base\serializers\StaffSerializers.py:294
 msgid "You can not update a staff fine from another branch"
 msgstr "لا يمكنك تحديث غرامة الموظفين من فرع آخر"
 
-#: .\base\serializers\StaffSerializers.py:389
+#: .\base\serializers\StaffSerializers.py:385
 msgid "Over Time value can not be negative"
 msgstr "لا يمكن أن تكون القيمة الزمنية سلبية"
 
-#: .\base\serializers\StaffSerializers.py:394
+#: .\base\serializers\StaffSerializers.py:390
 msgid "Minus Time value can not be negative"
 msgstr "ناقص القيمة الزمنية لا يمكن أن تكون سلبية"
 
-#: .\base\serializers\StaffSerializers.py:399
+#: .\base\serializers\StaffSerializers.py:395
 msgid "Delay Time value can not be negative"
 msgstr "لا يمكن أن تكون قيمة وقت التأخير سلبية"
 
-#: .\base\serializers\StaffSerializers.py:404
+#: .\base\serializers\StaffSerializers.py:400
 msgid "Absence Days value can not be negative or above 30"
 msgstr "لا يمكن أن تكون قيمة أيام الغياب سلبية أو أعلى من 30"
 
-#: .\base\serializers\StaffSerializers.py:409
+#: .\base\serializers\StaffSerializers.py:405
 msgid "Bonus value can not be negative"
 msgstr "لا يمكن أن تكون قيمة المكافأة سلبية"
 
-#: .\base\serializers\StaffSerializers.py:416
+#: .\base\serializers\StaffSerializers.py:412
 msgid "You can not add a salary to this staff member"
 msgstr "لا يمكنك إضافة راتب إلى هذا الموظف"
 
-#: .\base\serializers\StaffSerializers.py:456
+#: .\base\serializers\StaffSerializers.py:450
 msgid "You can not update a staff salary from another branch"
 msgstr "لا يمكنك تحديث راتب الموظفين من فرع آخر"
 
@@ -688,7 +684,7 @@ msgid "This child already has an active subscription"
 msgstr "هذا الطفل لديه بالفعل اشتراك نشط"
 
 #: .\base\serializers\SubscriptionSerializers.py:250
-#: .\base\serializers\SubscriptionSerializers.py:277
+#: .\base\serializers\SubscriptionSerializers.py:267
 msgid "The money Paid does not equal the price of the subscription"
 msgstr "الأموال المدفوعة لا تساوي سعر الاشتراك"
 
@@ -791,7 +787,7 @@ msgstr "تم إنشاء المستخدم بنجاح"
 #: .\base\views\ProductViews.py:150 .\base\views\StaffViews.py:134
 #: .\base\views\StaffViews.py:224 .\base\views\StaffViews.py:319
 #: .\base\views\StaffViews.py:407 .\base\views\SubscriptionViews.py:148
-#: .\base\views\UserViews.py:118
+#: .\base\views\UserViews.py:71
 msgid "You do not have the permission to access this data"
 msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
 
@@ -805,12 +801,6 @@ msgstr "تم إنشاء المستخدم بنجاح"
 #, fuzzy
 #| msgid "User Created successfully"
 msgid "Branch Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
-
-#: .\base\views\CashierViews.py:29
-#, fuzzy
-#| msgid "User Created successfully"
-msgid "Dlieverd Money Created successfully"
 msgstr "تم إنشاء المستخدم بنجاح"
 
 #: .\base\views\ChildViews.py:28
@@ -1033,15 +1023,27 @@ msgstr "تم إنشاء المستخدم بنجاح"
 msgid "SubscriptionInstance Updated successfully"
 msgstr "تم إنشاء المستخدم بنجاح"
 
-#: .\base\views\UserViews.py:58
-msgid "User Created successfully"
+#: .\base\views\UserViews.py:32
+#, fuzzy
+#| msgid "User Created successfully"
+msgid "User Created Successfully"
 msgstr "تم إنشاء المستخدم بنجاح"
 
-#: .\base\views\UserViews.py:101
+#: .\base\views\UserViews.py:54
 #, fuzzy
 #| msgid "User Created successfully"
 msgid "User Updated successfully"
 msgstr "تم إنشاء المستخدم بنجاح"
+
+#~ msgid "Value cannot be negative or equal to zero"
+#~ msgstr "لا يمكن أن تكون القيمة سالبة أو تساوي الصفر"
+
+#~ msgid "You can not update the staff member"
+#~ msgstr "لا يمكنك تحديث الموظف"
+
+#, fuzzy
+#~ msgid "Dlieverd Money Created successfully"
+#~ msgstr "تم إنشاء المستخدم بنجاح"
 
 #~ msgid "Invalid Phone Number or password. Please try again."
 #~ msgstr "رقم الهاتف أو كلمة المرور غير صالحة. يرجى المحاولة مرة أخرى."
