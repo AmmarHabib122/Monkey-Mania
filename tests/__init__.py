@@ -1,9 +1,9 @@
-# # user
-# from .user.CreateUserTests import *
-# from .user.UpdateUserTests import *
-# from .user.FieldsUserTests import *
-# from .user.RetrieveOneUserTests import *
-# from .user.RetrieveListUserTests import *
+# user
+from .user.CreateUserTests import *
+from .user.UpdateUserTests import *
+from .user.FieldsUserTests import *
+from .user.RetrieveOneUserTests import *
+from .user.RetrieveListUserTests import *
 
 
 #branch
