@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-30 16:02+0300\n"
+"POT-Creation-Date: 2025-07-03 00:53+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,11 +38,15 @@ msgstr "يجب أن يحتوي رقم الهاتف على أرقام فقط."
 msgid "Phone number must be exactly 11 digits long."
 msgstr "يجب أن يكون رقم الهاتف بالضبط 11 رقمًا."
 
+#: .\base\libs\main.py:104
+#, python-brace-format
+msgid "Unsupported file extension {extension} . Allowed: {allowed_extensions}"
+msgstr ""
+"امتداد الملف غير المدعوم {extension}. مسموح به: {المسموح بها _extensions}"
+
 #: .\base\libs\main.py:246
-#, fuzzy
-#| msgid "Birth-Date can not be in the future."
 msgid "Start date cannot be bigger than the end date"
-msgstr "لا يمكن أن يكون تاريخ الميلاد في المستقبل."
+msgstr "لا يمكن أن يكون تاريخ البدء أكبر من تاريخ الانتهاء"
 
 #: .\base\libs\main.py:248 .\base\views\IncomeViews.py:27
 msgid "Start and End dates must be provided together"
@@ -59,13 +63,11 @@ msgstr "ليس لديك إذن لأداء هذا الإجراء"
 
 #: .\base\serializers\AuthSerializers.py:13
 msgid "This User is not active any more"
-msgstr "هذا المستخدم لم يعد نشطا بعد الآن"
+msgstr "هذا المستخدم لم يعد نشطًا"
 
 #: .\base\serializers\AuthSerializers.py:15
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Logged in successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تسجيل الدخول بنجاح"
 
 #: .\base\serializers\BillSerializers.py:28
 #: .\base\serializers\SubscriptionSerializers.py:164
@@ -202,13 +204,11 @@ msgstr "لا يُسمح للطفل {name} بزيارة هذا الفرع"
 #, python-brace-format
 msgid ""
 "There is no hour prices found for {children_count} children in this branch."
-msgstr "لا توجد أسعار ساعة موجودة للأطفال {children_count} في هذا الفرع."
+msgstr "لا توجد أسعار ساعة موجودة للأطفال {Kids_Count} في هذا الفرع."
 
 #: .\base\serializers\BillSerializers.py:266
-#, fuzzy
-#| msgid "email already registered"
 msgid "The bill is already closed"
-msgstr "البريد الإلكتروني مسجل بالفعل"
+msgstr "الفاتورة مغلقة بالفعل"
 
 #: .\base\serializers\BillSerializers.py:269
 msgid "You can not close a bill from a different branch"
@@ -231,12 +231,10 @@ msgid "Age can not be negative or equal to zero"
 msgstr "لا يمكن أن يكون العمر سلبيًا أو يساوي الصفر"
 
 #: .\base\serializers\BranchSerializers.py:102
-#, fuzzy
-#| msgid "You can not add a user with a role higher or equal to yours"
 msgid ""
 "You can only set a user with a manager role or higher to the branch manager "
 "field."
-msgstr "لا يمكنك إضافة مستخدم له دور أعلى أو مساوٍ لدورك"
+msgstr "يمكنك فقط تعيين مستخدم له دور المدير أو أعلى إلى حقل مدير الفرع."
 
 #: .\base\serializers\BranchSerializers.py:107
 msgid "Allowed Delay Minutes can not be negative or equal to zero"
@@ -261,8 +259,8 @@ msgid ""
 msgstr "لا يمكنك تعيين مستخدم من فرع آخر ليكون مدير هذا الفرع."
 
 #: .\base\serializers\ChildSerializers.py:58
-msgid ", "
-msgstr "و"
+msgid "Allowed values: {', '.join(allowed)}."
+msgstr "القيم المسموح بها: {'،'. join (مسموح به)}."
 
 #: .\base\serializers\ChildSerializers.py:69
 msgid "Invalid school ID."
@@ -314,7 +312,7 @@ msgstr "حاولت إضافة نفس الفرع أكثر من مرة"
 #: .\base\serializers\DiscountSerializers.py:76
 #, python-brace-format
 msgid "Discount allowed types are {allowed_values}."
-msgstr "أنواع الخصم المسموح بها هي {allowed_values}."
+msgstr "أنواع الخصم المسموح بها هي {المسموح بها _values}."
 
 #: .\base\serializers\DiscountSerializers.py:81
 #: .\base\serializers\SubscriptionSerializers.py:214
@@ -487,12 +485,12 @@ msgstr "تم اكتشاف العناصر التي تم إرجاعها المكر
 #: .\base\serializers\ProductBillSerializers.py:293
 #, python-brace-format
 msgid "{name} has only {available} units"
-msgstr "{name} لديه وحدات {available} فقط"
+msgstr "{name} لديه وحدات {Available} فقط"
 
 #: .\base\serializers\ProductBillSerializers.py:312
 #, python-brace-format
 msgid "{product} in offer {offer} has only {available} units available"
-msgstr "{product} في العرض {offer} يحتوي فقط على {available} وحدات متوفرة"
+msgstr "{Product} في العرض {عرض} يحتوي فقط على {متوفرة} وحدات متوفرة"
 
 #: .\base\serializers\ProductBillSerializers.py:345
 msgid "You cannot return items when creating a bill."
@@ -602,10 +600,8 @@ msgid "Withdraw value can not be negative or equal to zero"
 msgstr "لا يمكن أن تكون قيمة السحب سالبة أو تساوي الصفر"
 
 #: .\base\serializers\StaffSerializers.py:174
-#, fuzzy
-#| msgid "You can not add a user with a role higher or equal to yours"
 msgid "You can not add a withdraw to this staff member"
-msgstr "لا يمكنك إضافة مستخدم له دور أعلى أو مساوٍ لدورك"
+msgstr "لا يمكنك إضافة سحب إلى هذا الموظف"
 
 #: .\base\serializers\StaffSerializers.py:202
 msgid "You can not update a staff withdraw from another branch"
@@ -710,17 +706,15 @@ msgstr "لا يمكنك الوصول إلى مستخدم من فرع آخر"
 
 #: .\base\serializers\UserSerializers.py:98
 msgid "incorrect role"
-msgstr "الدور غير صحيح"
+msgstr "دور غير صحيح"
 
 #: .\base\serializers\UserSerializers.py:111
 msgid "Passwords do not match"
-msgstr "كلمات المرور غير متطابقة"
+msgstr "كلمات المرور لا تتطابق"
 
 #: .\base\serializers\UserSerializers.py:131
-#, fuzzy
-#| msgid "You can not add a user with a role higher or equal to yours"
 msgid "You can not give a user a role higher or equal to yours"
-msgstr "لا يمكنك إضافة مستخدم له دور أعلى أو مساوٍ لدورك"
+msgstr "لا يمكنك إعطاء المستخدم دورًا أعلى أو مساويًا لك"
 
 #: .\base\serializers\UserSerializers.py:139
 #: .\base\serializers\UserSerializers.py:182
@@ -732,10 +726,8 @@ msgid "Branch must have a value"
 msgstr "يجب أن يكون للفرع قيمة"
 
 #: .\base\serializers\UserSerializers.py:177
-#, fuzzy
-#| msgid "You can not add a user with a role higher or equal to yours"
 msgid "You can not give a user with a role higher or equal to yours"
-msgstr "لا يمكنك إضافة مستخدم له دور أعلى أو مساوٍ لدورك"
+msgstr "لا يمكنك إعطاء مستخدم له دور أعلى أو مساوٍ لك"
 
 #: .\base\utils\custom_exception_handler.py:12
 #: .\base\utils\custom_exception_handler.py:14
@@ -746,39 +738,38 @@ msgstr "لا يمكنك إضافة مستخدم له دور أعلى أو مسا
 msgid "An error occurred"
 msgstr "حدث خطأ"
 
+#: .\base\utils\custom_exception_handler.py:35
+#, python-brace-format
+msgid "The field '{field_name}' is required."
+msgstr "حقل '{field_name}' مطلوب."
+
 #: .\base\views\AuthViews.py:54
 msgid "You have been logged out successfully."
-msgstr "لقد تم تسجيل خروجك بنجاح."
+msgstr "لقد تم تسجيل الدخول بنجاح."
 
 #: .\base\views\AuthViews.py:58
 msgid "Valid Refresh Token is Required"
 msgstr "مطلوب رمز تحديث صالح"
 
 #: .\base\views\BillViews.py:31
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Bill Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "بيل خلق بنجاح"
 
 #: .\base\views\BillViews.py:49
 msgid "Wrong data for closing the bill"
 msgstr "بيانات خاطئة لإغلاق الفاتورة"
 
 #: .\base\views\BillViews.py:51
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Bill Closed successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "أغلق بيل بنجاح"
 
 #: .\base\views\BillViews.py:73
 msgid "Discount must be provided"
 msgstr "يجب توفير الخصم"
 
 #: .\base\views\BillViews.py:91
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Discount Applied successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تطبيق الخصم بنجاح"
 
 #: .\base\views\BillViews.py:108 .\base\views\BillViews.py:115
 #: .\base\views\DiscountViews.py:64 .\base\views\ExpenseViews.py:68
@@ -792,274 +783,165 @@ msgid "You do not have the permission to access this data"
 msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
 
 #: .\base\views\BranchViews.py:28
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Branch Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "فرع خلق بنجاح"
 
 #: .\base\views\BranchViews.py:48
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Branch Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث الفرع بنجاح"
 
 #: .\base\views\ChildViews.py:28
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Child Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "خلق الطفل بنجاح"
 
 #: .\base\views\ChildViews.py:48
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Child Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث الطفل بنجاح"
 
 #: .\base\views\DiscountViews.py:29
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Discount Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "خصم تم إنشاؤه بنجاح"
 
 #: .\base\views\DiscountViews.py:47
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Discount Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "خصم تحديث بنجاح"
 
 #: .\base\views\ExpenseViews.py:34
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "GeneralExpense Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "GeneralExpense خلقت بنجاح"
 
 #: .\base\views\ExpenseViews.py:52
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "GeneralExpense Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث GeneralExpense بنجاح"
 
 #: .\base\views\ExpenseViews.py:132
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "MaterialExpense Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم إنشاء Materialexpense بنجاح"
 
 #: .\base\views\ExpenseViews.py:150
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "MaterialExpense Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث Materialexpense بنجاح"
 
 #: .\base\views\IncomeViews.py:108
 msgid "Start and End dates must be provided and be equal"
 msgstr "يجب توفير تواريخ البدء والنهاية وتكون متساوية"
 
 #: .\base\views\MaterialViews.py:25
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Material Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "المواد التي تم إنشاؤها بنجاح"
 
 #: .\base\views\MaterialViews.py:43
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Material Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث المواد بنجاح"
 
 #: .\base\views\MaterialViews.py:114
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Material added to branch successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "المواد المضافة إلى الفرع بنجاح"
 
 #: .\base\views\MaterialViews.py:132
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Material Branch data Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث بيانات فرع المواد بنجاح"
 
 #: .\base\views\OfferViews.py:26
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Offer Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "عرض تم إنشاؤه بنجاح"
 
 #: .\base\views\OfferViews.py:44
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Offer Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "عرض تحديث بنجاح"
 
 #: .\base\views\OfferViews.py:115
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Offer added to branch successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "العرض يضاف إلى الفرع بنجاح"
 
 #: .\base\views\OfferViews.py:134
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Offer branch data Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "عرض بيانات الفرع تم تحديثها بنجاح"
 
 #: .\base\views\ProductBillViews.py:29
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Cafe Bill Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم إنشاء Bill Cafe Bill بنجاح"
 
 #: .\base\views\ProductBillViews.py:47
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Cafe Bill Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث فاتورة المقهى بنجاح"
 
 #: .\base\views\ProductViews.py:26
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Product Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم إنشاء المنتج بنجاح"
 
 #: .\base\views\ProductViews.py:44
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Product Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث المنتج بنجاح"
 
 #: .\base\views\ProductViews.py:115
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Product added to branch successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تمت إضافة المنتج إلى الفرع بنجاح"
 
 #: .\base\views\ProductViews.py:134
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Product branch data Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث بيانات فرع المنتج بنجاح"
 
 #: .\base\views\SchoolViews.py:28
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "School Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "أنشأت المدرسة بنجاح"
 
 #: .\base\views\SchoolViews.py:46
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "School Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث المدرسة بنجاح"
 
 #: .\base\views\StaffViews.py:58
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Staff Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "أنشأ الموظفون بنجاح"
 
 #: .\base\views\StaffViews.py:118
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Staff Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث الموظفين بنجاح"
 
 #: .\base\views\StaffViews.py:190
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "StaffWithdraw Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم إنشاء staffwithdraw بنجاح"
 
 #: .\base\views\StaffViews.py:208
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "StaffWithdraw Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث staffwithdraw بنجاح"
 
 #: .\base\views\StaffViews.py:285
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "StaffFine Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "أنشأت stafffine بنجاح"
 
 #: .\base\views\StaffViews.py:303
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "StaffFine Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث stafffine بنجاح"
 
 #: .\base\views\StaffViews.py:373
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "StaffSalary Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم إنشاء الموظفين بنجاح"
 
 #: .\base\views\StaffViews.py:391
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "StaffSalary Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تحديث الموظفين بنجاح"
 
 #: .\base\views\SubscriptionViews.py:35
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Subscription Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم إنشاء الاشتراك بنجاح"
 
 #: .\base\views\SubscriptionViews.py:53
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "Subscription Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث الاشتراك بنجاح"
 
 #: .\base\views\SubscriptionViews.py:113
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "SubscriptionInstance Created successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم إنشاء الاشتراك بنجاح"
 
 #: .\base\views\SubscriptionViews.py:132
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "SubscriptionInstance Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
+msgstr "تم تحديث الاشتراك بنجاح"
 
 #: .\base\views\UserViews.py:32
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "User Created Successfully"
 msgstr "تم إنشاء المستخدم بنجاح"
 
 #: .\base\views\UserViews.py:54
-#, fuzzy
-#| msgid "User Created successfully"
 msgid "User Updated successfully"
-msgstr "تم إنشاء المستخدم بنجاح"
-
-#~ msgid "Value cannot be negative or equal to zero"
-#~ msgstr "لا يمكن أن تكون القيمة سالبة أو تساوي الصفر"
-
-#~ msgid "You can not update the staff member"
-#~ msgstr "لا يمكنك تحديث الموظف"
-
-#, fuzzy
-#~ msgid "Dlieverd Money Created successfully"
-#~ msgstr "تم إنشاء المستخدم بنجاح"
-
-#~ msgid "Invalid Phone Number or password. Please try again."
-#~ msgstr "رقم الهاتف أو كلمة المرور غير صالحة. يرجى المحاولة مرة أخرى."
-
-#~ msgid "This username is already taken or invalid"
-#~ msgstr "اسم المستخدم هذا مستخدم بالفعل أو غير صالح"
-
-#~ msgid "This phone number is already taken or invalid"
-#~ msgstr "رقم الهاتف هذا مستخدم بالفعل أو غير صالح"
-
-#~ msgid "email must end with @gmail.com"
-#~ msgstr "يجب أن ينتهي البريد الإلكتروني بـ @gmail.com"
-
-#~ msgid ""
-#~ "Password must be at least 8 characters long and contain at least one "
-#~ "alphabetic letter or symbol."
-#~ msgstr ""
-#~ "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل وتحتوي على حرف أبجدي أو رمز "
-#~ "واحد على الأقل."
+msgstr "تم تحديث المستخدم بنجاح"
