@@ -12,3 +12,4 @@ from .DiscountViews import *
 from .ExpenseViews import *
 from .SubscriptionViews import *
 from .OfferViews import *
+from .DashboardViews import *

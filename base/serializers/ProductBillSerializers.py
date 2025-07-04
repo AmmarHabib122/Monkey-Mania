@@ -367,8 +367,8 @@ class ProductBillSerializer(serializers.ModelSerializer):
             created_products = models.ProductBillProduct.objects.bulk_create(bill_products)
             instance.products.add(*created_products)
             instance.total_price = total_price
-            instance.bill.update_products_price()
             instance.save()
+            instance.bill.update_products_price()
             return instance
 
 
@@ -455,8 +455,8 @@ class ProductBillSerializer(serializers.ModelSerializer):
 
             # Finalize
             instance.total_price = total_price
-            instance.bill.update_products_price()
             instance.save()
+            instance.bill.update_products_price()
             return instance
 
 

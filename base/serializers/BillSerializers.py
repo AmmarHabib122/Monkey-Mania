@@ -119,21 +119,32 @@ class BillSerializer(serializers.ModelSerializer):
             data['children'].append(child_data)
 
         merged_products = []
-        for product_bill_data in data.get('product_bills_set', []):
-            for product_data in product_bill_data:
 
-                existing_product = next((product for product in merged_products if product['name'] == product_data['name']), None)
-                if existing_product:
-                    existing_product['total_price'] += product_data['total_price']
-                    existing_product['qunatity']    += product_data['qunatity']
+        for product_bill in instance.product_bills_set.all():
+            for pbp in product_bill.products.all():
+                product = pbp.product_object
+                if not product:
+                    continue  # skip if product is missing
+
+                name = getattr(product, 'name', 'Unnamed')
+                unit_price = getattr(product, 'price', 0)
+                quantity = pbp.quantity
+                total_price = unit_price * quantity
+
+                existing = next((item for item in merged_products if item['name'] == name), None)
+                if existing:
+                    existing['quantity'] += quantity
+                    existing['total_price'] += total_price
                 else:
                     merged_products.append({
-                        'name'        : product_data['name'],
-                        'quantity'    : product_data['quantity'],
-                        'total_price' : product_data['total_price'],
-                        'unit_price'  : product_data['unit_price'],
+                        'name': name,
+                        'quantity': quantity,
+                        'unit_price': unit_price,
+                        'total_price': total_price
                     })
+
         data['product_bills_set'] = merged_products
+
         return data
         
     def validate_cash(self, value):

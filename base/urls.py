@@ -141,4 +141,7 @@ urlpatterns = [
     path('branch_offer/<str:pk>/update/', views.Update_BranchOffer, name = 'Update_BranchOffer'),
     path('branch_offer/all/', views.List_BranchOffer, name = 'List_BranchOffer'),
     path('branch_offer/<str:pk>/', views.Get_BranchOffer, name = 'Get_BranchOffer'),
+
+    #Dashboard
+    path('dashboard/statistics/', views.Get_DashboardStatistics, name = 'Get_DashboardStatistics'),
 ]

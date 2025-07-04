@@ -3,6 +3,7 @@ from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
+from decimal import Decimal
 
 
 from base import serializers
@@ -110,7 +111,7 @@ class GetBillAPI(RoleAccessList, generics.RetrieveAPIView):
         if instance.is_active:
             instance.time_spent  = libs.calculate_timesince(instance.created)
             instance.time_price  = libs.calculate_time_price(instance.time_spent, instance.hour_price, instance.half_hour_price) if not instance.is_subscription else 0
-            instance.total_price = instance.time_price + instance.products_price
+            instance.total_price = Decimal(instance.time_price) + Decimal(instance.products_price)
         elif self.request.user.role in ['waiter', 'reception']:
             raise PermissionDenied(_("You do not have the permission to access this data"))
         return instance

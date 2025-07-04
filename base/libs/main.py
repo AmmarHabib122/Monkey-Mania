@@ -128,7 +128,7 @@ def calculate_timesince(start_time):
 
 def calculate_time_price(spent_time, hour_price, half_hour_price):
     spent_time  = max(spent_time - 15, 0)                 #extra 15 minutes allowed for clients without charges
-    hours       = spent_time // 60; 
+    hours       = Decimal(spent_time // 60); 
     spent_time %= 60
     time_price  = hours * hour_price
     time_price += half_hour_price if spent_time > 0 else 0 
