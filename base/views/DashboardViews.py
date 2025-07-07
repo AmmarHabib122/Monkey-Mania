@@ -54,7 +54,7 @@ class DashboardSatistics(APIView):
         }
 
         # 1. Today Total Sales
-        bills_query = models.Bill.objects.filter(branch = branch)
+        bills_query = models.Bill.objects.filter(branch = branch) if branch else models.Bill.objects.all()
         bills_query = libs.get_all_instances_in_a_date_range_query(bills_query, today_start, today_end)
         today_kids_sales = bills_query.aggregate(
             total=Coalesce(Sum('time_price'), 0, output_field=DecimalField())
@@ -68,7 +68,7 @@ class DashboardSatistics(APIView):
         dashboard_statistics['todays_children_count'] = todays_children_count
 
         # 2. Yesterday Total Sales
-        bills_query = models.Bill.objects.filter(branch = branch)
+        bills_query = models.Bill.objects.filter(branch = branch) if branch else models.Bill.objects.all()
         bills_query = libs.get_all_instances_in_a_date_range_query(bills_query, yesterday_start, yesterday_end)
         yesterday_kids_sales = bills_query.aggregate(
             total=Coalesce(Sum('time_price'), 0, output_field=DecimalField())
@@ -84,16 +84,16 @@ class DashboardSatistics(APIView):
         children_count_difference_from_yesterday = todays_children_count - yeseterdays_children_count
         dashboard_statistics['children_count_difference_from_yesterday'] = str(children_count_difference_from_yesterday) if children_count_difference_from_yesterday < 0 else "+" + str(children_count_difference_from_yesterday)
 
-        # 4. Today Created Subscriptions count and sales
-        subscriptions_query = models.SubscriptionInstance.objects.filter(branch = branch)
+        # 3. Today Created Subscriptions count and sales
+        subscriptions_query = models.SubscriptionInstance.objects.filter(branch = branch) if branch else models.SubscriptionInstance.objects.all()
         subscriptions_query = libs.get_all_instances_in_a_date_range_query(subscriptions_query, today_start, today_end)
         dashboard_statistics['todays_subscriptions_count'] = subscriptions_query.count()
         dashboard_statistics['todays_subscriptions_sales'] = subscriptions_query.aggregate(
             total=Coalesce(Sum('price'), 0, output_field=DecimalField())
         )['total']
 
-        # 5. Today Cafe Cales
-        product_bills_query = models.ProductBill.objects.filter(bill__branch = branch)
+        # 4. Today Cafe Cales
+        product_bills_query = models.ProductBill.objects.filter(bill__branch = branch) if branch else models.ProductBill.objects.all()
         product_bills_query = libs.get_all_instances_in_a_date_range_query(product_bills_query, today_start, today_end)
         todays_product_bills_sales = product_bills_query.aggregate(
             total=Coalesce(Sum('total_price'), 0, output_field=DecimalField())
@@ -101,7 +101,7 @@ class DashboardSatistics(APIView):
         dashboard_statistics['todays_cafe_sales'] = todays_product_bills_sales
 
         # 5. Yesterday Cafe Cales
-        product_bills_query = models.ProductBill.objects.filter(bill__branch = branch)
+        product_bills_query = models.ProductBill.objects.filter(bill__branch = branch) if branch else models.ProductBill.objects.all()
         product_bills_query = libs.get_all_instances_in_a_date_range_query(product_bills_query, yesterday_start, yesterday_end)
         yesterdays_product_bills_sales = product_bills_query.aggregate(
             total=Coalesce(Sum('total_price'), 0, output_field=DecimalField())
@@ -112,8 +112,8 @@ class DashboardSatistics(APIView):
         else : 
             dashboard_statistics['cafe_sales_difference_from_yesterday'] = "Not defined"
             
-        # 5. Staff Withdraws
-        staff_withdraws_query = models.StaffWithdraw.objects.filter(branch = branch)
+        # 6. Staff Withdraws
+        staff_withdraws_query = models.StaffWithdraw.objects.filter(branch = branch) if branch else models.StaffWithdraw.objects.all()
         staff_withdraws_query = libs.get_all_instances_in_a_date_range_query(staff_withdraws_query, today_start, today_end)
         dashboard_statistics['todays_staff_requested_withdraw_count'] = staff_withdraws_query.values('staff').distinct().count()
         dashboard_statistics['todays_staff_withdraws_total'] = staff_withdraws_query.aggregate(
