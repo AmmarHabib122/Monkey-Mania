@@ -9,7 +9,6 @@ env/
 # Django stuff
 db.sqlite3
 media/
-MonkeyMania/settings.py
 
 # VS Code config
 .vscode/
