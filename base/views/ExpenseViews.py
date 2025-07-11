@@ -83,8 +83,8 @@ class ListGeneralExpenseAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['name'] 
 
     def get_queryset(self):
-        branch   = libs.get_one_branch_id(self)
-        query    = super().get_queryset().filter(branch=branch)
+        branches  = libs.get_branch_ids(self)
+        query     = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
         start_date, end_date, is_date_range = libs.get_date_range(self)
         if is_date_range   and   start_date == end_date:
             query = libs.get_all_instances_in_a_day_query(query, start_date)
@@ -181,8 +181,8 @@ class ListMaterialExpenseAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['material__material__name'] 
 
     def get_queryset(self):
-        branch   = libs.get_one_branch_id(self)
-        query    = super().get_queryset().filter(branch=branch)
+        branches  = libs.get_branch_ids(self)
+        query     = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
         start_date, end_date, is_date_range = libs.get_date_range(self)
         if is_date_range   and   start_date == end_date:
             query = libs.get_all_instances_in_a_day_query(query, start_date)
