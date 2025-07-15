@@ -166,8 +166,8 @@ class ListBranchProductAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['product__layer1', 'product__layer2', 'product__layer3'] 
 
     def get_queryset(self):
-        branch = libs.get_one_branch_id(self)
-        query  = models.BranchProduct.objects.filter(branch = branch)
+        branches = libs.get_branch_ids(self)
+        query    = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
         return query
 List_BranchProduct = ListBranchProductAPI.as_view()
 

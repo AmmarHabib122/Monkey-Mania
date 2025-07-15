@@ -153,8 +153,8 @@ class ListBillAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 
 
     def get_queryset(self):
-        branch   = libs.get_one_branch_id(self)
-        query    = super().get_queryset().filter(branch=branch)
+        branches  = libs.get_branch_ids(self)
+        query     = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
         start_date, end_date, is_date_range = libs.get_date_range(self)
         if is_date_range   and   start_date == end_date:
             query = libs.get_all_instances_in_a_day_query(query, start_date)

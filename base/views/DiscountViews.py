@@ -81,8 +81,8 @@ class ListDiscountAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['name'] 
 
     def get_queryset(self):
-        branch = libs.get_one_branch_id(self)
-        queryset  = self.queryset.all().filter(branches = branch)
+        branches = libs.get_branch_ids(self)
+        query    = super().get_queryset().filter(branches__in = branches) if branches != ['all'] else super().get_queryset()
         return queryset
 List_Discount = ListDiscountAPI.as_view()
 

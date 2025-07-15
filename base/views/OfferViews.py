@@ -166,8 +166,8 @@ class ListBranchOfferAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['offer__name'] 
 
     def get_queryset(self):
-        branch = libs.get_one_branch_id(self)
-        query  = models.BranchOffer.objects.filter(branch = branch)
+        branches = libs.get_branch_ids(self)
+        query    = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
         return query
 List_BranchOffer = ListBranchOfferAPI.as_view()
 

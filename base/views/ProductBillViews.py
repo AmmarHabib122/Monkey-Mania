@@ -84,8 +84,8 @@ class ListActiveProductBillAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['bill__children__name', 'table_number', 'bill_number'] 
 
     def get_queryset(self):
-        branch = libs.get_one_branch_id(self)
-        queryset  = self.queryset.all().filter(bill__branch = branch, bill__is_active = True)
+        branches = libs.get_branch_ids(self)
+        query    = super().get_queryset().filter(bill__branch__in = branches) if branches != ['all'] else super().get_queryset()
         return queryset
 List_ActiveProductBill = ListActiveProductBillAPI.as_view()
 
@@ -104,8 +104,8 @@ class ListProductBillAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['bill__children__name', 'table_number', 'bill_number'] 
 
     def get_queryset(self):
-        branch   = libs.get_one_branch_id(self)
-        query    = super().get_queryset().filter(bill__branch=branch)
+        branches = libs.get_branch_ids(self)
+        query    = super().get_queryset().filter(bill__branch__in = branches) if branches != ['all'] else super().get_queryset()
         start_date, end_date, is_date_range = libs.get_date_range(self)
         if is_date_range   and   start_date == end_date:
             query = libs.get_all_instances_in_a_day_query(query, start_date)
