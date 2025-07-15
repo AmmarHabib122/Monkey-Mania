@@ -83,6 +83,9 @@ class BranchSerializer(serializers.ModelSerializer):
             if request.user.branch and request.user.branch != instance:
                 raise PermissionDenied(_("You Do Not have the permission to access this data"))
         data = super().to_representation(instance)
+        created_by = instance.created_by
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
         data['hour_prices_set'] = HourPriceSerializer(instance.hour_prices_set.all(), many=True).data
         return data
     

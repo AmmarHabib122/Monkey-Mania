@@ -41,6 +41,16 @@ class GeneralExpenseSerializer(serializers.ModelSerializer):
             'created_by',
         ]
         
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        branch = instance.branch
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
+        return data
+    
     def validate_name(self, value):
         return value.lower()
     
@@ -121,6 +131,15 @@ class MaterialExpenseSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['measure_unit'] = instance.material.measure_unit
+        created_by = instance.created_by
+        branch = instance.branch
+        material = instance.material
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['material'] = material.name if material else None
+        data['material_id'] = material.id if material else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
         return data
         
     def validate_name(self, value):

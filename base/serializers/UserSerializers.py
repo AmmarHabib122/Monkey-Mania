@@ -76,7 +76,17 @@ class UserSerializer(serializers.ModelSerializer):
                     raise PermissionDenied(_("You Do Not have the permission to access this data"))
                 if user.branch and instance.branch != user.branch:
                     raise PermissionDenied(_("You Can not access a user from another branch"))
-        return super().to_representation(instance)
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        staff = instance.staff
+        branch = instance.branch
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['staff'] = staff.name if staff else None
+        data['staff_id'] = staff.id if staff else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
+        return data
 
 
     def validate_username(self, value):

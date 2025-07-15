@@ -98,6 +98,9 @@ class ChildSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data =  super().to_representation(instance)
+        created_by = instance.created_by
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
         if data.get('child_phone_numbers_set'):
             for dict in data['child_phone_numbers_set']:
                 dict.pop('id', None)

@@ -32,7 +32,13 @@ class ProductSerializer(serializers.ModelSerializer):
             'updated',
             'created_by',
         ]
-
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        return data
+        
     def validate_layer1(self, value):
         return value.lower()
     
@@ -163,6 +169,15 @@ class BranchProductSerializer(serializers.ModelSerializer):
             if request.user.branch    and    instance.branch != request.user.branch:
                 raise PermissionDenied(_("You Can not access a Product from another branch"))
         data = super().to_representation(instance)
+        created_by = instance.created_by
+        product = instance.product
+        branch = instance.branch
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['product'] = product.name if product else None
+        data['product_id'] = product.id if product else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
         data['material_consumptions_set'] = BranchProductMaterialSerializer(instance.material_consumptions_set.all(), many = True).data
         for material_data in data['material_consumptions_set']:
             branch_material = models.BranchProductMaterial.objects.get(id = material_data['id'])

@@ -27,6 +27,13 @@ class SchoolSerializer(serializers.ModelSerializer):
             'created_by',
         ]
         
+    def to_representation(self, instance):
+        data = super().to_representation(instance) 
+        created_by = instance.created_by
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        return data   
+        
     def validate_name(self, value):
         return value.lower()
     

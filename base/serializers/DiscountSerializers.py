@@ -44,11 +44,16 @@ class DiscountSerializer(serializers.ModelSerializer):
         
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        new_data_branches = []
-        for branch_id in data['branches']:
-            branch = models.Branch.objects.get(id = branch_id)
-            new_data_branches.append(branch.name)
-        data['branches'] = new_data_branches
+        created_by = instance.created_by
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        branches_id = data['branches']
+        branches = instance.branches
+        branches_name = []
+        for branch in branches:
+            branches_name.append(branch.name)
+        data['branches'] = branches_name
+        data['branches_id'] = branches_id
         return data
 
     def validate_name(self, value):

@@ -54,6 +54,12 @@ class StaffSerializer(serializers.ModelSerializer):
             raise PermissionDenied(_("You Do Not have the permission to access this data"))
     
         data = super().to_representation(instance)
+        created_by = instance.created_by
+        branch = instance.branch
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
         data['images'] = [image.value.url for image in instance.images.all()] if instance.images.exists() else []
         return data
 
@@ -162,6 +168,18 @@ class StaffWithdrawSerializer(serializers.ModelSerializer):
             'created_by',
         ]
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        staff = instance.staff
+        branch = instance.branch
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['staff'] = staff.name if staff else None
+        data['staff_id'] = staff.id if staff else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
+        return data
     
     def validate_value(self, value):
         if value <= 0: 
@@ -266,6 +284,18 @@ class StaffFineSerializer(serializers.ModelSerializer):
             'created_by',
         ]
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        staff = instance.staff
+        branch = instance.branch
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['staff'] = staff.name if staff else None
+        data['staff_id'] = staff.id if staff else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
+        return data
     
     def validate_value(self, value):
         if value <= 0 or value >= 10: 
@@ -373,6 +403,18 @@ class StaffSalarySerializer(serializers.ModelSerializer):
             'created_by',
         ]
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        staff = instance.staff
+        branch = instance.branch
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['staff'] = staff.name if staff else None
+        data['staff_id'] = staff.id if staff else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
+        return data
 
     def get_withdraws(self, obj):
         return obj.withdraws

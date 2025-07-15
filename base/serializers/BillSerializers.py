@@ -95,7 +95,15 @@ class BillSerializer(serializers.ModelSerializer):
             if request.user.branch and request.user.branch != instance.branch:
                 raise PermissionDenied(_("You Do Not have the permission to access this data"))
         data = super().to_representation(instance)
-
+        created_by = instance.created_by
+        finished_by = instance.finished_by
+        branch = instance.branch
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['finished_by'] = finished_by.username if finished_by else None
+        data['finished_by_id'] = finished_by.id if finished_by else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
         if instance.is_subscription:
             data['subscription'] = {
                 'name'  : instance.subscription.name,

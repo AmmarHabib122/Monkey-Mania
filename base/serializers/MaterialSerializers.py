@@ -31,7 +31,13 @@ class MaterialSerializer(serializers.ModelSerializer):
             'updated',
             'created_by',
         ]
-
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        return data
+        
     def validate_name(self, value):
         return value.lower()
     
@@ -103,7 +109,17 @@ class BranchMaterialSerializer(serializers.ModelSerializer):
         if request:                   
             if request.user.branch    and    instance.branch != request.user.branch:
                 raise PermissionDenied(_("You Can not access a Material from another branch"))
-        return super().to_representation(instance)
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        material = instance.material
+        branch = instance.branch
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['material'] = material.name if material else None
+        data['material_id'] = material.id if material else None
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
+        return data 
 
 
 

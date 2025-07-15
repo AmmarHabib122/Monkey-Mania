@@ -62,11 +62,17 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         
     def to_representation(self, instance):
         data = super().to_representation(instance)
+        created_by = instance.created_by
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
 
+        data['creatable_in_branches_id'] = data['creatable_in_branches']
         data['creatable_in_branches'] = []
         for branch in instance.creatable_in_branches.all():
             data['creatable_in_branches'].append(branch.name)
 
+
+        data['usable_in_branches_id'] = data['usable_in_branches']
         data['usable_in_branches'] = []
         for branch in instance.usable_in_branches.all():
             data['usable_in_branches'].append(branch.name)
@@ -193,7 +199,23 @@ class SubscriptionInstanceSerializer(serializers.ModelSerializer):
             'updated',
             'created_by',
         ]
-        
+    
+    def to_representation(self, instance):
+        data = super().to_representation(instance)   
+        created_by = instance.created_by
+        subscription = instance.subscription
+        branch = instance.branch
+        child = instance.child
+        data['created_by'] = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['subscription'] = subscription.name if subscription else None
+        data['subscription_id'] = subscription.id if subscription else None
+        data['child'] = child.name if child else None
+        data['child_id'] = child.id if child else None 
+        data['branch'] = branch.name if branch else None
+        data['branch_id'] = branch.id if branch else None
+        return data
+    
     def validate_cash(self, value):
         if value < 0: 
             raise ValidationError(_("cash can not be negative"))
