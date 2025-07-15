@@ -23,9 +23,9 @@ class DashboardSatistics(APIView):
         #add a start_date and end_date to the request as today and yesterday
         today = date.today()
         yesterday = today - timedelta(days=1)
-        query = request._request.GET.copy()
-        query["start_date"] = today  # Default start date, can be changed
-        query["end_date"] = today    # Default end date, can be changed
+        query = request.GET.copy()
+        query["start_date"] = today.strftime("%Y-%m-%d")  # Default start date, can be changed
+        query["end_date"] = today.strftime("%Y-%m-%d")    # Default end date, can be changed
         request._request.GET = query
 
         branch = libs.get_one_branch_id(self)
