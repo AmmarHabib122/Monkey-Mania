@@ -85,7 +85,7 @@ class ListActiveProductBillAPI(RoleAccessList, generics.ListAPIView):
 
     def get_queryset(self):
         branches = libs.get_branch_ids(self)
-        query    = super().get_queryset().filter(bill__branch__in = branches) if branches != ['all'] else super().get_queryset()
+        queryset = super().get_queryset().filter(bill__branch__in = branches) if branches != ['all'] else super().get_queryset()
         return queryset
 List_ActiveProductBill = ListActiveProductBillAPI.as_view()
 
