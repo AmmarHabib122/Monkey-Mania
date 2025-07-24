@@ -33,6 +33,7 @@ urlpatterns = [
     
     #School
     path('school/create/', views.Create_School, name = 'Create_School'),
+    path('school/bulk_create/', views.BulkCreate_School, name = 'BulkCreate_School'),
     path('school/<str:pk>/update/', views.Update_School, name = 'Update_School'),
     path('school/all/', views.List_School, name = 'List_School'),
     path('school/<str:pk>/', views.Get_School, name = 'Get_School'),

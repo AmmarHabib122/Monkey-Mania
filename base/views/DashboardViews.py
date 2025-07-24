@@ -14,9 +14,10 @@ from base import permissions
 from base import libs
 
 
+class RoleAccessList:
+    role_access_list    = ['owner', 'admin', 'manager', 'reception']
 
-
-class DashboardSatistics(APIView):
+class DashboardSatistics(RoleAccessList, APIView):
     role_access_list    = ['owner', 'admin', 'manager', 'reception']
     permission_classes  = [permissions.Authenticated, permissions.RoleAccess]
     def get(self, request):

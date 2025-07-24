@@ -2,10 +2,15 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
 from rest_framework.filters import SearchFilter
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+
 
 from base import serializers
 from base import models
 from base import permissions
+from base import libs
 
 
 
@@ -74,5 +79,18 @@ List_School = ListSchoolAPI.as_view()
 
 
 
+class CreateSchoolsFromCsvFile(RoleAccessList, APIView):
+    permission_classes = [permissions.Authenticated, permissions.RoleAccess]
+    serializer_class   = serializers.SchoolSerializer
 
-
+    def post(self, request, *args, **kwargs):
+        required_columns = ['name', 'address', 'notes']  # adapt as needed
+        records = libs.get_csv_file_records(request, required_columns=required_columns)
+        if not records:
+            raise ValidationError(_("CSV file is empty or invalid"))
+        serializer = serializers.SchoolSerializer(data=records, many=True, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()  
+        return Response({'message' : _("Schools File Created Successfully")}, status=status.HTTP_201_CREATED)
+    
+BulkCreate_School = CreateSchoolsFromCsvFile.as_view()

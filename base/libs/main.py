@@ -6,6 +6,7 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from datetime import timedelta, time, datetime
 from decimal import Decimal
+import pandas as pd
 
 
 from base import models
@@ -252,3 +253,24 @@ def get_date_range(self):
     else:
         is_date_range = False         #to know that the user want all table records not filtered by date interval
     return start_date, end_date, is_date_range
+
+
+
+def get_csv_file_records(request, required_columns=[]):
+    file = request.FILES.get('file')
+    if not file:
+        raise ValidationError(_("Csv file must be provided"))
+    if not file.name.endswith('.csv'):
+        raise ValidationError(_("The file provided must be in .csv format"))
+    file = pd.read_csv(file)
+    missing_columns = [col for col in required_columns if col not in file.columns]
+    if missing_columns:
+        raise ValidationError(_("Wrong column format"))
+    records = []
+    for row in file.to_dict(orient='records'):
+        clean_row = {k: v for k, v in row.items() if pd.notna(v) and str(v).strip() != ''}
+        records.append(clean_row)     
+    return records
+                
+            
+            
