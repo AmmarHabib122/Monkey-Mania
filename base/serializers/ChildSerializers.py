@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
 from django.utils import timezone
-import datetime
 from django.db import transaction
 
 
@@ -64,7 +63,7 @@ class ChildSerializer(serializers.ModelSerializer):
     child_phone_numbers_set = ChildPhoneNumberSerializer(many = True)
     school  = serializers.PrimaryKeyRelatedField(
         queryset = models.School.objects.all(), 
-        required = True,
+        required = False,
         error_messages={
             'invalid': _('Invalid school ID.'),
             'does_not_exist': _('You must provide a valid school ID.'),
@@ -99,6 +98,8 @@ class ChildSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data =  super().to_representation(instance)
         created_by = instance.created_by
+        data["school_id"] = data.get('school', None)
+        data["school"] = instance.school.name if instance.school else None
         data['created_by'] = created_by.username if created_by else None
         data['created_by_id'] = created_by.id if created_by else None
         if data.get('child_phone_numbers_set'):
@@ -139,7 +140,6 @@ class ChildSerializer(serializers.ModelSerializer):
         user                           = self.context['request'].user
         validated_data['created_by']   = user
         request_phone_numbers          = validated_data.pop('child_phone_numbers_set')
-        special_needs                  = validated_data.pop('special_needs', None)     #remove if provided
         with transaction.atomic():
             instance            = super().create(validated_data)
             phone_numbers_list  = []

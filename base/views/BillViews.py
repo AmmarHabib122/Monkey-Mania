@@ -131,9 +131,9 @@ class ListActiveBillAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 
 
     def get_queryset(self):
-        branch = libs.get_one_branch_id(self)
-        queryset  = self.queryset.all().filter(branch = branch)
-        return queryset
+        branches  = libs.get_branch_ids(self)
+        query     = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
+        return query
 List_ActiveBill = ListActiveBillAPI.as_view()
 
 

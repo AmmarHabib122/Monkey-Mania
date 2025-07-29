@@ -7,7 +7,7 @@ from base import libs
 class Child(models.Model):
     name           = models.CharField(max_length = 150, unique = True)
     birth_date     = models.DateField()
-    address        = models.CharField(max_length = 255)
+    address        = models.CharField(max_length = 255, null = True, blank = True)
     notes          = models.CharField(max_length = 255, null = True, blank = True)
     is_active      = models.BooleanField(default = False)
     special_needs  = models.BooleanField(default = False)

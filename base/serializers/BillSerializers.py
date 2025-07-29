@@ -9,6 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from base import models
 from base import libs
+from base.serializers import ChildSerializer
 
 
 
@@ -22,7 +23,9 @@ from base import libs
 class BillSerializer(serializers.ModelSerializer):
     children   = serializers.PrimaryKeyRelatedField(
         queryset = models.Child.objects.all(), 
-        required = True,
+        required = False,
+        allow_empty = True,
+        allow_null = True,
         many     = True,
         error_messages={
             'invalid': _('Invalid child ID.'),
@@ -39,6 +42,7 @@ class BillSerializer(serializers.ModelSerializer):
             'incorrect_type': _('branch must be identified by an integer ID.')
         }
     ) 
+    new_children = ChildSerializer(many = True, write_only=True, required=False)
     discount = serializers.CharField(required = False)
     class Meta:
         model = models.Bill
@@ -52,6 +56,7 @@ class BillSerializer(serializers.ModelSerializer):
             'time_price',
             'products_price',
             'children',
+            'new_children',
             'discount',
             'discount_value',
             'discount_type',
@@ -238,9 +243,19 @@ class BillSerializer(serializers.ModelSerializer):
         is_subscription                  = validated_data.get('is_subscription', False)
         branch                           = validated_data.get('branch')
         children                         = validated_data.get('children', [])
-        validated_data['children_count'] = len(children)
         discount                         = validated_data.pop('discount', None)
+        request_new_children             = validated_data.pop('new_children', [])
+
         with transaction.atomic():
+
+            for child_data in request_new_children:
+                serializer = ChildSerializer(data=child_data, context=self.context)
+                serializer.is_valid(raise_exception=True)
+                child_instance = serializer.save()
+                children.append(child_instance)
+
+            validated_data['children_count'] = len(children)
+
             if is_subscription:
                 if validated_data['children_count'] != 1:
                     raise ValidationError(_("Subscription bill cannot have more than one child"))
@@ -270,6 +285,7 @@ class BillSerializer(serializers.ModelSerializer):
             for child in validated_data.get('children', []):
                 child.is_active = True
                 child.save()
+            
             return super().create(validated_data)
     
 
