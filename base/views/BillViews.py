@@ -108,11 +108,7 @@ class GetBillAPI(RoleAccessList, generics.RetrieveAPIView):
         if self.request.user.branch    and   instance.branch != self.request.user.branch:
             raise PermissionDenied(_("You do not have the permission to access this data"))
         
-        if instance.is_active:
-            instance.time_spent  = libs.calculate_timesince(instance.created)
-            instance.time_price  = libs.calculate_time_price(instance.time_spent, instance.hour_price, instance.half_hour_price) if not instance.is_subscription else 0
-            instance.total_price = Decimal(instance.time_price) + Decimal(instance.products_price)
-        elif self.request.user.role in ['waiter', 'reception']:
+        if not instance.is_active   and  self.request.user.role in ['waiter', 'reception']:
             raise PermissionDenied(_("You do not have the permission to access this data"))
         return instance
 

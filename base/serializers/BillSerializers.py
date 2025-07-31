@@ -100,6 +100,10 @@ class BillSerializer(serializers.ModelSerializer):
             if request.user.branch and request.user.branch != instance.branch:
                 raise PermissionDenied(_("You Do Not have the permission to access this data"))
         data = super().to_representation(instance)
+        if instance.is_active:
+            data['spent_time']  = libs.calculate_timesince(instance.created)
+            data["time_price"]  = libs.calculate_time_price(data['spent_time'], instance.hour_price, instance.half_hour_price) if not instance.is_subscription else 0
+            data["total_price"] = Decimal(data["time_price"]) + Decimal(instance.products_price)
         created_by = instance.created_by
         finished_by = instance.finished_by
         branch = instance.branch
@@ -255,6 +259,7 @@ class BillSerializer(serializers.ModelSerializer):
                 children.append(child_instance)
 
             validated_data['children_count'] = len(children)
+            validated_data['children']       = children
 
             if is_subscription:
                 if validated_data['children_count'] != 1:

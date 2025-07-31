@@ -9,7 +9,6 @@ from .ProductSerializers import *
 from .MaterialSerializers import *
 from .BillSerializers import *
 from .ProductBillSerializers import *
-from .DayIncomeSerializers import *
 from .DiscountSerializers import *
 from .ExpenseSerializers import *
 from .SubscriptionSerializers import *
