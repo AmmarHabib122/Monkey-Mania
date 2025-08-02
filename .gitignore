@@ -15,3 +15,6 @@ media/
 
 # Optional: ignore all .pyc files in any subfolder
 **/*.pyc
+.env
+.devcontainer/
+static

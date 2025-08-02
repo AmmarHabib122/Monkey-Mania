@@ -1,0 +1,28 @@
+[project]
+name = "monkey-mania"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ammar Hamed"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django (==5.2.3)",
+    "django-restframework (==0.0.1)",
+    "django-cors-headers (==4.7.0)",
+    "djangorestframework-simplejwt (==5.5.0)",
+    "djangorestframework (==3.16.0)",
+    "requests (==2.32.4)",
+    "beautifulsoup4 (==4.13.4)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "gunicorn (>=23.0.0,<24.0.0)",
+    "python-decouple (==3.8)",
+    "pandas (>=2.3.1,<3.0.0)",
+    "pillow (>=11.3.0,<12.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    container_name: $WEB_NAME
+    command: bash -c "./start.sh"
+    volumes:
+      - .:/code
+    ports:
+      - "${WEB_PORT}:${WEB_PORT}"
+    env_file:
+      - .env
+  db:
+    image: postgres:15.3
+    env_file:
+      - .env
+    container_name: monkey-mania-db
+    volumes:
+      - pg-data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: monkey
+      POSTGRES_DB: monkey
+      POSTGRES_PASSWORD: monkey
+    ports:
+      - "${DB_PORT}:5432"
+
+volumes:
+  pg-data:

@@ -1,5 +1,4 @@
 import os
-import dj_database_url
 from decouple import config
 from datetime import timedelta
 from pathlib import Path
@@ -78,7 +77,14 @@ WSGI_APPLICATION = 'MonkeyMania.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600)
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
+    },
 }
 
 
@@ -124,6 +130,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = "/media/"
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

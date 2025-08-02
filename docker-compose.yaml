@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    container_name: $WEB_NAME
+    command: bash -c "./start.sh"
+    volumes:
+      - .:/code
+    ports:
+      - "${WEB_PORT}:${WEB_PORT}"
+    env_file:
+      - .env
