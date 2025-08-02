@@ -50,7 +50,7 @@ class DiscountSerializer(serializers.ModelSerializer):
         branches_id = data['branches']
         branches = instance.branches
         branches_name = []
-        for branch in branches:
+        for branch in branches.all():
             branches_name.append(branch.name)
         data['branches'] = branches_name
         data['branches_id'] = branches_id
