@@ -101,6 +101,13 @@ def calculate_age(birth_date):
     return years, months, days
 
 
+def calculate_age_decimal(birth_date):
+    today = date.today()
+    age_days = (today - birth_date).days
+    age_years = age_days / 365.2425
+    return round(age_years, 2)
+
+
 def validate_image(value):
     allowed_extensions = ['jpg', 'jpeg', 'png']
     extension = value.name.split('.')[-1].lower()
