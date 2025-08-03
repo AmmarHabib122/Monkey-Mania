@@ -63,6 +63,7 @@ class BillSerializer(serializers.ModelSerializer):
             'branch',
             'product_bills_set',
             'is_active',
+            'is_allowed_age',
             'hour_price',
             'half_hour_price',
             'total_price',
@@ -81,6 +82,7 @@ class BillSerializer(serializers.ModelSerializer):
             'discount_type',
             'product_bills_set',
             'is_active',
+            'is_allowed_age',
             'hour_price',
             'half_hour_price',
             'total_price',
@@ -288,6 +290,8 @@ class BillSerializer(serializers.ModelSerializer):
             validated_data["half_hour_price"]  = libs.apply_discount_to_price(time_price_instance.half_hour_price, validated_data['discount_value'], validated_data['discount_type'])
             
             for child in validated_data.get('children', []):
+                if (branch  and  child.age >= branch.allowed_age)  or  child.special_needs:
+                    validated_data["is_allowed_age"] = True
                 child.is_active = True
                 child.save()
             
