@@ -142,7 +142,10 @@ def calculate_time_price(spent_time, hour_price, half_hour_price):
     hours       = Decimal(spent_time // 60); 
     spent_time %= 60
     time_price  = hours * hour_price
-    time_price += half_hour_price if spent_time > 0 else 0 
+    if spent_time > 30:
+        time_price += hour_price
+    elif spent_time > 0:
+        time_price += half_hour_price   
     time_price  = time_price if time_price > 0 else 0
     return Decimal(time_price)
 

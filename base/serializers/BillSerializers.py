@@ -326,29 +326,11 @@ class BillSerializer(serializers.ModelSerializer):
         validated_data['instapay']     = instapay
         validated_data['finished']     = timezone.now()
         validated_data['is_active']    = False
-        validated_data['finished_by']  = user
+        validated_data['finished_by']  = user                                                                                                                                                                                                                                                                                                                                                                                                                                                ser
         validated_data['spent_time']   = libs.calculate_timesince(instance.created)
         remaining_spent_time           = libs.calculate_subscription_time(validated_data['spent_time'], instance.subscription) if instance.is_subscription else validated_data['spent_time'] 
         validated_data['time_price']   = libs.calculate_time_price(remaining_spent_time, instance.hour_price, instance.half_hour_price)
         validated_data['total_price']  = instance.products_price + validated_data['time_price']
         instance                       = super().update(instance, validated_data)
 
-        if instance.cash > 0:
-            bill_content_type = ContentType.objects.get_for_model(instance)
-            models.Cashier.objects.create(
-                transaction_type   = bill_content_type,  
-                transaction_id     = instance.id,
-                branch             = instance.branch,
-                value              = instance.cash,
-                created_by         = user
-            )
-
         return instance
-
-    
-
-
-
-
-
-        
