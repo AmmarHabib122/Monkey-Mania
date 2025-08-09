@@ -72,6 +72,9 @@ urlpatterns = [
     path('branch_product/create/', views.Create_BranchProduct, name = 'Create_BranchProduct'),
     path('branch_product/<str:pk>/update/', views.Update_BranchProduct, name = 'Update_BranchProduct'),
     path('branch_product/all/', views.List_BranchProduct, name = 'List_BranchProduct'),
+    path('branch_product/layer1/', views.List_BranchProductLayer1, name = 'List_BranchProductLayer1'),
+    path('branch_product/layer2/', views.List_BranchProductLayer2, name = 'List_BranchProductLayer2'),
+    path('branch_product/layer3/', views.List_BranchProductLayer3, name = 'List_BranchProductLayer3'),
     path('branch_product/<str:pk>/', views.Get_BranchProduct, name = 'Get_BranchProduct'),
 
     #Material

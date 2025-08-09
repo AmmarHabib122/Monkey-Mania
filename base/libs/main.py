@@ -55,13 +55,13 @@ def get_one_branch_id(self):
     if user.branch:
         branch = user.branch.id
     else:
-        branch = self.request.query_params.get("branch_id")
+        branch = self.request.query_params.get("branch_id", None)
         try:
             if branch:
                 branch = int(branch)
                 models.Branch.objects.get(id = branch)
             else:
-                return None
+                raise ValidationError (_("Invalid Branch id"))
         except:
             raise ValidationError (_("Invalid Branch id"))
     return branch

@@ -2,7 +2,9 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
 from rest_framework.filters import SearchFilter
-from django.db import transaction
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 
 from base import serializers
 from base import models
@@ -166,8 +168,15 @@ class ListBranchProductAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['product__layer1', 'product__layer2', 'product__layer3'] 
 
     def get_queryset(self):
-        branches = libs.get_branch_ids(self)
-        query    = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
+        layer1 = self.request.query_params.get("layer1", None)
+        layer2 = self.request.query_params.get("layer2", None)
+        branch = libs.get_one_branch_id(self)
+        if layer1  and  layer2:
+            query  = super().get_queryset().filter(branch = branch, product__layer1=layer1, product__layer2=layer2)
+        elif layer1:
+            query  = super().get_queryset().filter(branch = branch, product__layer1=layer1)
+        else: 
+            query  = super().get_queryset().filter(branch = branch) 
         return query
 List_BranchProduct = ListBranchProductAPI.as_view()
 
@@ -176,3 +185,41 @@ List_BranchProduct = ListBranchProductAPI.as_view()
 
 
 
+
+class ListBranchProductLayer1(APIView):
+    permission_classes  = [permissions.Authenticated]
+    def get(self, request):
+        branch = libs.get_one_branch_id(self)
+        layer1_values = models.BranchProduct.objects.filter(branch=branch).values_list('product__layer1', flat=True).distinct()
+        return Response(layer1_values)
+List_BranchProductLayer1 = ListBranchProductLayer1.as_view()
+
+
+
+
+
+class ListBranchProductLayer2(APIView):
+    permission_classes  = [permissions.Authenticated]
+    def get(self, request):
+        layer1 = self.request.query_params.get("layer1", None)
+        if not layer1:
+            raise ValidationError (_("layer 1 must be provided"))
+        branch = libs.get_one_branch_id(self)
+        layer2_values = models.BranchProduct.objects.filter(branch=branch, product__layer1=layer1).values_list('product__layer2', flat=True).distinct()
+        return Response(layer2_values)
+List_BranchProductLayer2 = ListBranchProductLayer2.as_view()
+
+
+
+
+class ListBranchProductLayer3(APIView):
+    permission_classes  = [permissions.Authenticated]
+    def get(self, request):
+        layer1 = self.request.query_params.get("layer1", None)
+        layer2 = self.request.query_params.get("layer2", None)
+        if not layer1  or  not layer2:
+            raise ValidationError (_("layer 1 and 2 must be provided"))
+        branch = libs.get_one_branch_id(self)
+        layer3_values = models.BranchProduct.objects.filter(branch=branch, product__layer1=layer1, product__layer2=layer2).values_list('product__layer3', flat=True).distinct()
+        return Response(layer3_values)
+List_BranchProductLayer3 = ListBranchProductLayer3.as_view()

@@ -8,8 +8,8 @@ from django.db import models
 
 
 class Product(models.Model):
-    layer1      = models.CharField(max_length = 150)
-    layer2      = models.CharField(max_length = 150)
+    layer1      = models.CharField(max_length = 150, db_index=True)
+    layer2      = models.CharField(max_length = 150, db_index=True)
     layer3      = models.CharField(max_length = 150)
     created     = models.DateTimeField(auto_now_add = True)
     updated     = models.DateTimeField(auto_now = True)
@@ -110,6 +110,10 @@ class BranchProduct(models.Model):
                 fields = ['product', 'branch'],
                 name   = 'unique_branch_products'
             )
+        ]
+        
+        indexes = [
+            models.Index(fields=['branch', 'product']),
         ]
     
     def __str__(self):
