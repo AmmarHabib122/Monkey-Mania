@@ -191,15 +191,12 @@ def apply_discount_to_price(original_price, discount_value, discount_type):
 
 
 
+# Updated functions in libs.py
 def get_all_instances_in_a_day_query(query, date):
-    # Define the start of the day at 7 AM
-    start_of_day = timezone.make_aware(timezone.datetime.combine(date, time(7, 0)))
-    # Define the end of the day as 7 AM the next day
-    end_of_day   = start_of_day + timedelta(days=1)
-    # Filter objects within the custom day range
-    query        = query.filter(created__range = (start_of_day, end_of_day))
-    return query
-
+    # Use UTC for start/end times
+    start_of_day = datetime.combine(date, time(7, 0)).replace(tzinfo=timezone.utc)
+    end_of_day = start_of_day + timedelta(days=1)
+    return query.filter(created__range=(start_of_day, end_of_day))
 
 
 
@@ -207,13 +204,10 @@ def get_all_instances_in_a_day_query(query, date):
 
 
 def get_all_instances_in_a_date_range_query(query, start_date, end_date):
-    # Define the start of the day at 7 AM
-    start_date = timezone.make_aware(timezone.datetime.combine(start_date, time(7, 0)))
-    # Define the end of the range : to add a day but before 7 am
-    end_date   = timezone.make_aware(timezone.datetime.combine(end_date + timedelta(days=1), time(7, 0)))
-    # Filter objects within the custom range
-    query      = query.filter(created__range = (start_date, end_date))
-    return query
+    # Use UTC for start/end times
+    start_date = datetime.combine(start_date, time(7, 0)).replace(tzinfo=timezone.utc)
+    end_date = datetime.combine(end_date + timedelta(days=1), time(7, 0)).replace(tzinfo=timezone.utc)
+    return query.filter(created__range=(start_date, end_date))
 
 
 

@@ -29,11 +29,16 @@ class DashboardSatistics(RoleAccessList, APIView):
         query["start_date"] = today.strftime("%Y-%m-%d")  # Default start date, can be changed
         query["end_date"] = today.strftime("%Y-%m-%d")    # Default end date, can be changed
         request._request.GET = query
-
-        branch = libs.get_branch_ids(self)
         today_start, today_end, is_date_range = libs.get_date_range(self)
-        yesterday_start = today_start - timedelta(days=1)
-        yesterday_end   = today_end   - timedelta(days=1)
+        
+        branch = libs.get_branch_ids(self)
+        
+        yesterday = today - timedelta(days=1)
+        query = request.GET.copy()
+        query["start_date"] = yesterday.strftime("%Y-%m-%d")  # Default start date, can be changed
+        query["end_date"] = yesterday.strftime("%Y-%m-%d")    # Default end date, can be changed
+        request._request.GET = query
+        yesterday_start, yesterday_end, is_date_range = libs.get_date_range(self)
 
         # Initialize response dict
         dashboard_statistics = {
