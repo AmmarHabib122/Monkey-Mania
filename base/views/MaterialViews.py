@@ -61,7 +61,8 @@ Get_Material = GetMaterialAPI.as_view()
 
 
 class ListMaterialAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Material.objects.all()
+    queryset           = models.Material.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.MaterialSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -157,7 +158,8 @@ Get_BranchMaterial = GetBranchMaterialAPI.as_view()
 
 
 class ListBranchMaterialAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.BranchMaterial.objects.all()
+    queryset           = models.BranchMaterial.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.BranchMaterialSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]

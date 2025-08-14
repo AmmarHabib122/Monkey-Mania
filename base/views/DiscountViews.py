@@ -73,7 +73,7 @@ Get_Discount = GetDiscountAPI.as_view()
 
 
 class ListDiscountAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Discount.objects.all()
+    queryset           = models.Discount.objects.all().order_by('-id')
     serializer_class   = serializers.DiscountSerializer
     role_access_list   = ['owner', 'admin', 'manager']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]

@@ -20,6 +20,8 @@ class RoleAccessList:
 class DashboardSatistics(RoleAccessList, APIView):
     role_access_list    = ['owner', 'admin', 'manager', 'reception']
     permission_classes  = [permissions.Authenticated, permissions.RoleAccess]
+    pagination_class    = None
+    
     def get(self, request):
         #add a start_date and end_date to the request as today and yesterday
         today = date.today()

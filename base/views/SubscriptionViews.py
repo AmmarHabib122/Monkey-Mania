@@ -73,7 +73,8 @@ Get_Subscription = GetSubscriptionAPI.as_view()
 
 
 class ListSubscriptionAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Subscription.objects.all()
+    queryset           = models.Subscription.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.SubscriptionSerializer
     role_access_list   = ['owner', 'admin', 'manager']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
@@ -157,7 +158,7 @@ Get_SubscriptionInstance = GetSubscriptionInstanceAPI.as_view()
 
 
 class ListSubscriptionInstanceAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.SubscriptionInstance.objects.all()
+    queryset           = models.SubscriptionInstance.objects.all().order_by('-id')
     serializer_class   = serializers.SubscriptionInstanceSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]

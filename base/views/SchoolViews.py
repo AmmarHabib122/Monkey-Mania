@@ -70,7 +70,8 @@ Get_School = GetSchoolAPI.as_view()
 
 
 class ListSchoolAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.School.objects.all()
+    queryset           = models.School.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.SchoolSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]

@@ -64,7 +64,8 @@ Get_Child = GetChildAPI.as_view()
 
 
 class ListNonActiveChildAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Child.objects.filter(is_active = False)
+    queryset           = models.Child.objects.filter(is_active = False).order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.ChildSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -78,7 +79,7 @@ List_NonActiveChild = ListNonActiveChildAPI.as_view()
 
 
 class ListChildAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Child.objects.all()
+    queryset           = models.Child.objects.all().order_by('-id')
     serializer_class   = serializers.ChildSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]

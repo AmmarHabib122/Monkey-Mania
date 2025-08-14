@@ -64,7 +64,8 @@ Get_Product = GetProductAPI.as_view()
 
 
 class ListProductAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Product.objects.all()
+    queryset           = models.Product.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.ProductSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -161,7 +162,8 @@ Get_BranchProduct = GetBranchProductAPI.as_view()
 
 
 class ListBranchProductAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.BranchProduct.objects.all()
+    queryset           = models.BranchProduct.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.BranchProductSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -188,6 +190,7 @@ List_BranchProduct = ListBranchProductAPI.as_view()
 
 class ListBranchProductLayer1(APIView):
     permission_classes  = [permissions.Authenticated]
+    pagination_class    = None
     def get(self, request):
         branch = libs.get_one_branch_id(self)
         layer1_values = models.BranchProduct.objects.filter(branch=branch).values_list('product__layer1', flat=True).distinct()
@@ -200,6 +203,7 @@ List_BranchProductLayer1 = ListBranchProductLayer1.as_view()
 
 class ListBranchProductLayer2(APIView):
     permission_classes  = [permissions.Authenticated]
+    pagination_class    = None
     def get(self, request):
         layer1 = self.request.query_params.get("layer1", None)
         if not layer1:
@@ -214,6 +218,7 @@ List_BranchProductLayer2 = ListBranchProductLayer2.as_view()
 
 class ListBranchProductLayer3(APIView):
     permission_classes  = [permissions.Authenticated]
+    pagination_class    = None
     def get(self, request):
         layer1 = self.request.query_params.get("layer1", None)
         layer2 = self.request.query_params.get("layer2", None)
