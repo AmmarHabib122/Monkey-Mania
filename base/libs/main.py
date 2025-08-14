@@ -188,26 +188,19 @@ def apply_discount_to_price(original_price, discount_value, discount_type):
 
 
 
-
-
-
-# Updated functions in libs.py
 def get_all_instances_in_a_day_query(query, date):
-    # Use UTC for start/end times
-    start_of_day = datetime.combine(date, time(7, 0)).replace(tzinfo=timezone.utc)
+    app_tz = timezone.get_current_timezone()
+    start_of_day = timezone.make_aware(datetime.combine(date, time(7, 0)), app_tz)
     end_of_day = start_of_day + timedelta(days=1)
     return query.filter(created__range=(start_of_day, end_of_day))
 
 
-
-
-
-
 def get_all_instances_in_a_date_range_query(query, start_date, end_date):
-    # Use UTC for start/end times
-    start_date = datetime.combine(start_date, time(7, 0)).replace(tzinfo=timezone.utc)
-    end_date = datetime.combine(end_date + timedelta(days=1), time(7, 0)).replace(tzinfo=timezone.utc)
-    return query.filter(created__range=(start_date, end_date))
+    app_tz = timezone.get_current_timezone()
+    start_dt = timezone.make_aware(datetime.combine(start_date, time(7, 0)), app_tz)
+    end_dt = timezone.make_aware(datetime.combine(end_date + timedelta(days=1), time(7, 0)), app_tz)
+    return query.filter(created__range=(start_dt, end_dt))
+
 
 
 

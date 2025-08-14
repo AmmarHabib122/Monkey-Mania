@@ -64,7 +64,7 @@ class DashboardSatistics(RoleAccessList, APIView):
         }
 
         # 1. Today Total Sales
-        bills_query = models.Bill.objects.filter(branch__in = branch) if branch != "all" else models.Bill.objects.all()
+        bills_query = models.Bill.objects.filter(branch__in = branch) if branch != ["all"] else models.Bill.objects.all()
         bills_query = libs.get_all_instances_in_a_date_range_query(bills_query, today_start, today_end)
         today_kids_sales = bills_query.aggregate(
             total=Coalesce(Sum('time_price'), 0, output_field=DecimalField())
@@ -73,13 +73,13 @@ class DashboardSatistics(RoleAccessList, APIView):
             total=Coalesce(Sum('children_count'), 0)
         )['total']
         todays_cash = bills_query.aggregate(
-            total=Coalesce(Sum('cash'), 0)
+            total=Coalesce(Sum('cash'), 0, output_field=DecimalField())
         )['total']
         todays_visa = bills_query.aggregate(
-            total=Coalesce(Sum('visa'), 0)
+            total=Coalesce(Sum('visa'), 0, output_field=DecimalField())
         )['total']
         todays_instapay = bills_query.aggregate(
-            total=Coalesce(Sum('instapay'), 0)
+            total=Coalesce(Sum('instapay'), 0, output_field=DecimalField())
         )['total']
         todays_money_unbalance = sum(bill.money_unbalance for bill in bills_query)
         dashboard_statistics['todays_kids_sales'] = today_kids_sales
@@ -90,7 +90,7 @@ class DashboardSatistics(RoleAccessList, APIView):
         dashboard_statistics['todays_instapay']        = todays_instapay
 
         # 2. Yesterday Total Sales
-        bills_query = models.Bill.objects.filter(branch__in = branch) if branch != "all" else models.Bill.objects.all()
+        bills_query = models.Bill.objects.filter(branch__in = branch) if branch != ["all"] else models.Bill.objects.all()
         bills_query = libs.get_all_instances_in_a_date_range_query(bills_query, yesterday_start, yesterday_end)
         yesterday_kids_sales = bills_query.aggregate(
             total=Coalesce(Sum('time_price'), 0, output_field=DecimalField())
@@ -107,7 +107,7 @@ class DashboardSatistics(RoleAccessList, APIView):
         dashboard_statistics['children_count_difference_from_yesterday'] = str(children_count_difference_from_yesterday) if children_count_difference_from_yesterday < 0 else "+" + str(children_count_difference_from_yesterday)
 
         # 3. Today Created Subscriptions count and sales
-        subscriptions_query = models.SubscriptionInstance.objects.filter(branch__in = branch) if branch != "all" else models.SubscriptionInstance.objects.all()
+        subscriptions_query = models.SubscriptionInstance.objects.filter(branch__in = branch) if branch != ["all"] else models.SubscriptionInstance.objects.all()
         subscriptions_query = libs.get_all_instances_in_a_date_range_query(subscriptions_query, today_start, today_end)
         dashboard_statistics['todays_subscriptions_count'] = subscriptions_query.count()
         dashboard_statistics['todays_subscriptions_sales'] = subscriptions_query.aggregate(
@@ -124,7 +124,7 @@ class DashboardSatistics(RoleAccessList, APIView):
         )['total']
 
         # 4. Today Cafe Cales
-        product_bills_query = models.ProductBill.objects.filter(bill__branch__in = branch) if branch != "all" else models.ProductBill.objects.all()
+        product_bills_query = models.ProductBill.objects.filter(bill__branch__in = branch) if branch != ["all"] else models.ProductBill.objects.all()
         product_bills_query = libs.get_all_instances_in_a_date_range_query(product_bills_query, today_start, today_end)
         todays_product_bills_sales = product_bills_query.aggregate(
             total=Coalesce(Sum('total_price'), 0, output_field=DecimalField())
@@ -132,7 +132,7 @@ class DashboardSatistics(RoleAccessList, APIView):
         dashboard_statistics['todays_cafe_sales'] = todays_product_bills_sales
 
         # 5. Yesterday Cafe Cales
-        product_bills_query = models.ProductBill.objects.filter(bill__branch__in = branch) if branch != "all" else models.ProductBill.objects.all()
+        product_bills_query = models.ProductBill.objects.filter(bill__branch__in = branch) if branch != ["all"] else models.ProductBill.objects.all()
         product_bills_query = libs.get_all_instances_in_a_date_range_query(product_bills_query, yesterday_start, yesterday_end)
         yesterdays_product_bills_sales = product_bills_query.aggregate(
             total=Coalesce(Sum('total_price'), 0, output_field=DecimalField())
@@ -144,7 +144,7 @@ class DashboardSatistics(RoleAccessList, APIView):
             dashboard_statistics['cafe_sales_difference_from_yesterday'] = "Not defined"
             
         # 6. Staff Withdraws
-        staff_withdraws_query = models.StaffWithdraw.objects.filter(branch__in = branch) if branch != "all" else models.StaffWithdraw.objects.all()
+        staff_withdraws_query = models.StaffWithdraw.objects.filter(branch__in = branch) if branch != ["all"] else models.StaffWithdraw.objects.all()
         staff_withdraws_query = libs.get_all_instances_in_a_date_range_query(staff_withdraws_query, today_start, today_end)
         dashboard_statistics['todays_staff_requested_withdraw_count'] = staff_withdraws_query.values('staff').distinct().count()
         dashboard_statistics['todays_staff_withdraws_total'] = staff_withdraws_query.aggregate(
