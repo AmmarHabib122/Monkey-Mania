@@ -186,7 +186,10 @@ class ProductBillSerializer(serializers.ModelSerializer):
         created_by = instance.created_by
         data['created_by'] = created_by.username if created_by else None
         data['created_by_id'] = created_by.id if created_by else None
-        data['first_child'] = instance.bill.children.all().first().name if instance.bill.children.exists() else None
+        bill = instance.bill
+        data['first_child'] = bill.children.all().first().name if bill.children.exists() else None
+        data['branch'] = bill.branch.name if bill.branch else None
+        data['branch_id'] = bill.branch.id if bill.branch else None
         # Process products
         new_products_data = []
         for product_data in data.get('products', []):
