@@ -186,6 +186,7 @@ class ProductBillSerializer(serializers.ModelSerializer):
         created_by = instance.created_by
         data['created_by'] = created_by.username if created_by else None
         data['created_by_id'] = created_by.id if created_by else None
+        data['first_child'] = instance.bill.children.all().first().name if instance.bill.children.exists() else None
         # Process products
         new_products_data = []
         for product_data in data.get('products', []):

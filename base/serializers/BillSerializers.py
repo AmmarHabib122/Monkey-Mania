@@ -124,6 +124,7 @@ class BillSerializer(serializers.ModelSerializer):
             data.pop('subscription', None)
 
         data['children'] = []
+        data['first_child'] = instance.children.all().first().name if instance.children.exists() else None
         for child in instance.children.all():
             child_data = {
                 "id" : child.id,
