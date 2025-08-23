@@ -6,6 +6,8 @@ from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.db import transaction
+from django.urls import reverse
+from django.shortcuts import redirect
 
 from base import models
 from base import libs
@@ -27,6 +29,10 @@ admin.site.register(models.Bill)
 admin.site.register(models.ProductBill)
 admin.site.register(models.ProductBillProduct)
 admin.site.register(models.Discount)
+admin.site.register(models.BranchMaterial)
+admin.site.register(models.BranchProduct)
+admin.site.register(models.GeneralExpense)
+admin.site.register(models.MaterialExpense)
 
 
 
@@ -59,11 +65,10 @@ class ProductAdmin(admin.ModelAdmin):
                             errors = serializer.errors
                             first_field, first_messages = next(iter(errors.items()))
                             first_error = first_messages[0]
-                            self.message_user(request, f"CSV error: {first_error}", level=messages.ERROR)
-                            return render(request, "admin/upload_csv.html", data)
+                            raise ValidationError(f"CSV File error: {first_error}")
                         serializer.save() 
-                self.message_user(request, "CSV uploaded successfully!", level=messages.SUCCESS)
-                return render(request, "admin/base/product/change_list.html", data)
+                self.message_user(request, "Products created using CSV file successfully!", level=messages.SUCCESS)
+                return redirect(reverse('admin:base_product_changelist'))
             except ValidationError as e:
                 error_text = e.detail[0] if isinstance(e.detail, list) else str(e.detail)
                 self.message_user(request, f"CSV error: {error_text}", level=messages.ERROR)
@@ -101,11 +106,10 @@ class MaterialAdmin(admin.ModelAdmin):
                             errors = serializer.errors
                             first_field, first_messages = next(iter(errors.items()))
                             first_error = first_messages[0]
-                            self.message_user(request, f"CSV error: {first_error}", level=messages.ERROR)
-                            return render(request, "admin/upload_csv.html", data)
+                            raise ValidationError(f"CSV File error: {first_error}")
                         serializer.save() 
-                self.message_user(request, "CSV records created successfully!", level=messages.SUCCESS)
-                return render(request, "admin/base/material/change_list.html", data)
+                self.message_user(request, "Material created using CSV file successfully!", level=messages.SUCCESS)
+                return redirect(reverse('admin:base_material_changelist'))
             except ValidationError as e:
                 error_text = e.detail[0] if isinstance(e.detail, list) else str(e.detail)
                 self.message_user(request, f"CSV error: {error_text}", level=messages.ERROR)
