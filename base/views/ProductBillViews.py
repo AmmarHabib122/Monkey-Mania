@@ -76,7 +76,8 @@ Get_ProductBill = GetProductBillAPI.as_view()
 
 
 class ListActiveProductBillAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.ProductBill.objects.all()
+    queryset           = models.ProductBill.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.ProductBillSerializer
     role_access_list   = ['owner', 'admin', 'manager', 'reception', 'waiter']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
@@ -97,7 +98,7 @@ List_ActiveProductBill = ListActiveProductBillAPI.as_view()
 
 
 class ListProductBillAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.ProductBill.objects.all()
+    queryset           = models.ProductBill.objects.all().order_by('-id')
     serializer_class   = serializers.ProductBillSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]

@@ -80,7 +80,7 @@ Get_User = GetUserAPI.as_view()
 
 
 class ListUserAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.User.objects.all()
+    queryset           = models.User.objects.all().order_by('-id')
     serializer_class   = serializers.UserSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]

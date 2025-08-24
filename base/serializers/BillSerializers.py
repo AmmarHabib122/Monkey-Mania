@@ -63,6 +63,7 @@ class BillSerializer(serializers.ModelSerializer):
             'branch',
             'product_bills_set',
             'is_active',
+            'is_allowed_age',
             'hour_price',
             'half_hour_price',
             'total_price',
@@ -81,6 +82,7 @@ class BillSerializer(serializers.ModelSerializer):
             'discount_type',
             'product_bills_set',
             'is_active',
+            'is_allowed_age',
             'hour_price',
             'half_hour_price',
             'total_price',
@@ -122,6 +124,7 @@ class BillSerializer(serializers.ModelSerializer):
             data.pop('subscription', None)
 
         data['children'] = []
+        data['first_child'] = instance.children.all().first().name if instance.children.exists() else None
         for child in instance.children.all():
             child_data = {
                 "id" : child.id,
@@ -288,6 +291,8 @@ class BillSerializer(serializers.ModelSerializer):
             validated_data["half_hour_price"]  = libs.apply_discount_to_price(time_price_instance.half_hour_price, validated_data['discount_value'], validated_data['discount_type'])
             
             for child in validated_data.get('children', []):
+                if (branch  and  libs.calculate_age_decimal(child.birth_date) >= branch.allowed_age)  or  child.special_needs:
+                    validated_data["is_allowed_age"] = True
                 child.is_active = True
                 child.save()
             
@@ -329,22 +334,4 @@ class BillSerializer(serializers.ModelSerializer):
         validated_data['total_price']  = instance.products_price + validated_data['time_price']
         instance                       = super().update(instance, validated_data)
 
-        if instance.cash > 0:
-            bill_content_type = ContentType.objects.get_for_model(instance)
-            models.Cashier.objects.create(
-                transaction_type   = bill_content_type,  
-                transaction_id     = instance.id,
-                branch             = instance.branch,
-                value              = instance.cash,
-                created_by         = user
-            )
-
         return instance
-
-    
-
-
-
-
-
-        

@@ -119,9 +119,10 @@ Get_Bill = GetBillAPI.as_view()
 
 
 class ListActiveBillAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Bill.objects.filter(is_active = True)
+    queryset           = models.Bill.objects.filter(is_active = True).order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.BillSerializer
-    role_access_list    = ['owner', 'admin', 'manager', 'reception', 'waiter']
+    role_access_list   = ['owner', 'admin', 'manager', 'reception', 'waiter']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 
@@ -141,9 +142,9 @@ List_ActiveBill = ListActiveBillAPI.as_view()
 
 
 class ListBillAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Bill.objects.all()
+    queryset           = models.Bill.objects.all().order_by('-id')
     serializer_class   = serializers.BillSerializer
-    role_access_list    = ['owner', 'admin', 'manager']
+    role_access_list   = ['owner', 'admin', 'manager']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 

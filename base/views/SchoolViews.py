@@ -5,6 +5,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from django.db import transaction
 
 
 from base import serializers
@@ -69,7 +70,8 @@ Get_School = GetSchoolAPI.as_view()
 
 
 class ListSchoolAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.School.objects.all()
+    queryset           = models.School.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.SchoolSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -88,9 +90,11 @@ class CreateSchoolsFromCsvFile(RoleAccessList, APIView):
         records = libs.get_csv_file_records(request, required_columns=required_columns)
         if not records:
             raise ValidationError(_("CSV file is empty or invalid"))
-        serializer = serializers.SchoolSerializer(data=records, many=True, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        serializer.save()  
+        with transaction.atomic():
+            for record in records:
+                serializer = serializers.SchoolSerializer(data=record, context={'request': request})
+                serializer.is_valid(raise_exception=True)
+                serializer.save()  
         return Response({'message' : _("Schools File Created Successfully")}, status=status.HTTP_201_CREATED)
     
 BulkCreate_School = CreateSchoolsFromCsvFile.as_view()

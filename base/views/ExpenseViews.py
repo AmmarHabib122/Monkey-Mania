@@ -76,7 +76,7 @@ Get_GeneralExpense = GetGeneralExpenseAPI.as_view()
 
 
 class ListGeneralExpenseAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.GeneralExpense.objects.all()
+    queryset           = models.GeneralExpense.objects.all().order_by('-id')
     serializer_class   = serializers.GeneralExpenseSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -174,7 +174,7 @@ Get_MaterialExpense = GetMaterialExpenseAPI.as_view()
 
 
 class ListMaterialExpenseAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.MaterialExpense.objects.all()
+    queryset           = models.MaterialExpense.objects.all().order_by('-id')
     serializer_class   = serializers.MaterialExpenseSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]

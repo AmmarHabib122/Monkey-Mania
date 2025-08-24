@@ -143,7 +143,7 @@ Get_Staff = GetStaffAPI.as_view()
 
 
 class ListStaffAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Staff.objects.all()
+    queryset           = models.Staff.objects.all().order_by('-id')
     serializer_class   = serializers.StaffSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -232,7 +232,7 @@ Get_StaffWithdraw = GetStaffWithdrawAPI.as_view()
 
 
 class ListStaffWithdrawAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.StaffWithdraw.objects.all()
+    queryset           = models.StaffWithdraw.objects.all().order_by('-id')
     serializer_class   = serializers.StaffWithdrawSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -327,7 +327,7 @@ Get_StaffFine = GetStaffFineAPI.as_view()
 
 
 class ListStaffFineAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.StaffFine.objects.all()
+    queryset           = models.StaffFine.objects.all().order_by('-id')
     serializer_class   = serializers.StaffFineSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -416,7 +416,7 @@ Get_StaffSalary = GetStaffSalaryAPI.as_view()
 
 
 class ListStaffSalaryAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.StaffSalary.objects.all()
+    queryset           = models.StaffSalary.objects.all().order_by('-id')
     serializer_class   = serializers.StaffSalarySerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]

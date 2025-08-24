@@ -15,7 +15,8 @@ class Material(models.Model):
     # def consumption(self):
     #     self.branch_materials_set.aggregate(total_consumption = models.Sum('consumption'))['total_consumption'] or 0
 
-
+    def __str__(self):
+        return self.name
 
 
 

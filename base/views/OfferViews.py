@@ -62,7 +62,8 @@ Get_Offer = GetOfferAPI.as_view()
 
 
 class ListOfferAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Offer.objects.all()
+    queryset           = models.Offer.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.OfferSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
@@ -159,7 +160,8 @@ Get_BranchOffer = GetBranchOfferAPI.as_view()
 
 
 class ListBranchOfferAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.BranchOffer.objects.all()
+    queryset           = models.BranchOffer.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.BranchOfferSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]

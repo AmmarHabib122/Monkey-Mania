@@ -67,7 +67,8 @@ Get_Branch = GetBranchAPI.as_view()
 
 
 class ListBranchAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.Branch.objects.all()
+    queryset           = models.Branch.objects.all().order_by('-id')
+    pagination_class   = None
     serializer_class   = serializers.BranchSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
