@@ -15,7 +15,7 @@ class Bill(models.Model):
     is_subscription  = models.BooleanField(default = False) 
     subscription     = models.ForeignKey('base.Subscription', on_delete = models.PROTECT, related_name = 'subscription_bills_set', null = True)
     is_active        = models.BooleanField(default = True)
-    is_allowed_age   = models.BooleanField(default = False)  #define whether one of the children in the bill must have his parents or not
+    is_allowed_age   = models.BooleanField(default = True)  #define whether one of the children in the bill must have his parents or not
     children_count   = models.IntegerField(default = 0)
     children         = models.ManyToManyField('base.Child', related_name = "child_bills_set")
     branch           = models.ForeignKey('base.Branch', on_delete = models.PROTECT, related_name = 'branch_bills_set')
