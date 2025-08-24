@@ -291,8 +291,10 @@ class BillSerializer(serializers.ModelSerializer):
             validated_data["half_hour_price"]  = libs.apply_discount_to_price(time_price_instance.half_hour_price, validated_data['discount_value'], validated_data['discount_type'])
             
             for child in validated_data.get('children', []):
-                if (branch  and  libs.calculate_age_decimal(child.birth_date) >= branch.allowed_age)  or  child.special_needs:
-                    validated_data["is_allowed_age"] = True
+                if (branch  and  libs.calculate_age_decimal(child.birth_date) < branch.allowed_age)  or  child.special_needs:
+                    validated_data["is_allowed_age"] = False
+                print("child age : ", libs.calculate_age_decimal(child.birth_date))
+                # print("child is_allowed_age : ", validated_data["is_allowed_age"])
                 child.is_active = True
                 child.save()
             
