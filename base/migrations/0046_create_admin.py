@@ -4,11 +4,16 @@ def create_superuser(apps, schema_editor):
     User = apps.get_model("base", "User")
     phone = "122"   # your phone number
     password = "122"   # your password
+    
     if not User.objects.filter(phone_number=phone).exists():
-        User.objects.create_superuser(
+        user = User(
             phone_number=phone,
-            password=password
+            is_staff=True,
+            is_superuser=True,
+            is_active=True,
         )
+        user.set_password(password)  # hash password
+        user.save()
 
 class Migration(migrations.Migration):
 
