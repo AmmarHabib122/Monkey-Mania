@@ -17,7 +17,7 @@ class Product(models.Model):
 
     @property
     def name(self):
-        return f"{self.layer2} {self.layer3}"
+        return f"#{self.id} {self.layer2} {self.layer3}"
     
     
     @property
@@ -34,7 +34,7 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return f"#{self.id} {self.name}"
 
 
 

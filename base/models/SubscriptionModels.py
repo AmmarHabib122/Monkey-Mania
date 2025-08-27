@@ -20,6 +20,9 @@ class Subscription(models.Model):
     def is_multi_access(self):
         return self.usable_in_branches.exists()
     
+    def __str__(self):
+        return f"#{self.id} {self.name}"
+    
 
 
 
@@ -48,3 +51,6 @@ class SubscriptionInstance(models.Model):
     @property
     def name(self):
         return self.subscription.name
+    
+    def __str__(self):
+        return f"#{self.id} {self.subscription.name} branch {self.branch.name} for child {self.child.name}"

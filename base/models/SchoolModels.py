@@ -10,4 +10,5 @@ class School(models.Model):
     updated              = models.DateTimeField(auto_now = True)
     created_by           = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_schools_set')
     
-    
+    def __str__(self):
+        return f"#{self.id} {self.name}"

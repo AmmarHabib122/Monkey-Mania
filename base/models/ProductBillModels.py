@@ -22,6 +22,9 @@ class ProductBill(models.Model):
             last_order = ProductBill.objects.filter(bill__branch=self.bill.branch).order_by('-bill_number').first()
             self.bill_number = (last_order.bill_number + 1) if last_order else 1
         super().save(force_insert, force_update, using, update_fields)
+        
+    def __str__(self):
+        return f"#{self.id} {self.bill.children.all().first().name}"
 
 
 

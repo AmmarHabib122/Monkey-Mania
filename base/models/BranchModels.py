@@ -21,7 +21,7 @@ class Branch(models.Model):
     # material
     # subscribtion plan
     def __str__(self):
-        return self.name
+        return f"#{self.id} {self.name}"
 
 
 
@@ -39,3 +39,6 @@ class HourPrice(models.Model):
                 name   = 'unique_children_count'
             )
         ]
+        
+    def __str__(self):
+        return f"#{self.id} {self.branch.name} {self.children_count} children"

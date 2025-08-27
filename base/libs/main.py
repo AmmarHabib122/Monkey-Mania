@@ -262,7 +262,7 @@ def get_csv_file_records(request, required_columns=[]):
     file = pd.read_csv(file)
     missing_columns = [col for col in required_columns if col not in file.columns]
     if missing_columns:
-        raise ValidationError(_("Wrong column format"))
+        raise ValidationError(_("Wrong column format, The correct Format is {required_columns}").format(required_columns=required_columns))
     records = []
     for row in file.to_dict(orient='records'):
         clean_row = {k: v for k, v in row.items() if pd.notna(v) and str(v).strip() != ''}
