@@ -13,7 +13,7 @@ def create_superuser(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', 'the_last_migration_here'),
+        ('base', '0045_alter_bill_is_allowed_age'),
     ]
 
     operations = [
