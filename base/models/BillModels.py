@@ -47,3 +47,5 @@ class Bill(models.Model):
         self.save(update_fields=["total_price"])
     
 
+    def __str__(self):
+        return f"#{self.id} {self.children.all().first().name}"

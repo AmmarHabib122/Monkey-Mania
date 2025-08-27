@@ -12,6 +12,9 @@ class GeneralExpense(models.Model):
     updated      = models.DateTimeField(auto_now = True)
     created_by   = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_general_expenses_set')
     
+    def __str__(self):
+        return f"#{self.id} {self.name} {self.quantity} items  branch {self.branch.name}"
+    
     
 
 
@@ -25,5 +28,8 @@ class MaterialExpense(models.Model):
     created      = models.DateTimeField(auto_now_add = True)
     updated      = models.DateTimeField(auto_now = True)
     created_by   = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_material_expenses_set')
+    
+    def __str__(self):
+        return f"#{self.id} {self.material.name} {self.quantity} items  branch {self.branch.name}"
     
     

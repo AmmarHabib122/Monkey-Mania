@@ -30,7 +30,7 @@ class Staff(models.Model):
         return round(self.day_value / self.shift_hours / 60, 4)
 
     def __str__(self):
-        return self.name
+        return f"#{self.id} {self.name}"
 
 
 
@@ -46,6 +46,8 @@ class StaffWithdraw(models.Model):
     updated        = models.DateTimeField(auto_now = True)
     created_by     = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_withdraw_set')
     
+    def __str__(self):
+        return f"#{self.id} {self.staff.name}"
 
 
 
@@ -65,7 +67,10 @@ class StaffFine(models.Model):
     updated        = models.DateTimeField(auto_now = True)
     created_by     = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_fines_set')
 
+    def __str__(self):
+        return f"#{self.id} {self.staff.name}"
 
+    
 
 
 
@@ -156,3 +161,6 @@ class StaffSalary(models.Model):
     #     ]) 
     #     total_value = (total_value + 4) // 5 * 5    #round up to nearest 5
     #     return total_value
+    
+    def __str__(self):
+        return f"#{self.id} {self.staff.name}"
