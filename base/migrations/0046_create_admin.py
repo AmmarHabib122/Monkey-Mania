@@ -1,19 +1,19 @@
 from django.db import migrations
+from django.contrib.auth.hashers import make_password
 
 def create_superuser(apps, schema_editor):
     User = apps.get_model("base", "User")
-    phone = "122"   # your phone number
-    password = "122"   # your password
-    
+    phone = "122"
+    password = "122"
+
     if not User.objects.filter(phone_number=phone).exists():
-        user = User(
+        User.objects.create(
             phone_number=phone,
+            password=make_password(password),
             is_staff=True,
             is_superuser=True,
             is_active=True,
         )
-        user.set_password(password)  # hash password
-        user.save()
 
 class Migration(migrations.Migration):
 
