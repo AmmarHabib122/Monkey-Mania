@@ -48,4 +48,5 @@ class Bill(models.Model):
     
 
     def __str__(self):
-        return f"#{self.id} {self.children.all().first().name}"
+        child = self.children.first()
+        return f"#{self.id} {child.name}" if child else f"#{self.id}"

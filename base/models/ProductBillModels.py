@@ -24,7 +24,9 @@ class ProductBill(models.Model):
         super().save(force_insert, force_update, using, update_fields)
         
     def __str__(self):
-        return f"#{self.id} {self.bill.children.all().first().name}"
+        bill = self.bill if self.bill else None
+        child = self.bill.children.first() if bill else None
+        return f"#{self.id} {child.name}" if child else f"#{self.id}"
 
 
 
