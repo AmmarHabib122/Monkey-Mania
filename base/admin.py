@@ -16,6 +16,7 @@ from base import serializers
 
 
 admin.site.register(models.User)
+admin.site.register(models.School)
 admin.site.register(models.Branch)
 admin.site.register(models.HourPrice)
 admin.site.register(models.Child)
