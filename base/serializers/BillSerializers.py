@@ -115,6 +115,7 @@ class BillSerializer(serializers.ModelSerializer):
         data['finished_by_id'] = finished_by.id if finished_by else None
         data['branch'] = branch.name if branch else None
         data['branch_id'] = branch.id if branch else None
+        data['first_child'] = instance.children.all().first().name if instance.children.exists() else None
         if instance.is_subscription:
             data['subscription'] = {
                 'name'  : instance.subscription.name,
