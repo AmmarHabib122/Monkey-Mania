@@ -2,6 +2,8 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
 from rest_framework.filters import SearchFilter
+from rest_framework.response import Response
+
 
 from base import serializers
 from base import models
@@ -40,12 +42,22 @@ class UpdateProductBillAPI(RoleAccessList, generics.UpdateAPIView):
     serializer_class   = serializers.ProductBillSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     lookup_field       = "pk"
-
+    
+    #only patch requests
     def update(self, request, *args, **kwargs):
-        kwargs['partial'] = True if request.method == "PATCH" else False
-        response = super().update(request, *args, **kwargs)
-        response.data['message'] = _("Cafe Bill Updated successfully")
-        return response
+        kwargs['partial'] = True 
+        requestData = request.data.copy()
+        returned_products = requestData.get('returned_products', None)
+        if not returned_products:
+            raise ValidationError(_("Returned Products Must be Provided"))
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data={'returned_products': returned_products}, partial=kwargs['partial'])
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        responseData = serializer.data
+        responseData['message'] = _("Cafe Bill Updated successfully")
+        return Response(responseData)
+    
 Update_ProductBill = UpdateProductBillAPI.as_view()
 
 
