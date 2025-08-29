@@ -19,7 +19,7 @@ class Bill(models.Model):
     children_count   = models.IntegerField(default = 0)
     children         = models.ManyToManyField('base.Child', related_name = "child_bills_set")
     branch           = models.ForeignKey('base.Branch', on_delete = models.PROTECT, related_name = 'branch_bills_set')
-    discount_value   = models.DecimalField(max_digits = 5, decimal_places = 4, default = 0)
+    discount_value   = models.DecimalField(max_digits = 10, decimal_places = 4, default = 0)
     discount_type    = models.CharField(max_length = 50, null = True)
     created_by       = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_bills_set')
     finished_by      = models.ForeignKey('base.User', on_delete = models.PROTECT, null = True, related_name = 'finished_bills_set')
