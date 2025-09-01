@@ -197,6 +197,7 @@ class ProductBillSerializer(serializers.ModelSerializer):
             if product:
                 product_type = product.get('type', 'product')
                 new_products_data.append({
+                    'id': product.get('id', None),
                     'unit_price': product.get('price', 0),
                     'total_price': float(product.get('price', 0)) * float(product_data['quantity']),
                     'quantity': product_data['quantity'],
@@ -212,10 +213,13 @@ class ProductBillSerializer(serializers.ModelSerializer):
                 product = returned_data.get('product', {})
                 if product:
                     product_type = product.get('type', 'product')
+                    created_by_user = models.User.objects.filter(id = returned_data['created_by']).first()
                     new_returned_products_data.append({
+                        'id': product.get('id', None),
                         'name': product.get('name', 'Unknown Product'),
                         'quantity': returned_data['quantity'],
-                        'created_by' : returned_data['created_by']
+                        'created_by' : created_by_user.username if created_by_user else None,
+                        'created_by_id' : created_by_user.id if created_by_user else None,
                     })
             data['returned_products'] = new_returned_products_data
         else:
@@ -249,41 +253,81 @@ class ProductBillSerializer(serializers.ModelSerializer):
         return value
     
     def validate_products(self, value):
-        if not value:
-            raise ValidationError(_("At least one added item must be provided"))
+        if not self.instance:  # 🚨 Create mode
+            if not value:
+                raise ValidationError(_("At least one added item must be provided"))
 
-        seen = set()
-        for data in value:
-            # Ensure product_object exists
-            if 'product_object' not in data:
-                raise ValidationError(_("Invalid item data"))
-            # Create a unique key for the product/offer
-            obj = data['product_object']
-            key = (ContentType.objects.get_for_model(obj).id, obj.id)
-            # Check for duplicates
-            if key in seen:
-                raise ValidationError(_("Duplicate added items detected"))
-            seen.add(key)
+            seen = set()
+            bill_id = self.initial_data.get("bill")
+
+            try:
+                bill_obj = models.Bill.objects.get(id=bill_id)
+            except models.Bill.DoesNotExist:
+                raise ValidationError(_("Invalid bill ID."))
+
+            for data in value:
+                if "product_object" not in data:
+                    raise ValidationError(_("Invalid item data"))
+
+                obj = data["product_object"]
+
+                # 🚨 Branch check
+                if hasattr(obj, "branch") and obj.branch != bill_obj.branch:
+                    raise ValidationError(
+                        _("{product} does not belong to branch {branch}").format(
+                            product=obj.name, branch=bill_obj.branch.name
+                        )
+                    )
+
+                key = (ContentType.objects.get_for_model(obj).id, obj.id)
+                if key in seen:
+                    raise ValidationError(_("Duplicate added items detected"))
+                seen.add(key)
+
+        else:  # 🚨 Update mode
+            if value:
+                raise ValidationError(_("Products cannot be modified when updating a bill."))
+
         return value
+
+    
     
     def validate_returned_products(self, value):
+        # 🚨 On CREATE → must be empty
+        if not self.instance:  # create mode
+            if value:
+                raise ValidationError(_("Returned products are not allowed when creating a new bill."))
+            return value  # just return, no validation needed
+
+        # 🚨 On UPDATE → must have at least one item
         if not value:
             raise ValidationError(_("At least one returned item must be provided"))
 
         seen = set()
+        bill_obj = self.instance.bill  # always from instance in update
+
         for data in value:
-            # Ensure product_object exists
-            if 'product_object' not in data:
+            if "product_object" not in data:
                 raise ValidationError(_("Invalid item data"))
-            # Create a unique key for the product/offer
-            obj = data['product_object']
+
+            obj = data["product_object"]
+
+            # Branch check
+            if hasattr(obj, "branch") and obj.branch != bill_obj.branch:
+                raise ValidationError(
+                    _("{product} does not belong to bill's branch {branch}").format(
+                        product=obj.name, branch=bill_obj.branch.name
+                    )
+                )
+
             key = (ContentType.objects.get_for_model(obj).id, obj.id)
-            # Check for duplicates
             if key in seen:
                 raise ValidationError(_("Duplicate returned items detected"))
             seen.add(key)
+
         return value
-    
+
+        
 
 
  
