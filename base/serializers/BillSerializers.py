@@ -311,7 +311,6 @@ class BillSerializer(serializers.ModelSerializer):
 
 
     def update(self, instance, validated_data):
-        '''Update is not allowed, just closing the bill'''
         user = self.context['request'].user
         if not instance.is_active:
             raise PermissionDenied(_("The bill is already closed"))

@@ -56,8 +56,24 @@ Close_Bill = CloseBillAPI.as_view()
 
 
 
+class UpdateMoneyBillAPI(RoleAccessList, generics.UpdateAPIView):
+    queryset           = models.Bill.objects.all()
+    serializer_class   = serializers.BillSerializer
+    role_access_list   = ['owner', 'admin']
+    permission_classes = [permissions.Authenticated, permissions.RoleAccess]
+    lookup_field       = "pk"
 
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True 
+        data = request.data.copy()
+        for key in data.keys():
+            if key not in ['cash', 'visa', 'instapay', 'time_price']:
+                raise ValidationError(_("Wrong data for updating the bill"))
+        response                 = super().update(request, *args, **kwargs)
+        response.data['message'] = _("Bill Closed successfully")
+        return response
 
+Close_Bill = CloseBillAPI.as_view()
 
 
 class ApplyDiscountBillAPI(RoleAccessList, generics.UpdateAPIView):
@@ -108,7 +124,7 @@ class GetBillAPI(RoleAccessList, generics.RetrieveAPIView):
         if self.request.user.branch    and   instance.branch != self.request.user.branch:
             raise PermissionDenied(_("You do not have the permission to access this data"))
         
-        if not instance.is_active   and  self.request.user.role in ['waiter', 'reception']:
+        if not instance.is_active   and  self.request.user.role in ['waiter']:
             raise PermissionDenied(_("You do not have the permission to access this data"))
         return instance
 
@@ -144,7 +160,6 @@ List_ActiveBill = ListActiveBillAPI.as_view()
 class ListBillAPI(RoleAccessList, generics.ListAPIView):
     queryset           = models.Bill.objects.all().order_by('-id')
     serializer_class   = serializers.BillSerializer
-    role_access_list   = ['owner', 'admin', 'manager']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 
