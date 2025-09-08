@@ -165,6 +165,7 @@ class ListBranchProductAPI(RoleAccessList, generics.ListAPIView):
     queryset           = models.BranchProduct.objects.all().order_by('-id')
     pagination_class   = None
     serializer_class   = serializers.BranchProductSerializer
+    role_access_list   = ['owner', 'admin', 'manager', 'reception', 'waiter']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['product__layer1', 'product__layer2', 'product__layer3'] 
@@ -188,8 +189,9 @@ List_BranchProduct = ListBranchProductAPI.as_view()
 
 
 
-class ListBranchProductLayer1(APIView):
-    permission_classes  = [permissions.Authenticated]
+class ListBranchProductLayer1(RoleAccessList, APIView):
+    role_access_list    = ['owner', 'admin', 'manager', 'reception', 'waiter']
+    permission_classes  = [permissions.Authenticated, permissions.RoleAccess]
     pagination_class    = None
     def get(self, request):
         branch = libs.get_one_branch_id(self)
@@ -201,8 +203,9 @@ List_BranchProductLayer1 = ListBranchProductLayer1.as_view()
 
 
 
-class ListBranchProductLayer2(APIView):
-    permission_classes  = [permissions.Authenticated]
+class ListBranchProductLayer2(RoleAccessList, APIView):
+    role_access_list    = ['owner', 'admin', 'manager', 'reception', 'waiter']
+    permission_classes  = [permissions.Authenticated, permissions.RoleAccess]
     pagination_class    = None
     def get(self, request):
         layer1 = self.request.query_params.get("layer1", None)
@@ -216,8 +219,9 @@ List_BranchProductLayer2 = ListBranchProductLayer2.as_view()
 
 
 
-class ListBranchProductLayer3(APIView):
-    permission_classes  = [permissions.Authenticated]
+class ListBranchProductLayer3(RoleAccessList, APIView):
+    role_access_list    = ['owner', 'admin', 'manager', 'reception', 'waiter']
+    permission_classes  = [permissions.Authenticated, permissions.RoleAccess]
     pagination_class    = None
     def get(self, request):
         layer1 = self.request.query_params.get("layer1", None)

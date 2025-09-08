@@ -433,8 +433,8 @@ class ProductBillSerializer(serializers.ModelSerializer):
         returned_products_data = validated_data.pop('returned_products', [])
         total_price            = instance.total_price
 
-        if not instance.bill.is_active:
-            raise PermissionDenied(_("Cannot edit closed bills"))
+        if not instance.bill.is_active  and  user.role in ['reception', 'waiter']:
+            raise PermissionDenied(_("You do not have the permissio to edit closed bills"))
 
         with transaction.atomic():
             instance = super().update(instance, validated_data)
@@ -507,10 +507,12 @@ class ProductBillSerializer(serializers.ModelSerializer):
             instance.total_price = total_price
             instance.save()
             instance.bill.update_products_price()
+            if not instance.bill.is_active:
+                instance.bill.update_total_price()
             return instance
 
 
-        
+         
 
 
 
