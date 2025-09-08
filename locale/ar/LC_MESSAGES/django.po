@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-31 17:56+0300\n"
+"POT-Creation-Date: 2025-09-08 15:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,12 @@ msgstr "إنجليزي"
 msgid "Arabic"
 msgstr "عربي"
 
-#: .\base\libs\main.py:48 .\base\libs\main.py:66
+#: .\base\admin.py:60 .\base\admin.py:101 .\base\admin.py:183
+#: .\base\admin.py:225 .\base\views\SchoolViews.py:92
+msgid "CSV file is empty or invalid"
+msgstr "ملف CSV فارغ أو غير صالح"
+
+#: .\base\libs\main.py:48 .\base\libs\main.py:64 .\base\libs\main.py:66
 msgid "Invalid Branch id"
 msgstr "ID فرع غير صالح"
 
@@ -38,25 +43,26 @@ msgstr "يجب أن يحتوي رقم الهاتف على أرقام فقط."
 msgid "Phone number must be exactly 11 digits long."
 msgstr "يجب أن يكون رقم الهاتف بالضبط 11 رقمًا."
 
-#: .\base\libs\main.py:250
+#: .\base\libs\main.py:247
 msgid "Start date cannot be bigger than the end date"
 msgstr "لا يمكن أن يكون تاريخ البدء أكبر من تاريخ الانتهاء"
 
-#: .\base\libs\main.py:252 .\base\views\IncomeViews.py:27
+#: .\base\libs\main.py:249
 msgid "Start and End dates must be provided together"
 msgstr "يجب توفير تواريخ البدء والنهاية معًا"
 
-#: .\base\libs\main.py:262
+#: .\base\libs\main.py:259
 msgid "Csv file must be provided"
 msgstr "يجب توفير ملف CSV"
 
-#: .\base\libs\main.py:264
+#: .\base\libs\main.py:261
 msgid "The file provided must be in .csv format"
 msgstr "يجب أن يكون الملف المقدم في فورمات .csv"
 
-#: .\base\libs\main.py:268
-msgid "Wrong column format"
-msgstr "فورمات العمود الخاطئ"
+#: .\base\libs\main.py:265
+#, python-brace-format
+msgid "Wrong column format, The correct Format is {required_columns}"
+msgstr "تنسيق العمود الخاطئ ، التنسيق الصحيح هو {required_columns}"
 
 #: .\base\permissions\main.py:18
 msgid "User is not logged in"
@@ -128,95 +134,95 @@ msgstr "يجب عليك توفير ID فرع صالح."
 msgid "branch must be identified by an integer ID."
 msgstr "يجب تحديد الفرع بواسطة ID عدد صحيح."
 
-#: .\base\serializers\BillSerializers.py:101
+#: .\base\serializers\BillSerializers.py:103
 #: .\base\serializers\BranchSerializers.py:84
 #: .\base\serializers\StaffSerializers.py:54
 #: .\base\serializers\UserSerializers.py:76
 msgid "You Do Not have the permission to access this data"
 msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
 
-#: .\base\serializers\BillSerializers.py:169
+#: .\base\serializers\BillSerializers.py:178
 #: .\base\serializers\SubscriptionSerializers.py:221
 msgid "cash can not be negative"
 msgstr "لا يمكن أن يكون الكاش عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:174
+#: .\base\serializers\BillSerializers.py:183
 #: .\base\serializers\SubscriptionSerializers.py:226
 msgid "instapay can not be negative"
 msgstr "لا يمكن أن يكون انستاباي عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:179
+#: .\base\serializers\BillSerializers.py:188
 #: .\base\serializers\SubscriptionSerializers.py:231
 msgid "visa can not be negative"
 msgstr "لا يمكن أن تكون الفيزا عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:185
-#: .\base\serializers\BillSerializers.py:229 .\base\views\BillViews.py:78
+#: .\base\serializers\BillSerializers.py:194
+#: .\base\serializers\BillSerializers.py:238 .\base\views\BillViews.py:113
 msgid ""
 "Couldn't find a discount available to this branch with the given "
 "credentials."
 msgstr "لا يمكن العثور على خصم متاح لهذا الفرع مع البيانات المرسلة."
 
-#: .\base\serializers\BillSerializers.py:191
+#: .\base\serializers\BillSerializers.py:200
 msgid "Time Price can not be negative"
 msgstr "لا يمكن أن يكون سعر الوقت عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:193
+#: .\base\serializers\BillSerializers.py:202
 msgid "You do not have the permission to set the bill Time Price"
 msgstr "ليس لديك إذن لتحديد سعر وقت الفاتورة"
 
-#: .\base\serializers\BillSerializers.py:199
+#: .\base\serializers\BillSerializers.py:208
 msgid "Cafe Price can not be negative"
 msgstr "لا يمكن أن يكون سعر المقهى عدد سالب"
 
-#: .\base\serializers\BillSerializers.py:201
+#: .\base\serializers\BillSerializers.py:210
 msgid "You do not have the permission to set the bill Cafe Price"
 msgstr "ليس لديك إذن لتعيين سعر فاتورة الكافيه"
 
-#: .\base\serializers\BillSerializers.py:207
-#: .\base\serializers\ProductBillSerializers.py:244
+#: .\base\serializers\BillSerializers.py:216
+#: .\base\serializers\ProductBillSerializers.py:252
 msgid "You can not create a bill with a different branch"
 msgstr "لا يمكنك إنشاء فاتورة مع فرع مختلف"
 
-#: .\base\serializers\BillSerializers.py:212
+#: .\base\serializers\BillSerializers.py:221
 msgid "Children list can not be empty"
 msgstr "لا يمكن أن تكون قائمة الأطفال فارغة"
 
-#: .\base\serializers\BillSerializers.py:216
+#: .\base\serializers\BillSerializers.py:225
 #, python-brace-format
 msgid "Child {name} is currently registered in another bill"
 msgstr "الطفل {name} مسجل حاليًا في فاتورة أخرى"
 
-#: .\base\serializers\BillSerializers.py:218
+#: .\base\serializers\BillSerializers.py:227
 msgid "You tried to add the same child more than once"
 msgstr "حاولت إضافة نفس الطفل أكثر من مرة"
 
-#: .\base\serializers\BillSerializers.py:266
+#: .\base\serializers\BillSerializers.py:275
 msgid "Subscription bill cannot have more than one child"
 msgstr "لا يمكن أن يكون فاتورة الاشتراك أكثر من طفل"
 
-#: .\base\serializers\BillSerializers.py:271
+#: .\base\serializers\BillSerializers.py:280
 #, python-brace-format
 msgid "The Child {name} has no current active subscription"
 msgstr "لا يوجد لدى الطفل {name} اشتراك نشط حاليًا"
 
-#: .\base\serializers\BillSerializers.py:275
-#: .\base\serializers\BillSerializers.py:277
+#: .\base\serializers\BillSerializers.py:284
+#: .\base\serializers\BillSerializers.py:286
 #, python-brace-format
 msgid "The Child {name} is not allowed to visit this branch"
 msgstr "لا يُسمح للطفل {name} بزيارة هذا الفرع"
 
-#: .\base\serializers\BillSerializers.py:285
+#: .\base\serializers\BillSerializers.py:294
 #, python-brace-format
 msgid ""
 "There is no hour prices found for {children_count} children in this branch."
 msgstr "لا توجد أسعار ساعة موجودة للأطفال {children_count} في هذا الفرع."
 
-#: .\base\serializers\BillSerializers.py:306
+#: .\base\serializers\BillSerializers.py:316
 msgid "The bill is already closed"
 msgstr "الفاتورة مغلقة بالفعل"
 
-#: .\base\serializers\BillSerializers.py:309
+#: .\base\serializers\BillSerializers.py:319
 msgid "You can not close a bill from a different branch"
 msgstr "لا يمكنك إغلاق فاتورة من فرع مختلف"
 
@@ -444,6 +450,7 @@ msgid "Invalid product type or ID"
 msgstr "نوع المنتج غير صالح أو ID"
 
 #: .\base\serializers\ProductBillSerializers.py:152
+#: .\base\serializers\ProductBillSerializers.py:266
 msgid "Invalid bill ID."
 msgstr "ID فاتورة غير صالح."
 
@@ -455,64 +462,88 @@ msgstr "يجب عليك تقديم ID فاتورة صالح."
 msgid "bill must be identified by an integer ID."
 msgstr "يجب تحديد الفاتورة بواسطة ID عدد صحيح."
 
-#: .\base\serializers\ProductBillSerializers.py:230
+#: .\base\serializers\ProductBillSerializers.py:238
 msgid "table-number can not be negative"
 msgstr "لا يمكن أن يكون رقم الجدول عدد سلبي"
 
-#: .\base\serializers\ProductBillSerializers.py:236
+#: .\base\serializers\ProductBillSerializers.py:244
 msgid "total-price can not be negative"
 msgstr "لا يمكن أن يكون إجمالي السعر عدد سلبي"
 
-#: .\base\serializers\ProductBillSerializers.py:238
+#: .\base\serializers\ProductBillSerializers.py:246
 msgid "You do not have the permission to set the bill price"
 msgstr "ليس لديك إذن لتعيين سعر الفاتورة"
 
-#: .\base\serializers\ProductBillSerializers.py:249
+#: .\base\serializers\ProductBillSerializers.py:258
 msgid "At least one added item must be provided"
 msgstr "يجب توفير عنصر واحد على الأقل إضافي"
 
-#: .\base\serializers\ProductBillSerializers.py:255
-#: .\base\serializers\ProductBillSerializers.py:273
+#: .\base\serializers\ProductBillSerializers.py:270
+#: .\base\serializers\ProductBillSerializers.py:311
 msgid "Invalid item data"
 msgstr "بيانات عنصر غير صالحة"
 
-#: .\base\serializers\ProductBillSerializers.py:261
+#: .\base\serializers\ProductBillSerializers.py:277
+#, python-brace-format
+msgid "{product} does not belong to branch {branch}"
+msgstr "{product} لا ينتمي إلى فرع {branch}"
+
+#: .\base\serializers\ProductBillSerializers.py:284
 msgid "Duplicate added items detected"
 msgstr "تم اكتشاف عناصر مكررة"
-#: .\base\serializers\ProductBillSerializers.py:267
+
+#: .\base\serializers\ProductBillSerializers.py:289
+#, fuzzy
+#| msgid "You cannot return items when creating a bill."
+msgid "Products cannot be modified when updating a bill."
+msgstr "لا يمكنك إرجاع العناصر عند إنشاء فاتورة."
+
+#: .\base\serializers\ProductBillSerializers.py:299
+#, fuzzy
+#| msgid "You cannot return items when creating a bill."
+msgid "Returned products are not allowed when creating a new bill."
+msgstr "لا يمكنك إرجاع العناصر عند إنشاء فاتورة."
+
+#: .\base\serializers\ProductBillSerializers.py:304
 msgid "At least one returned item must be provided"
 msgstr "يجب توفير عنصر واحد على الأقل"
 
-#: .\base\serializers\ProductBillSerializers.py:279
+#: .\base\serializers\ProductBillSerializers.py:318
+#, python-brace-format
+msgid "{product} does not belong to bill's branch {branch}"
+msgstr "{product} لا ينتمي إلى فرع Bill {branch}"
+
+#: .\base\serializers\ProductBillSerializers.py:325
 msgid "Duplicate returned items detected"
 msgstr "تم اكتشاف العناصر التي تم إرجاعها مكررة"
 
-#: .\base\serializers\ProductBillSerializers.py:295
+#: .\base\serializers\ProductBillSerializers.py:343
 #, python-brace-format
 msgid "{name} has only {available} units"
 msgstr "{name} لديه وحدات {available} فقط"
 
-#: .\base\serializers\ProductBillSerializers.py:314
+#: .\base\serializers\ProductBillSerializers.py:362
 #, python-brace-format
 msgid "{product} in offer {offer} has only {available} units available"
 msgstr "{product} في العرض {offer} يحتوي فقط على {available} وحدات متوفرة"
 
-#: .\base\serializers\ProductBillSerializers.py:347
+#: .\base\serializers\ProductBillSerializers.py:395
 msgid "You cannot return items when creating a bill."
 msgstr "لا يمكنك إرجاع العناصر عند إنشاء فاتورة."
 
-#: .\base\serializers\ProductBillSerializers.py:389
+#: .\base\serializers\ProductBillSerializers.py:437
 msgid "Cannot edit closed bills"
 msgstr "لا يمكن تعديل الفواتير المغلقة"
 
-#: .\base\serializers\ProductBillSerializers.py:403
+#: .\base\serializers\ProductBillSerializers.py:451
 #, python-brace-format
 msgid "Not enough {name} units to return"
 msgstr "لا تكفي {name} وحدات للارجاع"
 
-#: .\base\serializers\ProductBillSerializers.py:433
+#: .\base\serializers\ProductBillSerializers.py:481
 msgid "Duplicate items detected"
 msgstr "تم اكتشاف عناصر مكررة"
+
 #: .\base\serializers\ProductSerializers.py:72
 msgid "Material must be identified by an integer ID."
 msgstr "يجب تحديد الخامات بواسطة ID عدد صحيح."
@@ -654,6 +685,7 @@ msgstr "لا يمكنك تحديث راتب الموظفين من فرع آخر"
 #: .\base\serializers\SubscriptionSerializers.py:86
 msgid "Subscription Hours Invalid value"
 msgstr "قيمة ساعات غير صالحة للاشتراك"
+
 #: .\base\serializers\SubscriptionSerializers.py:91
 msgid "Subscription Duration value must be more than or equal to 7 days"
 msgstr "يجب أن تكون قيمة مدة الاشتراك أكثر من أو تساوي 7 أيام"
@@ -760,21 +792,48 @@ msgstr "بيانات خاطئة لإغلاق الفاتورة"
 #: .\base\views\BillViews.py:52
 msgid "Bill Closed successfully"
 msgstr "تم اغلاق الفاتورة بنجاح"
+
+#: .\base\views\BillViews.py:72
+#, fuzzy
+#| msgid "Wrong data for closing the bill"
+msgid "Wrong data for updating the bill"
+msgstr "بيانات خاطئة لإغلاق الفاتورة"
+
 #: .\base\views\BillViews.py:74
+#, fuzzy
+#| msgid "You cannot return items when creating a bill."
+msgid "You can not provide a negative value while updating the bill"
+msgstr "لا يمكنك إرجاع العناصر عند إنشاء فاتورة."
+
+#: .\base\views\BillViews.py:78
+msgid "Values must be in Decimal formal"
+msgstr "يجب أن تكون القيم في عشرية رسمية"
+
+#: .\base\views\BillViews.py:83
+msgid "The bill is still active, You can not update it right now"
+msgstr "لا تزال الفاتورة نشطة ، لا يمكنك تحديثها الآن"
+
+#: .\base\views\BillViews.py:92
+#, fuzzy
+#| msgid "Subscription Updated successfully"
+msgid "Caculations Updated Successfully"
+msgstr "تم تحديث الاشتراك بنجاح"
+
+#: .\base\views\BillViews.py:109
 msgid "Discount must be provided"
 msgstr "يجب ادراج الخصم"
 
-#: .\base\views\BillViews.py:92
+#: .\base\views\BillViews.py:127
 msgid "Discount Applied successfully"
 msgstr "تم تطبيق الخصم بنجاح"
 
-#: .\base\views\BillViews.py:109 .\base\views\BillViews.py:112
+#: .\base\views\BillViews.py:144 .\base\views\BillViews.py:147
 #: .\base\views\DiscountViews.py:64 .\base\views\ExpenseViews.py:68
-#: .\base\views\ExpenseViews.py:166 .\base\views\MaterialViews.py:148
-#: .\base\views\OfferViews.py:150 .\base\views\ProductBillViews.py:70
-#: .\base\views\ProductViews.py:150 .\base\views\StaffViews.py:134
+#: .\base\views\ExpenseViews.py:166 .\base\views\MaterialViews.py:149
+#: .\base\views\OfferViews.py:151 .\base\views\ProductBillViews.py:82
+#: .\base\views\ProductViews.py:153 .\base\views\StaffViews.py:134
 #: .\base\views\StaffViews.py:224 .\base\views\StaffViews.py:319
-#: .\base\views\StaffViews.py:407 .\base\views\SubscriptionViews.py:148
+#: .\base\views\StaffViews.py:407 .\base\views\SubscriptionViews.py:149
 #: .\base\views\UserViews.py:71
 msgid "You do not have the permission to access this data"
 msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
@@ -782,6 +841,7 @@ msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
 #: .\base\views\BranchViews.py:28
 msgid "Branch Created successfully"
 msgstr "تم انشاء الفرع بنجاح"
+
 #: .\base\views\BranchViews.py:48
 msgid "Branch Updated successfully"
 msgstr "تم تحديث الفرع بنجاح"
@@ -793,10 +853,6 @@ msgstr "تم تسجيل الطفل بنجاح"
 #: .\base\views\ChildViews.py:48
 msgid "Child Updated successfully"
 msgstr "تم تحديث الطفل بنجاح"
-
-#: .\base\views\DashboardViews.py:145 .\base\views\IncomeViews.py:108
-msgid "Start and End dates must be provided and be equal"
-msgstr "يجب توفير تواريخ البدء والنهاية وتكون متساوية"
 
 #: .\base\views\DiscountViews.py:29
 msgid "Discount Created successfully"
@@ -830,11 +886,11 @@ msgstr "الخامات التي تم إنشاؤها بنجاح"
 msgid "Material Updated successfully"
 msgstr "تم تحديث الخامات بنجاح"
 
-#: .\base\views\MaterialViews.py:114
+#: .\base\views\MaterialViews.py:115
 msgid "Material added to branch successfully"
 msgstr "تم اضافة الخامات الي الفرع بنجاح"
 
-#: .\base\views\MaterialViews.py:132
+#: .\base\views\MaterialViews.py:133
 msgid "Material Branch data Updated successfully"
 msgstr "تم تحديث بيانات خامات الفرع بنجاح"
 
@@ -846,51 +902,65 @@ msgstr "العرض تم إنشاؤه بنجاح"
 msgid "Offer Updated successfully"
 msgstr "العرض تحديث بنجاح"
 
-#: .\base\views\OfferViews.py:115
+#: .\base\views\OfferViews.py:116
 msgid "Offer added to branch successfully"
 msgstr "العرض تم اضافته إلى الفرع بنجاح"
 
-#: .\base\views\OfferViews.py:134
+#: .\base\views\OfferViews.py:135
 msgid "Offer branch data Updated successfully"
 msgstr "تم تعديل بيانات عروض الفرع بنجاح"
 
-#: .\base\views\ProductBillViews.py:29
+#: .\base\views\ProductBillViews.py:31
 msgid "Cafe Bill Created successfully"
 msgstr "تم إنشاء فاتورة الكافيه بنجاح"
 
-#: .\base\views\ProductBillViews.py:47
+#: .\base\views\ProductBillViews.py:52
+#, fuzzy
+#| msgid "At least one product must be provided."
+msgid "Returned Products Must be Provided"
+msgstr "يجب توفير منتج واحد على الأقل."
+
+#: .\base\views\ProductBillViews.py:58
 msgid "Cafe Bill Updated successfully"
 msgstr "تم تحديث فاتورة الكافيه بنجاح"
 
-#: .\base\views\ProductViews.py:26
+#: .\base\views\ProductViews.py:28
 msgid "Product Created successfully"
 msgstr "تم إنشاء المنتج بنجاح"
 
-#: .\base\views\ProductViews.py:44
+#: .\base\views\ProductViews.py:46
 msgid "Product Updated successfully"
 msgstr "تم تحديث المنتج بنجاح"
 
-#: .\base\views\ProductViews.py:115
+#: .\base\views\ProductViews.py:118
 msgid "Product added to branch successfully"
 msgstr "تمت إضافة المنتج إلى الفرع بنجاح"
 
-#: .\base\views\ProductViews.py:134
+#: .\base\views\ProductViews.py:137
 msgid "Product branch data Updated successfully"
 msgstr "تم تحديث بيانات منتجات الفرع بنجاح"
 
-#: .\base\views\SchoolViews.py:33
+#: .\base\views\ProductViews.py:210
+#, fuzzy
+#| msgid "Materials must be provided."
+msgid "layer 1 must be provided"
+msgstr "يجب ادراج الخامات."
+
+#: .\base\views\ProductViews.py:226
+#, fuzzy
+#| msgid "Branch must be provided"
+msgid "layer 1 and 2 must be provided"
+msgstr "يجب ادراج الفرع"
+
+#: .\base\views\SchoolViews.py:34
 msgid "School Created successfully"
 msgstr "أنشأت المدرسة بنجاح"
 
-#: .\base\views\SchoolViews.py:51
+#: .\base\views\SchoolViews.py:52
 msgid "School Updated successfully"
 msgstr "تم تحديث المدرسة بنجاح"
 
-#: .\base\views\SchoolViews.py:90
-msgid "CSV file is empty or invalid"
-msgstr "ملف CSV فارغ أو غير صالح"
-
-#: .\base\views\SchoolViews.py:94
+#: .\base\views\SchoolViews.py:98
 msgid "Schools File Created Successfully"
 msgstr "تم إنشاء ملف المدارس بنجاح"
 
@@ -934,11 +1004,11 @@ msgstr "تم إنشاء الاشتراك بنجاح"
 msgid "Subscription Updated successfully"
 msgstr "تم تحديث الاشتراك بنجاح"
 
-#: .\base\views\SubscriptionViews.py:113
+#: .\base\views\SubscriptionViews.py:114
 msgid "SubscriptionInstance Created successfully"
 msgstr "تم إنشاء اشتراك للطفل بنجاح"
 
-#: .\base\views\SubscriptionViews.py:132
+#: .\base\views\SubscriptionViews.py:133
 msgid "SubscriptionInstance Updated successfully"
 msgstr "تم تحديث اشتراك للطفل بنجاح"
 
@@ -949,3 +1019,9 @@ msgstr "تم إنشاء المستخدم بنجاح"
 #: .\base\views\UserViews.py:54
 msgid "User Updated successfully"
 msgstr "تم تحديث المستخدم بنجاح"
+
+#~ msgid "Wrong column format"
+#~ msgstr "فورمات العمود الخاطئ"
+
+#~ msgid "Start and End dates must be provided and be equal"
+#~ msgstr "يجب توفير تواريخ البدء والنهاية وتكون متساوية"

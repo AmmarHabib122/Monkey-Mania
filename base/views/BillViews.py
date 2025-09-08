@@ -56,7 +56,7 @@ Close_Bill = CloseBillAPI.as_view()
 
 
 
-class UpdateMoneyBillAPI(RoleAccessList, generics.UpdateAPIView):
+class UpdateCalculationsBillAPI(RoleAccessList, generics.UpdateAPIView):
     queryset           = models.Bill.objects.all()
     serializer_class   = serializers.BillSerializer
     role_access_list   = ['owner', 'admin']
@@ -64,16 +64,35 @@ class UpdateMoneyBillAPI(RoleAccessList, generics.UpdateAPIView):
     lookup_field       = "pk"
 
     def update(self, request, *args, **kwargs):
-        kwargs['partial'] = True 
         data = request.data.copy()
-        for key in data.keys():
+        print("$$$$$$$$$$$$$", data)
+        '''validation section'''
+        for key, val in data.items():
             if key not in ['cash', 'visa', 'instapay', 'time_price']:
                 raise ValidationError(_("Wrong data for updating the bill"))
-        response                 = super().update(request, *args, **kwargs)
-        response.data['message'] = _("Bill Closed successfully")
-        return response
+            if val < 0:
+                raise ValidationError(_("You can not provide a negative value while updating the bill"))
+            try:
+                val = float(val)
+            except (TypeError, ValueError):
+                raise ValidationError(_("Values must be in Decimal formal"))
+        
+        instance = self.get_object()
+        
+        if instance.is_active:
+            raise PermissionDenied(_("The bill is still active, You can not update it right now"))
+        
+        instance.time_price  = data['time_price']
+        instance.cash        = data['cash']
+        instance.visa        = data['visa']
+        instance.instapay    = data['instapay']
+        instance.total_price = instance.time_price + instance.products_price
+        instance.save()
+        data            = serializers.BillSerializer(instance).data
+        data['message'] = _("Caculations Updated Successfully")
+        return Response(data)
 
-Close_Bill = CloseBillAPI.as_view()
+Update_Calculations_Bill = UpdateCalculationsBillAPI.as_view()
 
 
 class ApplyDiscountBillAPI(RoleAccessList, generics.UpdateAPIView):
