@@ -31,6 +31,8 @@ class HourPrice(models.Model):
     hour_price       = models.DecimalField(max_digits = 20, decimal_places = 2) 
     half_hour_price  = models.DecimalField(max_digits = 20, decimal_places = 2) 
     branch           = models.ForeignKey('base.Branch', on_delete = models.CASCADE, related_name ='hour_prices_set')
+    created         = models.DateTimeField(auto_now_add = True)
+    updated         = models.DateTimeField(auto_now = True)
 
     class Meta:
         constraints = [

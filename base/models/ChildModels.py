@@ -38,6 +38,8 @@ class Child(models.Model):
 
 class PhoneNumber(models.Model):
     value = models.CharField(max_length = 20, unique = True)
+    created         = models.DateTimeField(auto_now_add = True)
+    updated         = models.DateTimeField(auto_now = True)
     def __str__(self):
         return self.value
     
@@ -48,6 +50,8 @@ class ChildPhoneNumber(models.Model):
     child         = models.ForeignKey('base.Child', on_delete = models.CASCADE, related_name = 'child_phone_numbers_set')
     phone_number  = models.ForeignKey('base.PhoneNumber', on_delete = models.CASCADE, related_name = 'child_phone_number_values_set')
     relationship  = models.CharField(max_length = 20)
+    created         = models.DateTimeField(auto_now_add = True)
+    updated         = models.DateTimeField(auto_now = True)
     
     class Meta:
         constraints = [

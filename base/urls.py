@@ -92,6 +92,7 @@ urlpatterns = [
     #Bill
     path('bill/create/', views.Create_Bill, name = 'Create_Bill'),
     path('bill/<str:pk>/close/', views.Close_Bill, name = 'Close_Bill'),
+    path('bill/<str:pk>/update_calculations/', views.Update_Calculations_Bill, name = 'Update_Calculations_Bill'),
     path('bill/<str:pk>/apply_discount/', views.Apply_Discount_Bill, name = 'Apply_Discount_Bill'),
     path('bill/all/', views.List_Bill, name = 'List_Bill'),
     path('bill/active/all/', views.List_ActiveBill, name = 'List_ActiveBill'),

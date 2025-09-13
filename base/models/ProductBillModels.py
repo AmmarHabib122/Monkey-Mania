@@ -40,6 +40,8 @@ class ProductBillProduct(models.Model):
     product_object = fields.GenericForeignKey('product_type', 'product_id')
     quantity       = models.IntegerField()
     notes          = models.CharField(max_length = 75, null = True)
+    created         = models.DateTimeField(auto_now_add = True)
+    updated         = models.DateTimeField(auto_now = True)
 
 
 
@@ -54,6 +56,8 @@ class ProductBillReturnedProduct(models.Model):
     product_object = fields.GenericForeignKey('product_type', 'product_id')
     quantity       = models.IntegerField()
     created_by     = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_product_bill_returned_products_set')
+    created         = models.DateTimeField(auto_now_add = True)
+    updated         = models.DateTimeField(auto_now = True)
 
 
 

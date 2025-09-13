@@ -62,6 +62,8 @@ class BranchOfferProduct(models.Model):
     offer        = models.ForeignKey('base.BranchOffer', on_delete=models.CASCADE, related_name='products_set')
     product      = models.ForeignKey('base.BranchProduct', on_delete=models.CASCADE, related_name = 'offer_products_set')
     quantity     = models.PositiveIntegerField(default=1)  
+    created         = models.DateTimeField(auto_now_add = True)
+    updated         = models.DateTimeField(auto_now = True)
 
     class Meta:
         constraints = [

@@ -117,7 +117,7 @@ class BranchProduct(models.Model):
         ]
     
     def __str__(self):
-        return self.name
+        return f"#{self.id} {self.branch.name}" if self.branch else f"#{self.id}"
     
 
 
@@ -134,6 +134,8 @@ class BranchProductMaterial(models.Model):
     product      = models.ForeignKey('base.BranchProduct', on_delete = models.CASCADE, related_name = 'material_consumptions_set')
     material     = models.ForeignKey('base.BranchMaterial', on_delete = models.CASCADE, related_name = 'branch_product_materials_set')
     consumption  = models.DecimalField(max_digits = 14, decimal_places = 6)
+    created         = models.DateTimeField(auto_now_add = True)
+    updated         = models.DateTimeField(auto_now = True)
 
 
     class Meta:

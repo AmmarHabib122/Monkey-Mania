@@ -56,8 +56,43 @@ Close_Bill = CloseBillAPI.as_view()
 
 
 
+class UpdateCalculationsBillAPI(RoleAccessList, generics.UpdateAPIView):
+    queryset           = models.Bill.objects.all()
+    serializer_class   = serializers.BillSerializer
+    role_access_list   = ['owner', 'admin']
+    permission_classes = [permissions.Authenticated, permissions.RoleAccess]
+    lookup_field       = "pk"
 
+    def update(self, request, *args, **kwargs):
+        data = request.data.copy()
+        print("$$$$$$$$$$$$$", data)
+        '''validation section'''
+        for key, val in data.items():
+            if key not in ['cash', 'visa', 'instapay', 'time_price']:
+                raise ValidationError(_("Wrong data for updating the bill"))
+            if val < 0:
+                raise ValidationError(_("You can not provide a negative value while updating the bill"))
+            try:
+                val = float(val)
+            except (TypeError, ValueError):
+                raise ValidationError(_("Values must be in Decimal formal"))
+        
+        instance = self.get_object()
+        
+        if instance.is_active:
+            raise PermissionDenied(_("The bill is still active, You can not update it right now"))
+        
+        instance.time_price  = data['time_price']
+        instance.cash        = data['cash']
+        instance.visa        = data['visa']
+        instance.instapay    = data['instapay']
+        instance.total_price = instance.time_price + instance.products_price
+        instance.save()
+        data            = serializers.BillSerializer(instance).data
+        data['message'] = _("Caculations Updated Successfully")
+        return Response(data)
 
+Update_Calculations_Bill = UpdateCalculationsBillAPI.as_view()
 
 
 class ApplyDiscountBillAPI(RoleAccessList, generics.UpdateAPIView):
@@ -108,7 +143,7 @@ class GetBillAPI(RoleAccessList, generics.RetrieveAPIView):
         if self.request.user.branch    and   instance.branch != self.request.user.branch:
             raise PermissionDenied(_("You do not have the permission to access this data"))
         
-        if not instance.is_active   and  self.request.user.role in ['waiter', 'reception']:
+        if not instance.is_active   and  self.request.user.role in ['waiter']:
             raise PermissionDenied(_("You do not have the permission to access this data"))
         return instance
 
@@ -144,7 +179,6 @@ List_ActiveBill = ListActiveBillAPI.as_view()
 class ListBillAPI(RoleAccessList, generics.ListAPIView):
     queryset           = models.Bill.objects.all().order_by('-id')
     serializer_class   = serializers.BillSerializer
-    role_access_list   = ['owner', 'admin', 'manager']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 

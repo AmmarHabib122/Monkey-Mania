@@ -78,7 +78,7 @@ class GetProductBillAPI(RoleAccessList, generics.RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         response   = super().retrieve(request, *args, **kwargs)
         bill       = models.Bill.objects.get(id = response.data.get('bill'))
-        if not bill.is_active    and    request.user.role in ['waiter', 'reception']:
+        if not bill.is_active    and    request.user.role in ['waiter']:
                 raise PermissionDenied(_("You do not have the permission to access this data"))
         return response
 Get_ProductBill = GetProductBillAPI.as_view()
@@ -91,7 +91,6 @@ class ListActiveProductBillAPI(RoleAccessList, generics.ListAPIView):
     queryset           = models.ProductBill.objects.filter(bill__is_active = True).order_by('-id')
     pagination_class   = None
     serializer_class   = serializers.ProductBillSerializer
-    role_access_list   = ['owner', 'admin', 'manager', 'reception', 'waiter']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['bill__children__name', 'table_number', 'bill_number'] 
