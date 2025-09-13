@@ -17,7 +17,9 @@ def upload_to_path(instance, filename):
 
 class Image(models.Model):
     value   = models.ImageField(upload_to=upload_to_path, unique=True)
-    hash    = models.CharField(max_length=64, null=True, editable=False)    
+    hash    = models.CharField(max_length=64, null=True, editable=False)   
+    created         = models.DateTimeField(auto_now_add = True)
+    updated         = models.DateTimeField(auto_now = True) 
 
 
 
