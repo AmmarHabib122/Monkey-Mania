@@ -65,7 +65,6 @@ class UpdateCalculationsBillAPI(RoleAccessList, generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         data = request.data.copy()
-        print("$$$$$$$$$$$$$", data)
         '''validation section'''
         for key, val in data.items():
             if key not in ['cash', 'visa', 'instapay', 'time_price']:
