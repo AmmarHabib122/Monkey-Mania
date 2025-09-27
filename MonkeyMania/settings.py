@@ -64,7 +64,10 @@ ROOT_URLCONF = 'MonkeyMania.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [
+                # BASE_DIR / 'templates',
+                BASE_DIR / 'frontend',
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,6 +82,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'MonkeyMania.wsgi.application'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "frontend",
+]
 
 
 DATABASES = {
