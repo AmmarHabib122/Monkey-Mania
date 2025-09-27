@@ -64,6 +64,7 @@ class UpdateCalculationsBillAPI(RoleAccessList, generics.UpdateAPIView):
     lookup_field       = "pk"
 
     def update(self, request, *args, **kwargs):
+        user = request.user
         data = request.data.copy()
         '''validation section'''
         for key, val in data.items():
@@ -81,11 +82,13 @@ class UpdateCalculationsBillAPI(RoleAccessList, generics.UpdateAPIView):
         if instance.is_active:
             raise PermissionDenied(_("The bill is still active, You can not update it right now"))
         
-        instance.time_price  = data['time_price']
-        instance.cash        = data['cash']
-        instance.visa        = data['visa']
-        instance.instapay    = data['instapay']
-        instance.total_price = instance.time_price + instance.products_price
+        instance.time_price              = data['time_price']
+        instance.cash                    = data['cash']
+        instance.visa                    = data['visa']
+        instance.instapay                = data['instapay']
+        instance.total_price             = instance.time_price + instance.products_price
+        instance.is_calculations_updated = True
+        instance.calculations_updated_by = user
         instance.save()
         data            = serializers.BillSerializer(instance).data
         data['message'] = _("Caculations Updated Successfully")
@@ -113,6 +116,7 @@ class ApplyDiscountBillAPI(RoleAccessList, generics.UpdateAPIView):
         
         instance.discount_value = discount_instance.value
         instance.discount_type  = discount_instance.type 
+        instance.discount       = discount_instance
         
         if instance.is_active:
             instance.hour_price      = libs.apply_discount_to_price(instance.hour_price, instance.discount_value, instance.discount_type)
