@@ -64,6 +64,7 @@ class BillSerializer(serializers.ModelSerializer):
             'product_bills_set',
             'is_active',
             'is_allowed_age',
+            'is_calculations_updated',
             'hour_price',
             'half_hour_price',
             'total_price',
@@ -73,6 +74,7 @@ class BillSerializer(serializers.ModelSerializer):
             'finished',
             'created',
             'updated',
+            'calculations_updated_by',
             'created_by',
             'finished_by',
         ]
@@ -83,6 +85,7 @@ class BillSerializer(serializers.ModelSerializer):
             'product_bills_set',
             'is_active',
             'is_allowed_age',
+            'is_calculations_updated',
             'hour_price',
             'half_hour_price',
             'total_price',
@@ -92,6 +95,7 @@ class BillSerializer(serializers.ModelSerializer):
             'finished',
             'created',
             'updated',
+            'calculations_updated_by',
             'created_by',
             'finished_by',
         ]
