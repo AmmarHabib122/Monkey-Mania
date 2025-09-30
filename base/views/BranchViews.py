@@ -6,6 +6,7 @@ from rest_framework.filters import SearchFilter
 from base import serializers
 from base import models
 from base import permissions
+from base import libs
 
 
 
@@ -79,6 +80,14 @@ class ListBranchAPI(RoleAccessList, generics.ListAPIView):
         queryset = self.queryset.all()
         queryset = queryset.filter(branch = user.branch) if user.branch else queryset
         return queryset
+    
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "branches.csv")
+        return super().list(request, *args, **kwargs)
+    
 List_Branch = ListBranchAPI.as_view()
 
 

@@ -108,18 +108,21 @@ class BillSerializer(serializers.ModelSerializer):
             data["total_price"] = Decimal(data["time_price"]) + Decimal(instance.products_price)
         created_by = instance.created_by
         finished_by = instance.finished_by
+        calculations_updated_by = instance.calculations_updated_by
         branch = instance.branch
         data['created_by'] = created_by.username if created_by else None
         data['created_by_id'] = created_by.id if created_by else None
         data['finished_by'] = finished_by.username if finished_by else None
         data['finished_by_id'] = finished_by.id if finished_by else None
+        data['calculations_updated_by'] = calculations_updated_by.username if calculations_updated_by else None
+        data['calculations_updated_by_id'] = calculations_updated_by.id if calculations_updated_by else None
         data['branch'] = branch.name if branch else None
         data['branch_id'] = branch.id if branch else None
         first_child = instance.children.all().first() if instance.children.exists() else None
         data['first_child'] = first_child.name if first_child else None
         data['first_phone'] = None
         if first_child:
-            first_phone = first_child.child_phone_numbers_set.first()
+            first_phone = first_child.child_phone_numbers_set.first() if first_child.child_phone_numbers_set.exists() else None
             data['first_phone'] = first_phone.phone_number.value if first_phone else None
         if instance.is_subscription:
             data['subscription'] = {
@@ -144,7 +147,8 @@ class BillSerializer(serializers.ModelSerializer):
                 })
             data['children'].append(child_data)
 
-        merged_products = []
+        merged_products          = []
+        merged_retunred_products = []
 
         for product_bill in instance.product_bills_set.all():
             for pbp in product_bill.products.all():
@@ -168,8 +172,36 @@ class BillSerializer(serializers.ModelSerializer):
                         'unit_price': unit_price,
                         'total_price': total_price
                     })
+                    
+            for pbp in product_bill.returned_products.all():
+                product = pbp.product_object
+                if not product:
+                    continue  # skip if product is missing
 
-        data['product_bills_set'] = merged_products
+                name = getattr(product, 'name', 'Unnamed')
+                created_by = getattr(product, 'created_by', None)
+                unit_price = getattr(product, 'price', 0)
+                created = getattr(product, 'created', 'undefined')
+                quantity = pbp.quantity
+                total_price = unit_price * quantity
+                
+                merged_retunred_products.append({
+                    'name': name,
+                    'quantity': quantity,
+                    'unit_price': unit_price,
+                    'total_price': total_price,
+                    'created_by': created_by.username if created_by else None,
+                    'created_by_id': created_by.id if created_by else None,
+                    'created': created,
+                })
+                    
+
+
+        data['product_bills_set']          = merged_products
+        data['returned_product_bills_set'] = merged_retunred_products
+        
+        data['discount']    = instance.discount.name if instance.discount else None
+        data['discount_id'] = instance.discount.id   if instance.discount else None
 
         return data
         
@@ -288,6 +320,7 @@ class BillSerializer(serializers.ModelSerializer):
 
             validated_data['discount_value'] = discount.value if discount else 0
             validated_data['discount_type']  = discount.type  if discount else None
+            validated_data['discount']       = discount       if discount else None
             time_price_instance              = branch.hour_prices_set.filter(children_count = validated_data['children_count']).first()
 
             if not time_price_instance:
@@ -337,6 +370,8 @@ class BillSerializer(serializers.ModelSerializer):
         remaining_spent_time           = libs.calculate_subscription_time(validated_data['spent_time'], instance.subscription) if instance.is_subscription else validated_data['spent_time'] 
         validated_data['time_price']   = libs.calculate_time_price(remaining_spent_time, instance.hour_price, instance.half_hour_price)
         validated_data['total_price']  = instance.products_price + validated_data['time_price']
+        if validated_data['cash'] + validated_data['visa'] + validated_data['instapay'] != validated_data['total_price']:
+            raise ValidationError(_("Total price does not equal the money client paid"))
         instance                       = super().update(instance, validated_data)
 
         return instance

@@ -70,6 +70,23 @@ class ListProductAPI(RoleAccessList, generics.ListAPIView):
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['layer1', 'layer2', 'layer3'] 
+    
+    def get_queryset(self):
+        query     = super().get_queryset()
+        start_date, end_date, is_date_range = libs.get_date_range(self)
+        if is_date_range   and   start_date == end_date:
+            query = libs.get_all_instances_in_a_day_query(query, start_date)
+        elif is_date_range:
+            query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
+        return query
+    
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "products.csv")
+        return super().list(request, *args, **kwargs)
+    
 List_Product = ListProductAPI.as_view()
 
 
@@ -174,13 +191,29 @@ class ListBranchProductAPI(RoleAccessList, generics.ListAPIView):
         layer1 = self.request.query_params.get("layer1", None)
         layer2 = self.request.query_params.get("layer2", None)
         branch = libs.get_one_branch_id(self)
+        
         if layer1  and  layer2:
             query  = super().get_queryset().filter(branch = branch, product__layer1=layer1, product__layer2=layer2)
         elif layer1:
             query  = super().get_queryset().filter(branch = branch, product__layer1=layer1)
         else: 
             query  = super().get_queryset().filter(branch = branch) 
+            
+        start_date, end_date, is_date_range = libs.get_date_range(self)
+        if is_date_range   and   start_date == end_date:
+            query = libs.get_all_instances_in_a_day_query(query, start_date)
+        elif is_date_range:
+            query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
+        
         return query
+    
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "branch_products.csv")
+        return super().list(request, *args, **kwargs)
+    
 List_BranchProduct = ListBranchProductAPI.as_view()
 
 

@@ -7,6 +7,9 @@ from django.utils import timezone
 from datetime import timedelta, time, datetime
 from decimal import Decimal
 import pandas as pd
+import csv
+from io import StringIO
+from django.http import HttpResponse
 
 
 from base import models
@@ -270,4 +273,25 @@ def get_csv_file_records(request, required_columns=[]):
     return records
                 
             
+            
+def is_csv_response(request):
+    is_csv = request.query_params.get("is_csv_response")
+    if is_csv is None:
+        return False
+    if str(is_csv).lower() in ["true", "1", "yes"]:
+        return True
+    if str(is_csv).lower() in ["false", "0", "no"]:
+        return False
+    raise ValidationError(_("Only True or False are allowed for is_csv_response parameter"))
+    
+
+
+def get_csv_file_response(data, filename="data.csv", columns=None):
+    df = pd.DataFrame(data, columns=columns if columns else None)
+    buffer = StringIO()
+    df.to_csv(buffer, index=False)
+    response = HttpResponse(buffer.getvalue(), content_type="text/csv")
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
+
             

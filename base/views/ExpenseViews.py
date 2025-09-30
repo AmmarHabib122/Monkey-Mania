@@ -92,6 +92,13 @@ class ListGeneralExpenseAPI(RoleAccessList, generics.ListAPIView):
             query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
         return query
     
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "general_expenses.csv")
+        return super().list(request, *args, **kwargs)
+    
 List_GeneralExpense = ListGeneralExpenseAPI.as_view()
 
 
@@ -189,6 +196,13 @@ class ListMaterialExpenseAPI(RoleAccessList, generics.ListAPIView):
         elif is_date_range:
             query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
         return query
+    
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "material_expenses.csv")
+        return super().list(request, *args, **kwargs)
     
 List_MaterialExpense = ListMaterialExpenseAPI.as_view()
 

@@ -76,6 +76,23 @@ class ListSchoolAPI(RoleAccessList, generics.ListAPIView):
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['name', 'address'] 
+    
+    def get_queryset(self):
+        query     = super().get_queryset()
+        start_date, end_date, is_date_range = libs.get_date_range(self)
+        if is_date_range   and   start_date == end_date:
+            query = libs.get_all_instances_in_a_day_query(query, start_date)
+        elif is_date_range:
+            query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
+        return query
+    
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "schools.csv")
+        return super().list(request, *args, **kwargs)
+    
 List_School = ListSchoolAPI.as_view()
 
 

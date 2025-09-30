@@ -99,6 +99,14 @@ class ListActiveProductBillAPI(RoleAccessList, generics.ListAPIView):
         branches = libs.get_branch_ids(self)
         queryset = super().get_queryset().filter(bill__branch__in = branches) if branches != ['all'] else super().get_queryset()
         return queryset
+    
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "active_cafe_bills.csv")
+        return super().list(request, *args, **kwargs)
+    
 List_ActiveProductBill = ListActiveProductBillAPI.as_view()
 
 
@@ -124,6 +132,14 @@ class ListProductBillAPI(RoleAccessList, generics.ListAPIView):
         elif is_date_range:
             query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
         return query
+    
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "all_cafe_bills.csv")
+        return super().list(request, *args, **kwargs)
+    
 List_ProductBill = ListProductBillAPI.as_view()
 
 

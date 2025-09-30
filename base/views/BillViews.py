@@ -64,8 +64,8 @@ class UpdateCalculationsBillAPI(RoleAccessList, generics.UpdateAPIView):
     lookup_field       = "pk"
 
     def update(self, request, *args, **kwargs):
+        user = request.user
         data = request.data.copy()
-        print("$$$$$$$$$$$$$", data)
         '''validation section'''
         for key, val in data.items():
             if key not in ['cash', 'visa', 'instapay', 'time_price']:
@@ -82,11 +82,13 @@ class UpdateCalculationsBillAPI(RoleAccessList, generics.UpdateAPIView):
         if instance.is_active:
             raise PermissionDenied(_("The bill is still active, You can not update it right now"))
         
-        instance.time_price  = data['time_price']
-        instance.cash        = data['cash']
-        instance.visa        = data['visa']
-        instance.instapay    = data['instapay']
-        instance.total_price = instance.time_price + instance.products_price
+        instance.time_price              = data['time_price']
+        instance.cash                    = data['cash']
+        instance.visa                    = data['visa']
+        instance.instapay                = data['instapay']
+        instance.total_price             = instance.time_price + instance.products_price
+        instance.is_calculations_updated = True
+        instance.calculations_updated_by = user
         instance.save()
         data            = serializers.BillSerializer(instance).data
         data['message'] = _("Caculations Updated Successfully")
@@ -114,6 +116,7 @@ class ApplyDiscountBillAPI(RoleAccessList, generics.UpdateAPIView):
         
         instance.discount_value = discount_instance.value
         instance.discount_type  = discount_instance.type 
+        instance.discount       = discount_instance
         
         if instance.is_active:
             instance.hour_price      = libs.apply_discount_to_price(instance.hour_price, instance.discount_value, instance.discount_type)
@@ -166,6 +169,14 @@ class ListActiveBillAPI(RoleAccessList, generics.ListAPIView):
         branches  = libs.get_branch_ids(self)
         query     = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
         return query
+    
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "active_bills.csv")
+        return super().list(request, *args, **kwargs)
+    
 List_ActiveBill = ListActiveBillAPI.as_view()
 
 
@@ -192,6 +203,13 @@ class ListBillAPI(RoleAccessList, generics.ListAPIView):
         elif is_date_range:
             query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
         return query
+    
+    def list(self, request, *args, **kwargs):
+        if libs.is_csv_response(request):
+            queryset = self.filter_queryset(self.get_queryset())
+            serializer = self.get_serializer(queryset, many=True)
+            return libs.get_csv_file_response(serializer.data, "all_bills.csv")
+        return super().list(request, *args, **kwargs)
     
 List_Bill = ListBillAPI.as_view()
 
