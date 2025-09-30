@@ -20,6 +20,8 @@ class PhoneNumberSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'value',
+            'created',
+            'updated',
         ]
         extra_kwargs = {
             'value': {'validators': []} 

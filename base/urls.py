@@ -149,4 +149,8 @@ urlpatterns = [
 
     #Dashboard
     path('dashboard/statistics/', views.Get_DashboardStatistics, name = 'Get_DashboardStatistics'),
+    
+    #CsvAnalytics
+    path('csv_analytics/file/', views.Get_CsvAnalyticsFile, name = 'Get_CsvAnalyticsFile'),
+    path('csv_analytics/allowed_types/', views.Get_CsvAnalyticsAllowedTypes, name = 'Get_CsvAnalyticsAllowedTypes'),
 ]
