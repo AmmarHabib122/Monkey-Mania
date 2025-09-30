@@ -36,6 +36,16 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
                 query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
             data = serializers.PhoneNumberSerializer(query, many = True).data
             return libs.get_csv_file_response(data, 'phone_numbers.csv', ['value', 'created'])
+        
+        elif type == 'products_sales':
+            query    = models.ProductBill.objects.filter(bill__branch__in = branches) if branches != ['all'] else models.ProductBill.objects.all()
+            if is_date_range   and   start_date == end_date:
+                query = libs.get_all_instances_in_a_day_query(query, start_date)
+            elif is_date_range:
+                query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
+            for record in query:
+                print(record)
+            return Response(query.data)
         else:
             raise ValidationError(_('Allowed values for type are ["phone_number", "products_sales", "bills_children_count"]'))
 Get_CsvAnalyticsFile = CsvAnalyticsFile.as_view()

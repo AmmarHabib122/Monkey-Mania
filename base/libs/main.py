@@ -42,6 +42,8 @@ def get_branch_ids(self):
         branches = [user.branch.id]
     else :
         branches = self.request.query_params.getlist("branch_id", [])
+        if not branches:
+            raise ValidationError (_("Branch id must be provided"))
         if branches != ['all']:
             try:
                 branches = [int(branch) for branch in branches]
@@ -49,6 +51,7 @@ def get_branch_ids(self):
                     models.Branch.objects.get(id = branch)
             except:
                 raise ValidationError (_("Invalid Branch id"))
+        
     return branches
 
 
