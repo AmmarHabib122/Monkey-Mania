@@ -289,7 +289,7 @@ def is_csv_response(request):
     
 
 
-def get_csv_file_response(data, filename="data.csv", columns=None):
+def send_csv_file_response(data, filename="data.csv", columns=None):
     df = pd.DataFrame(data, columns=columns if columns else None)
     buffer = StringIO()
     df.to_csv(buffer, index=False)
