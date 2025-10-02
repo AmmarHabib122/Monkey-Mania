@@ -94,7 +94,7 @@ class ListDiscountAPI(RoleAccessList, generics.ListAPIView):
         if libs.is_csv_response(request):
             queryset = self.filter_queryset(self.get_queryset())
             serializer = self.get_serializer(queryset, many=True)
-            return libs.get_csv_file_response(serializer.data, "discounts.csv")
+            return libs.send_csv_file_response(serializer.data, "discounts.csv")
         return super().list(request, *args, **kwargs)
     
 List_Discount = ListDiscountAPI.as_view()

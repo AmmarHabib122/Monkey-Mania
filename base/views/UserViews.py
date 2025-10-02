@@ -91,6 +91,7 @@ class ListUserAPI(RoleAccessList, generics.ListAPIView):
         lower_roles   = libs.get_lower_roles(user)   
         branches      = libs.get_branch_ids(self)
         query         = super().get_queryset().filter(role__in = lower_roles, branch__in = branches) if branches != ['all'] else super().get_queryset()
+        start_date, end_date, is_date_range = libs.get_date_range(self)
         if is_date_range   and   start_date == end_date:
             query = libs.get_all_instances_in_a_day_query(query, start_date)
         elif is_date_range:
@@ -101,7 +102,7 @@ class ListUserAPI(RoleAccessList, generics.ListAPIView):
         if libs.is_csv_response(request):
             queryset = self.filter_queryset(self.get_queryset())
             serializer = self.get_serializer(queryset, many=True)
-            return libs.get_csv_file_response(serializer.data, "users.csv")
+            return libs.send_csv_file_response(serializer.data, "users.csv")
         return super().list(request, *args, **kwargs)
     
     
