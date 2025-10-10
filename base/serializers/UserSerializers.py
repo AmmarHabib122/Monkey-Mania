@@ -170,11 +170,14 @@ class UserSerializer(serializers.ModelSerializer):
                     instance.save()
                 return instance
         
-        if user.role in ['admin', 'owner']:                                          
-            validated_data.pop('branch')                      #making sure that user with null branches remain the same
+
+        if instance == user   and   user.role in ['admin', 'owner']:
+            validated_data.pop('branch') 
+            validated_data.pop('role') 
+            
 
         #user updates lower_role_users and he is not reception or waiter
-        if instance.role in lower_roles and user.role != 'reception':
+        elif instance.role in lower_roles and user.role not in ['reception', 'waiter']:
             if user.role == 'manager': 
                 if instance.branch != user.branch:                #ensuring that a manager can not access a user from another branch
                     raise PermissionDenied(_("You Do not have the permission to perform this action"))                             
