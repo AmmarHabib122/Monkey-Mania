@@ -164,20 +164,20 @@ class UserSerializer(serializers.ModelSerializer):
         #password encryption
         if validated_data.get('password') : 
             validated_data.pop('confirm_password', None)
-            validated_data['password'] = make_password(validated_data['password'])
-        
-        #user updates himself
-        if instance == user:                                          
-            if user.role in ['reception', 'waiter']:               #if the role is reception or waiter can only update his password
+            if user.role in ['reception', 'waiter', 'manager']:               #if the role is reception or waiter can only update his password
                 if validated_data.get('password'):
-                    instance.password = validated_data['password']
+                    instance.password = make_password(validated_data['password'])
                     instance.save()
                 return instance
-            else: 
-                validated_data.pop('branch')                      #making sure that user with null branches remain the same
+        
+
+        if instance == user   and   user.role in ['admin', 'owner']:
+            validated_data.pop('branch') 
+            validated_data.pop('role') 
+            
 
         #user updates lower_role_users and he is not reception or waiter
-        elif instance.role in lower_roles and user.role != 'reception':
+        elif instance.role in lower_roles and user.role not in ['reception', 'waiter']:
             if user.role == 'manager': 
                 if instance.branch != user.branch:                #ensuring that a manager can not access a user from another branch
                     raise PermissionDenied(_("You Do not have the permission to perform this action"))                             

@@ -42,6 +42,8 @@ def get_branch_ids(self):
         branches = [user.branch.id]
     else :
         branches = self.request.query_params.getlist("branch_id", [])
+        if not branches:
+            raise ValidationError (_("Branch id must be provided"))
         if branches != ['all']:
             try:
                 branches = [int(branch) for branch in branches]
@@ -49,6 +51,7 @@ def get_branch_ids(self):
                     models.Branch.objects.get(id = branch)
             except:
                 raise ValidationError (_("Invalid Branch id"))
+        
     return branches
 
 
@@ -286,7 +289,7 @@ def is_csv_response(request):
     
 
 
-def get_csv_file_response(data, filename="data.csv", columns=None):
+def send_csv_file_response(data, filename="data.csv", columns=None):
     df = pd.DataFrame(data, columns=columns if columns else None)
     buffer = StringIO()
     df.to_csv(buffer, index=False)

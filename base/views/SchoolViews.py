@@ -90,7 +90,7 @@ class ListSchoolAPI(RoleAccessList, generics.ListAPIView):
         if libs.is_csv_response(request):
             queryset = self.filter_queryset(self.get_queryset())
             serializer = self.get_serializer(queryset, many=True)
-            return libs.get_csv_file_response(serializer.data, "schools.csv")
+            return libs.send_csv_file_response(serializer.data, "schools.csv")
         return super().list(request, *args, **kwargs)
     
 List_School = ListSchoolAPI.as_view()

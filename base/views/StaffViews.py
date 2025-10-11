@@ -163,7 +163,7 @@ class ListStaffAPI(RoleAccessList, generics.ListAPIView):
         if libs.is_csv_response(request):
             queryset = self.filter_queryset(self.get_queryset())
             serializer = self.get_serializer(queryset, many=True)
-            return libs.get_csv_file_response(serializer.data, "staff_members.csv")
+            return libs.send_csv_file_response(serializer.data, "staff_members.csv")
         return super().list(request, *args, **kwargs)
     
 List_Staff = ListStaffAPI.as_view()
@@ -264,7 +264,7 @@ class ListStaffWithdrawAPI(RoleAccessList, generics.ListAPIView):
         if libs.is_csv_response(request):
             queryset = self.filter_queryset(self.get_queryset())
             serializer = self.get_serializer(queryset, many=True)
-            return libs.get_csv_file_response(serializer.data, "staff_withdraws.csv")
+            return libs.send_csv_file_response(serializer.data, "staff_withdraws.csv")
         return super().list(request, *args, **kwargs)
     
 List_StaffWithdraw = ListStaffWithdrawAPI.as_view()
@@ -366,7 +366,7 @@ class ListStaffFineAPI(RoleAccessList, generics.ListAPIView):
         if libs.is_csv_response(request):
             queryset = self.filter_queryset(self.get_queryset())
             serializer = self.get_serializer(queryset, many=True)
-            return libs.get_csv_file_response(serializer.data, "staff_fines.csv")
+            return libs.send_csv_file_response(serializer.data, "staff_fines.csv")
         return super().list(request, *args, **kwargs)
     
 List_StaffFine = ListStaffFineAPI.as_view()
@@ -462,7 +462,7 @@ class ListStaffSalaryAPI(RoleAccessList, generics.ListAPIView):
         if libs.is_csv_response(request):
             queryset = self.filter_queryset(self.get_queryset())
             serializer = self.get_serializer(queryset, many=True)
-            return libs.get_csv_file_response(serializer.data, "staff_salaries.csv")
+            return libs.send_csv_file_response(serializer.data, "staff_salaries.csv")
         return super().list(request, *args, **kwargs)
     
 List_StaffSalary = ListStaffSalaryAPI.as_view()
