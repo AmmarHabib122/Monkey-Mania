@@ -165,7 +165,7 @@ class UserSerializer(serializers.ModelSerializer):
         password = validated_data.get('password')
         if password: 
             validated_data.pop('confirm_password', None)
-            if user.role in ['reception', 'waiter', 'manager']:               #if the role is reception or waiter can only update his password
+            if user.role in ['reception', 'waiter', 'manager']  and  instance == user:               #if the role is reception or waiter can only update his password
                 instance.password = make_password(password)
                 instance.save()
                 return instance
