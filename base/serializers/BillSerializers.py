@@ -183,7 +183,7 @@ class BillSerializer(serializers.ModelSerializer):
                     continue  # skip if product is missing
 
                 name = getattr(product, 'name', 'Unnamed')
-                created_by = getattr(product, 'created_by', None)
+                created_by = pbp.created_by
                 unit_price = getattr(product, 'price', 0)
                 created = getattr(product, 'created', 'undefined')
                 quantity = pbp.quantity
