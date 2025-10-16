@@ -162,13 +162,16 @@ class UserSerializer(serializers.ModelSerializer):
             raise ValidationError(_("Branch must have a value"))
 
         #password encryption
-        if validated_data.get('password') : 
+        password = validated_data.get('password')
+        if password: 
             validated_data.pop('confirm_password', None)
             if user.role in ['reception', 'waiter', 'manager']:               #if the role is reception or waiter can only update his password
-                if validated_data.get('password'):
-                    instance.password = make_password(validated_data['password'])
-                    instance.save()
+                instance.password = make_password(password)
+                instance.save()
                 return instance
+            else:
+                validated_data['password'] = make_password(password)
+                
         
 
         if instance == user   and   user.role in ['admin', 'owner']:
