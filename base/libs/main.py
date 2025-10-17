@@ -292,8 +292,8 @@ def is_csv_response(request):
 def send_csv_file_response(data, filename="data.csv", columns=None):
     df = pd.DataFrame(data, columns=columns if columns else None)
     buffer = StringIO()
-    df.to_csv(buffer, index=False)
-    response = HttpResponse(buffer.getvalue(), content_type="text/csv")
+    df.to_csv(buffer, index=False, encoding='utf-8-sig')
+    response = HttpResponse(buffer.getvalue(), content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
     return response
 
