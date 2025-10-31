@@ -10,6 +10,7 @@ class Child(models.Model):
     address        = models.CharField(max_length = 255, null = True, blank = True)
     notes          = models.CharField(max_length = 255, null = True, blank = True)
     is_active      = models.BooleanField(default = False)
+    is_blocked     = models.BooleanField(default = False)
     special_needs  = models.BooleanField(default = False)
     created        = models.DateTimeField(auto_now_add = True)
     updated        = models.DateTimeField(auto_now = True)

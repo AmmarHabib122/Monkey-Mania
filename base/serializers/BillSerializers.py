@@ -259,10 +259,11 @@ class BillSerializer(serializers.ModelSerializer):
         for child in value:
             if child.is_active:
                 raise ValidationError(_("Child {name} is currently registered in another bill").format(name=child.name))
-            elif child.id in child_ids:
+            if child.is_blocked:
+                raise ValidationError(_("Child {name} is BLOCKED, reach out to the branch manager to unblock him first").format(name=child.name))
+            if child.id in child_ids:
                 raise ValidationError(_("You tried to add the same child more than once"))
-            else:
-                child_ids.append(child.id)
+            child_ids.append(child.id)
         return value
     
     
