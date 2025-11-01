@@ -66,6 +66,7 @@ class ChildSerializer(serializers.ModelSerializer):
     school  = serializers.PrimaryKeyRelatedField(
         queryset = models.School.objects.all(), 
         required = False,
+        allow_null=True,
         error_messages={
             'invalid': _('Invalid school ID.'),
             'does_not_exist': _('You must provide a valid school ID.'),
@@ -82,6 +83,7 @@ class ChildSerializer(serializers.ModelSerializer):
             'notes',
             'address',
             'is_active',
+            'is_blocked',
             'special_needs',
             'created',
             'updated',
@@ -112,12 +114,20 @@ class ChildSerializer(serializers.ModelSerializer):
         return data
     
 
-
-
-    def vlidate_name(self, value):
-        return value.lower()
+    def validate_name(self, value):
+        value = value.strip().lower()
+        child = models.Child.objects.filter(name__iexact=value).first()
+        if child != self.instance:
+            raise ValidationError(_("The child name {name} already exists.").format(name = value))
+        return value
 
     def validate_special_needs(self, value):
+        user = self.context['request'].user
+        if user.role == 'reception':
+            raise ValidationError(_("You Do Not have the permission to perform this action."))
+        return value
+    
+    def validate_is_blocked(self, value):
         user = self.context['request'].user
         if user.role == 'reception':
             raise ValidationError(_("You Do Not have the permission to perform this action."))
@@ -141,6 +151,8 @@ class ChildSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user                           = self.context['request'].user
         validated_data['created_by']   = user
+        is_blocked                     = validated_data.pop('is_blocked', None)
+        special_needs                  = validated_data.pop('special_needs', None)
         request_phone_numbers          = validated_data.pop('child_phone_numbers_set')
         with transaction.atomic():
             instance            = super().create(validated_data)

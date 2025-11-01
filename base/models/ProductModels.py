@@ -17,7 +17,7 @@ class Product(models.Model):
 
     @property
     def name(self):
-        return f"#{self.id} {self.layer2} {self.layer3}"
+        return f"{self.layer2} {self.layer3}"
     
     
     @property
@@ -134,8 +134,8 @@ class BranchProductMaterial(models.Model):
     product      = models.ForeignKey('base.BranchProduct', on_delete = models.CASCADE, related_name = 'material_consumptions_set')
     material     = models.ForeignKey('base.BranchMaterial', on_delete = models.CASCADE, related_name = 'branch_product_materials_set')
     consumption  = models.DecimalField(max_digits = 14, decimal_places = 6)
-    created         = models.DateTimeField(auto_now_add = True)
-    updated         = models.DateTimeField(auto_now = True)
+    created      = models.DateTimeField(auto_now_add = True)
+    updated      = models.DateTimeField(auto_now = True)
 
 
     class Meta:

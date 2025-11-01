@@ -26,12 +26,14 @@ class DashboardSatistics(RoleAccessList, APIView):
             today -= timedelta(days=1)
         start_date        = request.query_params.get("start_date", None)
         end_date          = request.query_params.get("end_date", None)
+        is_current_children_allowed = False
         if start_date and end_date:
             main_interval_start, main_interval_end, main_interval_is_date_range = libs.get_date_range(self)
         else:
             main_interval_start = today
             main_interval_end = today
             main_interval_is_date_range = False
+            is_current_children_allowed = True
             
         #if main_interval is week 2 in october compare_interval will be week 1 in october
         compare_interval_end    = main_interval_start - timedelta(days = 1)
@@ -108,7 +110,7 @@ class DashboardSatistics(RoleAccessList, APIView):
         
         dashboard_statistics['todays_kids_sales']           = f"{todays_bills_query_sum_agg['kids_sales']} ({todays_bills_query_count_agg['total_bills_count']})"
         dashboard_statistics['todays_money_unbalance']      = str(todays_bills_query_sum_agg['money_unbalance']) if todays_bills_query_sum_agg['money_unbalance'] < 0 else "+" + str(todays_bills_query_sum_agg['money_unbalance']) + f" ({todays_bills_query_count_agg['money_unbalance_bills_count']})"
-        dashboard_statistics['todays_children_count']       = f"{todays_bills_query_sum_agg['children']}"
+        dashboard_statistics['todays_children_count']       = f"{todays_bills_query_sum_agg['children']} (now : {bills_query.filter(is_active = True).aggregate(total=Coalesce(Sum('children_count'), 0)) ['total']})" if is_current_children_allowed else f"{todays_bills_query_sum_agg['children']}"
         dashboard_statistics['todays_cash']                 = f"{todays_bills_query_sum_agg['cash']} ({todays_bills_query_count_agg['cash_bills_count'] + todays_subscripiton_query_count_agg['cash_subscriptions_count']})"
         dashboard_statistics['todays_visa']                 = f"{todays_bills_query_sum_agg['visa']} ({todays_bills_query_count_agg['visa_bills_count'] + todays_subscripiton_query_count_agg['visa_subscriptions_count']})"
         dashboard_statistics['todays_instapay']             = f"{todays_bills_query_sum_agg['instapay']} ({todays_bills_query_count_agg['instapay_bills_count'] + todays_subscripiton_query_count_agg['instapay_subscriptions_count']})"

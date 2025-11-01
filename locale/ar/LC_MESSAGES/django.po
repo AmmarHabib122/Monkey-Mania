@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-27 03:38+0300\n"
+"POT-Creation-Date: 2025-10-31 11:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,40 +31,46 @@ msgstr "عربي"
 msgid "CSV file is empty or invalid"
 msgstr "ملف CSV فارغ أو غير صالح"
 
-#: .\base\libs\main.py:51 .\base\libs\main.py:67 .\base\libs\main.py:69
+#: .\base\libs\main.py:46
+#, fuzzy
+#| msgid "Branch must be provided"
+msgid "Branch id must be provided"
+msgstr "يجب ادراج الفرع"
+
+#: .\base\libs\main.py:53 .\base\libs\main.py:70 .\base\libs\main.py:72
 msgid "Invalid Branch id"
 msgstr "ID فرع غير صالح"
 
-#: .\base\libs\main.py:84
+#: .\base\libs\main.py:87
 msgid "Phone number must contain only digits."
 msgstr "يجب أن يحتوي رقم الهاتف على أرقام فقط."
 
-#: .\base\libs\main.py:86
+#: .\base\libs\main.py:89
 msgid "Phone number must be exactly 11 digits long."
 msgstr "يجب أن يكون رقم الهاتف بالضبط 11 رقمًا."
 
-#: .\base\libs\main.py:250
+#: .\base\libs\main.py:253
 msgid "Start date cannot be bigger than the end date"
 msgstr "لا يمكن أن يكون تاريخ البدء أكبر من تاريخ الانتهاء"
 
-#: .\base\libs\main.py:252
+#: .\base\libs\main.py:255
 msgid "Start and End dates must be provided together"
 msgstr "يجب توفير تواريخ البدء والنهاية معًا"
 
-#: .\base\libs\main.py:262
+#: .\base\libs\main.py:265
 msgid "Csv file must be provided"
 msgstr "يجب توفير ملف CSV"
 
-#: .\base\libs\main.py:264
+#: .\base\libs\main.py:267
 msgid "The file provided must be in .csv format"
 msgstr "يجب أن يكون الملف المقدم في فورمات .csv"
 
-#: .\base\libs\main.py:268
+#: .\base\libs\main.py:271
 #, python-brace-format
 msgid "Wrong column format, The correct Format is {required_columns}"
 msgstr "تنسيق العمود الخاطئ ، التنسيق الصحيح هو {required_columns}"
 
-#: .\base\libs\main.py:285
+#: .\base\libs\main.py:288
 msgid "Only True or False are allowed for is_csv_response parameter"
 msgstr "يسمح فقط صحيح أو خطأ بمعلمة IS_CSV_RESPONSE"
 
@@ -72,8 +78,8 @@ msgstr "يسمح فقط صحيح أو خطأ بمعلمة IS_CSV_RESPONSE"
 msgid "User is not logged in"
 msgstr "لم يتم تسجيل الدخول للمستخدم"
 
-#: .\base\permissions\main.py:28 .\base\serializers\UserSerializers.py:183
-#: .\base\serializers\UserSerializers.py:196
+#: .\base\permissions\main.py:28 .\base\serializers\UserSerializers.py:186
+#: .\base\serializers\UserSerializers.py:199
 msgid "You Do not have the permission to perform this action"
 msgstr "ليس لديك إذن لأداء هذا الإجراء"
 
@@ -138,99 +144,106 @@ msgstr "يجب عليك توفير ID فرع صالح."
 msgid "branch must be identified by an integer ID."
 msgstr "يجب تحديد الفرع بواسطة ID عدد صحيح."
 
-#: .\base\serializers\BillSerializers.py:103
+#: .\base\serializers\BillSerializers.py:107
 #: .\base\serializers\BranchSerializers.py:84
 #: .\base\serializers\StaffSerializers.py:54
 #: .\base\serializers\UserSerializers.py:76
 msgid "You Do Not have the permission to access this data"
 msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
 
-#: .\base\serializers\BillSerializers.py:210
+#: .\base\serializers\BillSerializers.py:214
 #: .\base\serializers\SubscriptionSerializers.py:221
 msgid "cash can not be negative"
 msgstr "لا يمكن أن يكون الكاش عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:215
+#: .\base\serializers\BillSerializers.py:219
 #: .\base\serializers\SubscriptionSerializers.py:226
 msgid "instapay can not be negative"
 msgstr "لا يمكن أن يكون انستاباي عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:220
+#: .\base\serializers\BillSerializers.py:224
 #: .\base\serializers\SubscriptionSerializers.py:231
 msgid "visa can not be negative"
 msgstr "لا يمكن أن تكون الفيزا عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:226
-#: .\base\serializers\BillSerializers.py:270 .\base\views\BillViews.py:115
+#: .\base\serializers\BillSerializers.py:230
+#: .\base\serializers\BillSerializers.py:275 .\base\views\BillViews.py:115
 msgid ""
 "Couldn't find a discount available to this branch with the given "
 "credentials."
 msgstr "لا يمكن العثور على خصم متاح لهذا الفرع مع البيانات المرسلة."
 
-#: .\base\serializers\BillSerializers.py:232
+#: .\base\serializers\BillSerializers.py:236
 msgid "Time Price can not be negative"
 msgstr "لا يمكن أن يكون سعر الوقت عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:234
+#: .\base\serializers\BillSerializers.py:238
 msgid "You do not have the permission to set the bill Time Price"
 msgstr "ليس لديك إذن لتحديد سعر وقت الفاتورة"
 
-#: .\base\serializers\BillSerializers.py:240
+#: .\base\serializers\BillSerializers.py:244
 msgid "Cafe Price can not be negative"
 msgstr "لا يمكن أن يكون سعر المقهى عدد سالب"
 
-#: .\base\serializers\BillSerializers.py:242
+#: .\base\serializers\BillSerializers.py:246
 msgid "You do not have the permission to set the bill Cafe Price"
 msgstr "ليس لديك إذن لتعيين سعر فاتورة الكافيه"
 
-#: .\base\serializers\BillSerializers.py:248
+#: .\base\serializers\BillSerializers.py:252
 #: .\base\serializers\ProductBillSerializers.py:252
 msgid "You can not create a bill with a different branch"
 msgstr "لا يمكنك إنشاء فاتورة مع فرع مختلف"
 
-#: .\base\serializers\BillSerializers.py:253
+#: .\base\serializers\BillSerializers.py:257
 msgid "Children list can not be empty"
 msgstr "لا يمكن أن تكون قائمة الأطفال فارغة"
 
-#: .\base\serializers\BillSerializers.py:257
+#: .\base\serializers\BillSerializers.py:261
 #, python-brace-format
 msgid "Child {name} is currently registered in another bill"
 msgstr "الطفل {name} مسجل حاليًا في فاتورة أخرى"
 
-#: .\base\serializers\BillSerializers.py:259
+#: .\base\serializers\BillSerializers.py:263
+#, python-brace-format
+msgid ""
+"Child {name} is BLOCKED, reach out to the branch manager to unblock him "
+"first"
+msgstr "الطفل {name} محظور، تواصل مع مدير الفرع لإلغاء الحظر عنه أولاً"
+
+#: .\base\serializers\BillSerializers.py:265
 msgid "You tried to add the same child more than once"
 msgstr "حاولت إضافة نفس الطفل أكثر من مرة"
 
-#: .\base\serializers\BillSerializers.py:307
+#: .\base\serializers\BillSerializers.py:312
 msgid "Subscription bill cannot have more than one child"
 msgstr "لا يمكن أن يكون فاتورة الاشتراك أكثر من طفل"
 
-#: .\base\serializers\BillSerializers.py:312
+#: .\base\serializers\BillSerializers.py:317
 #, python-brace-format
 msgid "The Child {name} has no current active subscription"
 msgstr "لا يوجد لدى الطفل {name} اشتراك نشط حاليًا"
 
-#: .\base\serializers\BillSerializers.py:316
-#: .\base\serializers\BillSerializers.py:318
+#: .\base\serializers\BillSerializers.py:321
+#: .\base\serializers\BillSerializers.py:323
 #, python-brace-format
 msgid "The Child {name} is not allowed to visit this branch"
 msgstr "لا يُسمح للطفل {name} بزيارة هذا الفرع"
 
-#: .\base\serializers\BillSerializers.py:327
+#: .\base\serializers\BillSerializers.py:332
 #, python-brace-format
 msgid ""
 "There is no hour prices found for {children_count} children in this branch."
 msgstr "لا توجد أسعار ساعة موجودة للأطفال {children_count} في هذا الفرع."
 
-#: .\base\serializers\BillSerializers.py:349
+#: .\base\serializers\BillSerializers.py:354
 msgid "The bill is already closed"
 msgstr "الفاتورة مغلقة بالفعل"
 
-#: .\base\serializers\BillSerializers.py:352
+#: .\base\serializers\BillSerializers.py:357
 msgid "You can not close a bill from a different branch"
 msgstr "لا يمكنك إغلاق فاتورة من فرع مختلف"
 
-#: .\base\serializers\BillSerializers.py:374
+#: .\base\serializers\BillSerializers.py:379
 msgid "Total price does not equal the money client paid"
 msgstr "إجمالي السعر لا يساوي المال الذي دفعه العميل"
 
@@ -278,39 +291,45 @@ msgid ""
 "You can not set a user from another branch to be the manager of this branch."
 msgstr "لا يمكنك تعيين مستخدم من فرع آخر ليكون مدير هذا الفرع."
 
-#: .\base\serializers\ChildSerializers.py:57
+#: .\base\serializers\ChildSerializers.py:59
 msgid ", "
 msgstr "و"
 
-#: .\base\serializers\ChildSerializers.py:68
+#: .\base\serializers\ChildSerializers.py:71
 msgid "Invalid school ID."
 msgstr "ID المدرسة غير صالح."
 
-#: .\base\serializers\ChildSerializers.py:69
+#: .\base\serializers\ChildSerializers.py:72
 msgid "You must provide a valid school ID."
 msgstr "يجب عليك تقديم ID مدرسة صالح."
 
-#: .\base\serializers\ChildSerializers.py:70
+#: .\base\serializers\ChildSerializers.py:73
 msgid "school must be identified by an integer ID."
 msgstr "يجب تحديد المدرسة من خلال ID عدد صحيح."
 
-#: .\base\serializers\ChildSerializers.py:121
+#: .\base\serializers\ChildSerializers.py:120
+#, python-brace-format
+msgid "The child name {name} already exists."
+msgstr "اسم الطفل {name} موجود بالفعل."
+
+#: .\base\serializers\ChildSerializers.py:126
+#: .\base\serializers\ChildSerializers.py:132
 msgid "You Do Not have the permission to perform this action."
 msgstr "ليس لديك إذن لأداء هذا الإجراء."
 
-#: .\base\serializers\ChildSerializers.py:126
+#: .\base\serializers\ChildSerializers.py:137
 msgid "Birth-Date can not be in the future."
 msgstr "لا يمكن أن يكون تاريخ الميلاد في المستقبل."
 
-#: .\base\serializers\ChildSerializers.py:132
+#: .\base\serializers\ChildSerializers.py:143
 msgid "Each Phone-number must be unique per child."
 msgstr "يجب أن يكون كل رقم هاتف فريدًا لكل طفل."
 
-#: .\base\serializers\ChildSerializers.py:148
+#: .\base\serializers\ChildSerializers.py:161
 msgid "Child Phone Numbers must be provided."
 msgstr "يجب توفير أرقام هواتف الطفل."
 
-#: .\base\serializers\ChildSerializers.py:178
+#: .\base\serializers\ChildSerializers.py:191
 msgid "You Do Not have the permission to delete all Child numbers."
 msgstr "ليس لديك إذن لحذف جميع أرقام الأطفال."
 
@@ -762,7 +781,7 @@ msgid "You can not give a user a role higher or equal to yours"
 msgstr "لا يمكنك إعطاء المستخدم رتبة أعلى أو مساويًا لك"
 
 #: .\base\serializers\UserSerializers.py:149
-#: .\base\serializers\UserSerializers.py:192
+#: .\base\serializers\UserSerializers.py:195
 msgid "Branch can not be null for the given role"
 msgstr "لا يمكن أن يكون الفرع فارغًا للرتبة المعطاة"
 
@@ -770,7 +789,7 @@ msgstr "لا يمكن أن يكون الفرع فارغًا للرتبة الم�
 msgid "Branch must have a value"
 msgstr "يجب أن يكون للفرع قيمة"
 
-#: .\base\serializers\UserSerializers.py:187
+#: .\base\serializers\UserSerializers.py:190
 msgid "You can not give a user with a role higher or equal to yours"
 msgstr "لا يمكنك إعطاء مستخدم له رتبة أعلى أو مساوٍ لك"
 
@@ -844,7 +863,7 @@ msgstr "تم تطبيق الخصم بنجاح"
 #: .\base\views\ProductViews.py:170 .\base\views\StaffViews.py:134
 #: .\base\views\StaffViews.py:236 .\base\views\StaffViews.py:338
 #: .\base\views\StaffViews.py:433 .\base\views\SubscriptionViews.py:156
-#: .\base\views\UserViews.py:71
+#: .\base\views\UserViews.py:72
 msgid "You do not have the permission to access this data"
 msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
 
@@ -863,6 +882,14 @@ msgstr "تم تسجيل الطفل بنجاح"
 #: .\base\views\ChildViews.py:49
 msgid "Child Updated successfully"
 msgstr "تم تحديث الطفل بنجاح"
+
+#: .\base\views\CsvAnalyticsViews.py:80
+msgid ""
+"Allowed values for type are [\"phone_number\", \"products_sales\", "
+"\"bills_children_count\"]"
+msgstr ""
+"القيم المسموح بها للنوع هي [\"phone_number\"، \"products_sales\"، "
+"\"bills_children_count\"]"
 
 #: .\base\views\DiscountViews.py:29
 msgid "Discount Created successfully"
@@ -1022,11 +1049,11 @@ msgstr "تم إنشاء اشتراك للطفل بنجاح"
 msgid "SubscriptionInstance Updated successfully"
 msgstr "تم تحديث اشتراك للطفل بنجاح"
 
-#: .\base\views\UserViews.py:32
+#: .\base\views\UserViews.py:33
 msgid "User Created Successfully"
 msgstr "تم إنشاء المستخدم بنجاح"
 
-#: .\base\views\UserViews.py:54
+#: .\base\views\UserViews.py:55
 msgid "User Updated successfully"
 msgstr "تم تحديث المستخدم بنجاح"
 
