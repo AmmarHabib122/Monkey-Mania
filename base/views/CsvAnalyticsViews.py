@@ -52,8 +52,6 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             else:
                 filtered_children = children_query
                 
-                
-                
             children_phone_numbers = models.ChildPhoneNumber.objects.filter(child__in=filtered_children)
             
             phone_numbers_qs = models.PhoneNumber.objects.filter(
@@ -112,10 +110,11 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             dicount_bills_count = {}
             discount_query = models.Discount.objects.all()
             for discount in discount_query:
+                bills_query = discount.discount_bills_set.all()
                 if is_date_range   and   start_date == end_date:
-                    bills_query = libs.get_all_instances_in_a_day_query(discount.discount_bills_set.all(), start_date)
+                    bills_query = libs.get_all_instances_in_a_day_query(bills_query, start_date)
                 elif is_date_range:
-                    bills_query = libs.get_all_instances_in_a_date_range_query(discount.discount_bills_set().all(), start_date, end_date)
+                    bills_query = libs.get_all_instances_in_a_date_range_query(bills_query, start_date, end_date)
                 dicount_bills_count[discount.name] = dicount_bills_count.get(discount.name, 0) + bills_query.count()
             data.append(dicount_bills_count)  
             return libs.send_csv_file_response(data, 'discounts.csv')
