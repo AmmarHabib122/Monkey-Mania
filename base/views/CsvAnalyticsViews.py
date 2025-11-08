@@ -118,6 +118,7 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             discount_query = models.Discount.objects.all()
             for discount in discount_query:
                 bills_query = discount.discount_bills_set.all()
+                bills_query = bills_query.filter(branch__in = branches) if branches != ['all'] else bills_query
                 if is_date_range   and   start_date == end_date:
                     bills_query = libs.get_all_instances_in_a_day_query(bills_query, start_date)
                 elif is_date_range:
