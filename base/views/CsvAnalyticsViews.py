@@ -36,7 +36,7 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
                 bills_query = libs.get_all_instances_in_a_day_query(bills_query, start_date)
             elif is_date_range:
                 bills_query = libs.get_all_instances_in_a_date_range_query(bills_query, start_date, end_date)
-            first_bill_branch = bills_query.filter(child=OuterRef('pk')).order_by('created').values('branch')[:1]
+            first_bill_branch = bills_query.filter(children=OuterRef('pk')).order_by('created').values('branch')[:1]
             
             children_query = models.Child.objects.all()
             if is_date_range   and   start_date == end_date:
