@@ -36,20 +36,25 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
                 bills_query = libs.get_all_instances_in_a_day_query(bills_query, start_date)
             elif is_date_range:
                 bills_query = libs.get_all_instances_in_a_date_range_query(bills_query, start_date, end_date)
-            first_bill_branch = bills_query.filter(children=OuterRef('pk')).order_by('created').values('branch')[:1]
             
             children_query = models.Child.objects.all()
             if is_date_range   and   start_date == end_date:
                 children_query = libs.get_all_instances_in_a_day_query(children_query, start_date)
             elif is_date_range:
                 children_query = libs.get_all_instances_in_a_date_range_query(children_query, start_date, end_date) 
-            children_query = children_query.annotate(first_bill_branch_id=Subquery(first_bill_branch))
-                
+            
+            filtered_children = []
             if branches != ['all']:
-                children_query = children_query.filter(first_bill_branch_id__in=branches)
+                for child in children_query:
+                    first_bill = child.child_bills_set.order_by('created').first()
+                    if first_bill.branch.id in branches:
+                        filtered_children.append(child)
+            else:
+                filtered_children = children_query
                 
                 
-            children_phone_numbers = models.ChildPhoneNumber.objects.filter(child__in=children_query)
+                
+            children_phone_numbers = models.ChildPhoneNumber.objects.filter(child__in=filtered_children)
             
             phone_numbers_qs = models.PhoneNumber.objects.filter(
                 id__in=children_phone_numbers.values_list('phone_number_id', flat=True)
@@ -108,7 +113,7 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             discount_query = models.Discount.objects.all()
             for discount in discount_query:
                 if is_date_range   and   start_date == end_date:
-                    bills_query = libs.get_all_instances_in_a_day_query(discount.discount_bills_set().all(), start_date)
+                    bills_query = libs.get_all_instances_in_a_day_query(discount.discount_bills_set.all(), start_date)
                 elif is_date_range:
                     bills_query = libs.get_all_instances_in_a_date_range_query(discount.discount_bills_set().all(), start_date, end_date)
                 dicount_bills_count[discount.name] = dicount_bills_count.get(discount.name, 0) + bills_query.count()
