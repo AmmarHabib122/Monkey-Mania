@@ -47,8 +47,15 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             if branches != ['all']:
                 for child in children_query:
                     first_bill = child.child_bills_set.order_by('created').first()
-                    if first_bill.branch.id in branches:
-                        filtered_children.append(child)
+                    #filter by the child first bill if he has one else filter by the user branch who created it
+                    if first_bill:
+                        if first_bill.branch.id in branches:
+                            filtered_children.append(child)
+                    else:
+                        create_by_branch = child.created_by.branch
+                        if create_by_branch:
+                            if create_by_branch.id in branches:
+                                filtered_children.append(child)
             else:
                 filtered_children = children_query
                 
