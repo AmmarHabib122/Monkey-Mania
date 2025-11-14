@@ -111,6 +111,8 @@ class ChildSerializer(serializers.ModelSerializer):
                 dict.pop('id', None)
                 dict.pop('child', None)
                 dict['phone_number'] = dict['phone_number']['value']
+        data["last_visit_date"]                 = getattr(instance, "last_visit_date", None)
+        data["last_bill_id"]                    = getattr(instance, "last_bill_id", None)
         return data
     
 
