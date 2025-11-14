@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from django.db.models.functions import Coalesce
 from datetime import date, datetime, time, timedelta
 from django.db.models import Sum, IntegerField, DecimalField
+from django.db.models import OuterRef, Subquery
 
 from base import serializers
 from base import models
@@ -30,12 +31,47 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
         
         
         if type == 'phone_number':
-            query = models.PhoneNumber.objects.all()
+            bills_query = models.Bill.objects.all()
             if is_date_range   and   start_date == end_date:
-                query = libs.get_all_instances_in_a_day_query(query, start_date)
+                bills_query = libs.get_all_instances_in_a_day_query(bills_query, start_date)
             elif is_date_range:
-                query = libs.get_all_instances_in_a_date_range_query(query, start_date, end_date)
-            data = serializers.PhoneNumberSerializer(query, many = True).data
+                bills_query = libs.get_all_instances_in_a_date_range_query(bills_query, start_date, end_date)
+            
+            children_query = models.Child.objects.all()
+            if is_date_range   and   start_date == end_date:
+                children_query = libs.get_all_instances_in_a_day_query(children_query, start_date)
+            elif is_date_range:
+                children_query = libs.get_all_instances_in_a_date_range_query(children_query, start_date, end_date) 
+            
+            filtered_children = []
+            if branches != ['all']:
+                for child in children_query:
+                    first_bill = child.child_bills_set.order_by('created').first()
+                    #filter by the child first bill if he has one else filter by the user branch who created it
+                    if first_bill:
+                        if first_bill.branch.id in branches:
+                            filtered_children.append(child)
+                    else:
+                        create_by_branch = child.created_by.branch
+                        if create_by_branch:
+                            if create_by_branch.id in branches:
+                                filtered_children.append(child)
+            else:
+                filtered_children = children_query
+                
+            children_phone_numbers = models.ChildPhoneNumber.objects.filter(child__in=filtered_children)
+            
+            phone_numbers_qs = models.PhoneNumber.objects.filter(
+                id__in=children_phone_numbers.values_list('phone_number_id', flat=True)
+            )
+            
+            #refilter by date as we may have a created child within the interval but used an old number stored in the system            
+            if is_date_range   and   start_date == end_date:
+                phone_numbers_qs = libs.get_all_instances_in_a_day_query(phone_numbers_qs, start_date)
+            elif is_date_range:
+                phone_numbers_qs = libs.get_all_instances_in_a_date_range_query(phone_numbers_qs, start_date, end_date)
+            
+            data = serializers.PhoneNumberSerializer(phone_numbers_qs, many = True).data
             return libs.send_csv_file_response(data, 'phone_numbers.csv', ['value', 'created'])
         
         
@@ -76,8 +112,23 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             return libs.send_csv_file_response(data, 'children_count.csv')
         
         
+        elif type == 'discounts':
+            data = []
+            dicount_bills_count = {}
+            discount_query = models.Discount.objects.all()
+            for discount in discount_query:
+                bills_query = discount.discount_bills_set.all()
+                bills_query = bills_query.filter(branch__in = branches) if branches != ['all'] else bills_query
+                if is_date_range   and   start_date == end_date:
+                    bills_query = libs.get_all_instances_in_a_day_query(bills_query, start_date)
+                elif is_date_range:
+                    bills_query = libs.get_all_instances_in_a_date_range_query(bills_query, start_date, end_date)
+                dicount_bills_count[discount.name] = dicount_bills_count.get(discount.name, 0) + bills_query.count()
+            data.append(dicount_bills_count)  
+            return libs.send_csv_file_response(data, 'discounts.csv')
+        
         else:
-            raise ValidationError(_('Allowed values for type are ["phone_number", "products_sales", "bills_children_count"]'))
+            raise ValidationError(_('Allowed values for type are ["phone_number", "products_sales", "bills_children_count", "discounts"]'))
         
 Get_CsvAnalyticsFile = CsvAnalyticsFile.as_view()
     
@@ -95,6 +146,7 @@ class CsvAnalyticsAllowedTypes(APIView):
             'phone_number',
             'products_sales',
             'bills_children_count',
+            'discounts',
         ]
         return Response(allowed_types)
         
