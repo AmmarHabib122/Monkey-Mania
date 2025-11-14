@@ -59,7 +59,7 @@ Close_Bill = CloseBillAPI.as_view()
 class UpdateCalculationsBillAPI(RoleAccessList, generics.UpdateAPIView):
     queryset           = models.Bill.objects.all()
     serializer_class   = serializers.BillSerializer
-    role_access_list   = ['owner', 'admin']
+    role_access_list   = ['owner']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     lookup_field       = "pk"
 
