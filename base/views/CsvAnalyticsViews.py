@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.db.models.functions import Coalesce
 from datetime import date, datetime, time, timedelta
 from django.db.models import Sum, IntegerField, DecimalField
-from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Subquery, Q
 
 from base import serializers
 from base import models
@@ -126,7 +126,62 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
                 dicount_bills_count[discount.name] = dicount_bills_count.get(discount.name, 0) + bills_query.count()
             data.append(dicount_bills_count)  
             return libs.send_csv_file_response(data, 'discounts.csv')
+                
         
+        elif type == 'inactive_children':
+            '''memore based approach'''
+            # children_query = models.Child.objects.all()
+            # filtered_children = []
+            
+            # for child in children_query:
+            #     children_bills  = child.child_bills_set.filter(branch__in = branches) if branches != ['all'] else child.child_bills_set.all()
+            #     last_bill       = children_bills.order_by('-created').first()
+                
+            #     if not last_bill:
+            #         continue
+                 
+            #     #filter by children who did not visit the branch within certain time
+            #     if last_bill.created.date() <= start_date  or  last_bill.created.date() >= end_date:
+            #         child.last_visit_date               = last_bill.created.astimezone().strftime("%Y-%m-%d %H:%M")
+            #         child.last_bill_id                  = last_bill.id
+            #         filtered_children.append(child)
+                    
+            # data = serializers.ChildSerializer(filtered_children, many = True).data
+            # return libs.send_csv_file_response(data, 'inactive_children.csv', ['name', 'age', 'birth_date', 'is_blocked', 'special_needs', 'created_by', 'last_visit_date', 'created', 'last_bill_id', 'child_phone_numbers_set'])
+            
+            
+            
+            '''query based approach'''
+            bill_qs = models.Bill.objects.filter(branch__in=branches) if branches != ['all'] else models.Bill.objects.all()
+            
+            # Subquery to get each child's last bill
+            last_bill_qs = bill_qs.filter(
+                children=OuterRef("pk")
+            ).order_by("-created")
+            
+            children = (
+                models.Child.objects.annotate(
+                    last_bill_date=Subquery(
+                        last_bill_qs.values("created")[:1]
+                    ),
+                    last_bill_id=Subquery(
+                        last_bill_qs.values("id")[:1]
+                    ),
+                )
+                .filter(
+                    last_bill_date__isnull=False,  # must have bills
+                )
+                .filter(
+                    # INACTIVE filter
+                    Q(last_bill_date__lte=start_date) |
+                    Q(last_bill_date__gte=end_date)
+                )
+            )
+            data = serializers.ChildSerializer(children, many=True).data
+            return libs.send_csv_file_response(data, 'inactive_children.csv', ['name', 'age', 'birth_date', 'is_blocked', 'special_needs', 'created_by', 'last_visit_date', 'created', 'last_bill_id', 'child_phone_numbers_set'])
+
+            
+                   
         else:
             raise ValidationError(_('Allowed values for type are ["phone_number", "products_sales", "bills_children_count", "discounts"]'))
         
@@ -147,6 +202,7 @@ class CsvAnalyticsAllowedTypes(APIView):
             'products_sales',
             'bills_children_count',
             'discounts',
+            'inactive_children',
         ]
         return Response(allowed_types)
         
