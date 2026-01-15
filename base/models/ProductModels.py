@@ -117,7 +117,7 @@ class BranchProduct(models.Model):
         ]
     
     def __str__(self):
-        return f"#{self.id} {self.branch.name}" if self.branch else f"#{self.id}"
+        return f"#{self.id} {self.branch.name} {self.product.name}" if self.branch else f"#{self.id}"
     
 
 
