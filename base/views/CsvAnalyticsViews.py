@@ -104,6 +104,18 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
                 dicount_bills_count[discount.name] = dicount_bills_count.get(discount.name, 0) + bills_query.count()
             data.append(dicount_bills_count)  
             return libs.send_csv_file_response(data, 'discounts.csv')
+        
+        elif type == 'current_material_quantities':
+            branch_material_query = models.BranchMaterial.objects.all()
+            branch_material_query = branch_material_query.filter(branch__in = branches) if branches != ['all'] else branch_material_query
+
+            merged_data = {}
+            for branch_material in branch_material_query:
+                name = branch_material.material.name
+                merged_data[name] = merged_data.get(name, 0) + branch_material.available_units
+
+            data = [{'name': k, 'available_units': v} for k, v in merged_data.items()]
+            return libs.send_csv_file_response(data, 'current_material_quantities.csv', ['name', 'available_units'])
                 
         
         elif type == 'inactive_children':
@@ -178,6 +190,7 @@ class CsvAnalyticsAllowedTypes(APIView):
         allowed_types = [
             'phone_number',
             'products_sales',
+            'current_material_quantities',
             'bills_children_count',
             'discounts',
             'inactive_children',

@@ -34,7 +34,7 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return f"#{self.id} {self.name}"
 
 
 
@@ -146,3 +146,5 @@ class BranchProductMaterial(models.Model):
             )
         ]
 
+    def __str__(self):
+        return f"#{self.id} {self.product.branch.name} {self.product.name} (material : {self.material.material.name})" if self.product.branch else f"#{self.id}"

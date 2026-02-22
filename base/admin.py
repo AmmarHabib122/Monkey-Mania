@@ -60,7 +60,20 @@ class ProductAdmin(admin.ModelAdmin):
                     raise ValidationError(_("CSV file is empty or invalid"))
                 with transaction.atomic():
                     for record in records:
-                        serializer = serializers.ProductSerializer(data=record, context={'request': request})
+                        # 1. Normalize layers to match the serializer (lowercase & stripped)
+                        l1 = str(record.get('layer1', '')).strip().lower()
+                        l2 = str(record.get('layer2', '')).strip().lower()
+                        l3 = str(record.get('layer3', '')).strip().lower()
+                        
+                        # 2. Look for an existing Product
+                        existing_instance = models.Product.objects.filter(layer1=l1, layer2=l2, layer3=l3).first()
+
+                        # 3. Pass the instance to perform an UPDATE if found
+                        serializer = serializers.ProductSerializer(
+                            instance=existing_instance,
+                            data=record, 
+                            context={'request': request}
+                        )
                         if not serializer.is_valid():
                             errors = serializer.errors
                             first_field, first_messages = next(iter(errors.items()))
@@ -114,9 +127,13 @@ class BranchProductAdmin(admin.ModelAdmin):
 
                         try:
                             record['product'] = models.Product.objects.get(layer1=layer1, layer2=layer2, layer3=layer3).id
-                            
                         except models.Product.DoesNotExist:
                             raise ValidationError(f"Product '{layer2} {layer3}' with layer3 equals '{layer3}' does not exist. In Record: {record}")
+                        
+                        existing_instance = models.BranchProduct.objects.filter(
+                            branch_id=record['branch'], 
+                            product_id=record['product']
+                        ).first()
 
                         # parse material_consumptions_set from JSON string
                         try:
@@ -140,7 +157,11 @@ class BranchProductAdmin(admin.ModelAdmin):
                                 raise ValidationError(f"Material '{material_name}' does not exist. Record: {record}")
 
                         record['material_consumptions_set'] = converted_materials
-                        serializer = serializers.BranchProductSerializer(data=record, context={'request': request})
+                        serializer = serializers.BranchProductSerializer(
+                            instance=existing_instance, 
+                            data=record, 
+                            context={'request': request}
+                        )
                         if not serializer.is_valid():
                             errors = serializer.errors
                             first_field, first_messages = next(iter(errors.items()))
@@ -149,14 +170,17 @@ class BranchProductAdmin(admin.ModelAdmin):
                         serializer.save() 
                 self.message_user(request, "BranchProduct created using CSV file successfully!", level=messages.SUCCESS)
                 return redirect(reverse('admin:base_branchproduct_changelist'))
+            
             except ValidationError as e:
                 error_text = e.detail[0] if isinstance(e.detail, list) else str(e.detail)
                 self.message_user(request, f"CSV error: {error_text}", level=messages.ERROR)
                 return render(request, "admin/upload_csv.html", data)
+            
             except PermissionDenied as e:
                 error_text = e.detail[0] if isinstance(e.detail, list) else str(e.detail)
                 self.message_user(request, f"CSV error: {error_text}", level=messages.ERROR)
                 return render(request, "admin/upload_csv.html", data)
+            
         return render(request, "admin/upload_csv.html", data)
 admin.site.register(models.BranchProduct, BranchProductAdmin)
 
@@ -183,15 +207,25 @@ class MaterialAdmin(admin.ModelAdmin):
                     raise ValidationError(_("CSV file is empty or invalid"))
                 with transaction.atomic():
                     for record in records:
-                        print(record)
-                        serializer = serializers.MaterialSerializer(data=record, context={'request': request})
+                        # Normalize name to lowercase to match the database/serializer
+                        material_name = str(record.get('name', '')).strip().lower()
+                        
+                        # Look for existing record
+                        existing_instance = models.Material.objects.filter(name=material_name).first()
+
+                        # Pass instance if found to perform an UPDATE instead of a CREATE
+                        serializer = serializers.MaterialSerializer(
+                            instance=existing_instance, 
+                            data=record, 
+                            context={'request': request}
+                        )
                         if not serializer.is_valid():
                             errors = serializer.errors
                             first_field, first_messages = next(iter(errors.items()))
                             first_error = first_messages[0]
                             raise ValidationError(f"There is error : {first_error} In Record : {record}")
                         serializer.save() 
-                self.message_user(request, "Material created using CSV file successfully!", level=messages.SUCCESS)
+                self.message_user(request, "Material processed using CSV file successfully!", level=messages.SUCCESS)
                 return redirect(reverse('admin:base_material_changelist'))
             except ValidationError as e:
                 error_text = e.detail[0] if isinstance(e.detail, list) else str(e.detail)
@@ -235,7 +269,19 @@ class BranchMaterialAdmin(admin.ModelAdmin):
                             record['material'] = models.Material.objects.get(name=material_name).id
                         except models.Material.DoesNotExist:
                             raise ValidationError(f"Material '{material_name}' does not exist. Record: {record}")
-                        serializer = serializers.BranchMaterialSerializer(data=record, context={'request': request})
+                        
+                        # 1. Look for an existing BranchMaterial using the IDs
+                        existing_instance = models.BranchMaterial.objects.filter(
+                            branch_id=record['branch'], 
+                            material_id=record['material']
+                        ).first()
+
+                        # 2. Pass the instance to perform an UPDATE if found
+                        serializer = serializers.BranchMaterialSerializer(
+                            instance=existing_instance,
+                            data=record, 
+                            context={'request': request}
+                        )
                         if not serializer.is_valid():
                             errors = serializer.errors
                             first_field, first_messages = next(iter(errors.items()))

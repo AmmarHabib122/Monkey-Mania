@@ -16,7 +16,7 @@ class Material(models.Model):
     #     self.branch_materials_set.aggregate(total_consumption = models.Sum('consumption'))['total_consumption'] or 0
 
     def __str__(self):
-        return f"#{self.id} {self.name}"
+        return f"#{self.id} {self.name} (unit: {self.measure_unit})"
 
 
 
