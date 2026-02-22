@@ -61,3 +61,6 @@ class ChildPhoneNumber(models.Model):
                 name   = 'unique_child_phone_number'
             )
         ]
+
+    def __str__(self):
+        return f"{self.child.name} - {self.phone_number.value}"
