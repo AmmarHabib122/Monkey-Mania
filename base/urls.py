@@ -113,12 +113,14 @@ urlpatterns = [
 
     #GeneralExpense
     path('general_expense/create/', views.Create_GeneralExpense, name = 'Create_GeneralExpense'),
+    path('general_expense/bulk_create/', views.BulkCreate_GeneralExpense, name = 'BulkCreate_GeneralExpense'),
     path('general_expense/<str:pk>/update/', views.Update_GeneralExpense, name = 'Update_GeneralExpense'),
     path('general_expense/all/', views.List_GeneralExpense, name = 'List_GeneralExpense'),
     path('general_expense/<str:pk>/', views.Get_GeneralExpense, name = 'Get_GeneralExpense'),
 
     #MaterialExpense
     path('material_expense/create/', views.Create_MaterialExpense, name = 'Create_MaterialExpense'),
+    path('material_expense/bulk_create/', views.BulkCreate_MaterialExpense, name = 'BulkCreate_MaterialExpense'),
     path('material_expense/<str:pk>/update/', views.Update_MaterialExpense, name = 'Update_MaterialExpense'),
     path('material_expense/all/', views.List_MaterialExpense, name = 'List_MaterialExpense'),
     path('material_expense/<str:pk>/', views.Get_MaterialExpense, name = 'Get_MaterialExpense'),
