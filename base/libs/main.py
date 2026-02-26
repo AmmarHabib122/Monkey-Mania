@@ -297,4 +297,15 @@ def send_csv_file_response(data, filename="data.csv", columns=None):
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
     return response 
 
+
+
+
+
+def query_filter_by_single_field_from_filter_dict(request, query, filter_dict):
+    filter = request.query_params.get("filter")
+    if filter in filter_dict.keys():
+        return filter_dict[filter](query)
+    else:
+        raise ValidationError(_("Invalid filter value"))
+
             

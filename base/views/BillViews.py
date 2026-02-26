@@ -3,7 +3,9 @@ from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from decimal import Decimal
+from django.db.models import Q
 
 
 from base import serializers
@@ -12,6 +14,18 @@ from base import permissions
 from base import libs
 
 
+
+
+bill_filters = {
+    'inactive_bills'            : lambda qs: qs.filter(is_active = False),
+    'cash'                      : lambda qs: qs.filter(cash__gt = 0),
+    'visa'                      : lambda qs: qs.filter(visa__gt = 0),
+    'instapay'                  : lambda qs: qs.filter(instapay__gt = 0),
+    'has_cafe_bills'            : lambda qs: qs.filter(product_bills_set__isnull=False).distinct(),
+    'subscription_bills'        : lambda qs: qs.filter(is_subscription = True),
+    'updated_bills_by_admins'   : lambda qs: qs.filter(is_calculations_updated = True),
+    'has_discount'              : lambda qs: qs.filter(Q(discount__isnull=False) | Q(discount_type__isnull=False) | Q(discount_value__gt=0)),
+}
 
 
 class RoleAccessList:
@@ -166,8 +180,9 @@ class ListActiveBillAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 
 
     def get_queryset(self):
-        branches  = libs.get_branch_ids(self)
-        query     = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
+        branches    = libs.get_branch_ids(self)
+        query       = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
+        query       = libs.query_filter_by_single_field_from_filter_dict(self.request, query, bill_filters)
         return query
     
     def list(self, request, *args, **kwargs):
@@ -195,8 +210,9 @@ class ListBillAPI(RoleAccessList, generics.ListAPIView):
     search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 
 
     def get_queryset(self):
-        branches  = libs.get_branch_ids(self)
-        query     = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
+        branches    = libs.get_branch_ids(self)
+        query       = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
+        query       = libs.query_filter_by_single_field_from_filter_dict(self.request, query, bill_filters)
         start_date, end_date, is_date_range = libs.get_date_range(self)
         if is_date_range   and   start_date == end_date:
             query = libs.get_all_instances_in_a_day_query(query, start_date)
@@ -213,6 +229,18 @@ class ListBillAPI(RoleAccessList, generics.ListAPIView):
     
 List_Bill = ListBillAPI.as_view()
 
+
+
+class ListBillFiltersAPI(APIView):
+    role_access_list    = ['owner', 'admin', 'manager']
+    permission_classes  = [permissions.Authenticated, permissions.RoleAccess]
+    pagination_class    = None
+    
+    def get(self, request):
+        filter_keys = [bill_filters.keys()]
+        return Response(filter_keys)
+        
+List_Bill_FILTERS = ListBillFiltersAPI.as_view()
 
 
 
