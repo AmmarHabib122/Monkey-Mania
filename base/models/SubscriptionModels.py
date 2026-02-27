@@ -55,7 +55,10 @@ class SubscriptionInstance(models.Model):
     
     @property
     def usable_in_branches(self):
-        return self.subscription.usable_in_branches.all() if self.subscription.is_multi_access else self.branch
+        data = []
+        for branch in self.subscription.usable_in_branches.all():
+            data.append(branch.name)
+        return data if data else [self.branch.name]
     
     def __str__(self):
         return f"#{self.id} {self.subscription.name} branch {self.branch.name} for child {self.child.name}"
