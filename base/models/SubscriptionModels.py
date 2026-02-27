@@ -47,7 +47,7 @@ class SubscriptionInstance(models.Model):
 
     @property
     def is_active(self):
-        return self.expire_date <= timezone.now().date()   and   self.hours > 0
+        return self.expire_date >= timezone.now().date() and self.remaining_hours > 0
     
     @property
     def name(self):
