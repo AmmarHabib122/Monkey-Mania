@@ -34,7 +34,8 @@ class SubscriptionInstance(models.Model):
     cash                   = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
     instapay               = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
     visa                   = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0)
-    hours                  = models.DecimalField(max_digits = 5, decimal_places = 2)
+    base_hours             = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0)  #the hours that the subscription instance was created with
+    remaining_hours        = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0)
     expire_date            = models.DateField()
     price                  = models.DecimalField(max_digits = 15, decimal_places = 2)
     subscription           = models.ForeignKey('base.Subscription', on_delete = models.PROTECT,related_name = 'subscription_instances_set')       
@@ -51,6 +52,10 @@ class SubscriptionInstance(models.Model):
     @property
     def name(self):
         return self.subscription.name
+    
+    @property
+    def usable_in_branches(self):
+        return self.subscription.usable_in_branches.all() if self.subscription.is_multi_access else self.branch
     
     def __str__(self):
         return f"#{self.id} {self.subscription.name} branch {self.branch.name} for child {self.child.name}"
