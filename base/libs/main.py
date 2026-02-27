@@ -305,6 +305,8 @@ def query_filter_by_single_field_from_filter_dict(request, query, filter_dict):
     filter = request.query_params.get("filter")
     if filter in filter_dict.keys():
         return filter_dict[filter](query)
+    elif filter is None  or  filter == "":
+        return query
     else:
         raise ValidationError(_("Invalid filter value"))
 
