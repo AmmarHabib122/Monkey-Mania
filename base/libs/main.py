@@ -167,11 +167,11 @@ def calculate_subscription_time(spent_time, subscription_instance):
         hours                        = spent_time // 60; 
         spent_time                  %= 60
         subscription_instance.remaining_hours -= hours
-        subscription_instance.remaining_hours -= 0.5 if spent_time > 0 else 0 
+        subscription_instance.remaining_hours -= Decimal("0.5") if spent_time > 0 else Decimal("0")
         spent_time                   = 0
     else:
         spent_time -= (subscription_instance.remaining_hours * 60 + 15)
-        subscription_instance.remaining_hours = 0
+        subscription_instance.remaining_hours = Decimal("0")
     subscription_instance.save()
     return spent_time
         
