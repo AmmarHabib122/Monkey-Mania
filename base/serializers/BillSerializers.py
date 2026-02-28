@@ -130,8 +130,9 @@ class BillSerializer(serializers.ModelSerializer):
             data['first_phone'] = first_phone.phone_number.value if first_phone else None
         if instance.is_subscription:
             data['subscription'] = {
-                'name'  : instance.subscription.name,
-                'hours' : instance.subscription.hours
+                'name'              : instance.subscription.name,
+                'base_hours'        : instance.subscription.base_hours,
+                'remaining_hours'   : instance.subscription.remaining_hours
             }
         else:
             data.pop('subscription', None)
