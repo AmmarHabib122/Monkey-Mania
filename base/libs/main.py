@@ -163,15 +163,22 @@ def calculate_subscription_time(spent_time, subscription_instance):
     '''
     spent_time = Decimal(spent_time)
     spent_time = max(spent_time - 15, 0)                 #extra 15 minutes allowed for clients without charges
+    
     if subscription_instance.remaining_hours > spent_time / 60:
         hours                        = spent_time // 60; 
         spent_time                  %= 60
         subscription_instance.remaining_hours -= hours
-        subscription_instance.remaining_hours -= Decimal("0.5") if spent_time > 0 else Decimal("0")
+        if spent_time > 30:
+            subscription_instance.remaining_hours -= Decimal("1.00")
+        elif spent_time > 0:
+            subscription_instance.remaining_hours -= Decimal("0.50")
         spent_time                   = 0
+
     else:
-        spent_time -= (subscription_instance.remaining_hours * 60 + 15)
+        spent_time -= (subscription_instance.remaining_hours * 60)
+        spent_time += 15 #add the extra 15 minutes allowed for clients again is they will be removed in calculating time price function
         subscription_instance.remaining_hours = Decimal("0")
+
     subscription_instance.save()
     return spent_time
         

@@ -256,7 +256,7 @@ class SubscriptionInstanceSerializer(serializers.ModelSerializer):
         branch       = attrs.get('branch')
         subscription = attrs.get('subscription')
         if branch    and    subscription    and    branch not in subscription.creatable_in_branches.all():
-            raise PermissionDenied('This subscription is not allowed in this branch')
+            raise ValidationError('This subscription is not allowed in this branch')
         return super().validate(attrs)
     
 
