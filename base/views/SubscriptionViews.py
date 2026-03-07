@@ -76,7 +76,7 @@ class ListSubscriptionAPI(RoleAccessList, generics.ListAPIView):
     queryset           = models.Subscription.objects.all().order_by('-id')
     pagination_class   = None
     serializer_class   = serializers.SubscriptionSerializer
-    role_access_list   = ['owner', 'admin', 'manager']
+    role_access_list   = ['owner', 'admin', 'manager', 'reception']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['name'] 
