@@ -179,7 +179,6 @@ def calculate_subscription_time(spent_time, subscription_instance):
         spent_time += 15 #add the extra 15 minutes allowed for clients again is they will be removed in calculating time price function
         subscription_instance.remaining_hours = Decimal("0")
 
-    subscription_instance.save()
     return spent_time
         
 

@@ -375,6 +375,7 @@ class BillSerializer(serializers.ModelSerializer):
         validated_data['finished_by']  = user
         validated_data['spent_time']   = libs.calculate_timesince(instance.created)
         remaining_spent_time           = libs.calculate_subscription_time(validated_data['spent_time'], instance.subscription) if instance.is_subscription else validated_data['spent_time'] 
+        instance.subscription.save() if instance.subscription else None
         validated_data['time_price']   = libs.calculate_time_price(remaining_spent_time, instance.hour_price, instance.half_hour_price)
         validated_data['total_price']  = instance.products_price + validated_data['time_price']
         if validated_data['cash'] + validated_data['visa'] + validated_data['instapay'] != validated_data['total_price']:
