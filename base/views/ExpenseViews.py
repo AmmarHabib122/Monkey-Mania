@@ -2,6 +2,10 @@ from rest_framework import generics
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
 from rest_framework.filters import SearchFilter
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.db import transaction
 
 from base import serializers
 from base import models
@@ -100,6 +104,31 @@ class ListGeneralExpenseAPI(RoleAccessList, generics.ListAPIView):
         return super().list(request, *args, **kwargs)
     
 List_GeneralExpense = ListGeneralExpenseAPI.as_view()
+
+
+
+class CreateGeneralExpenseFromCsvFile(RoleAccessList, APIView):
+    permission_classes = [permissions.Authenticated, permissions.RoleAccess]
+    serializer_class   = serializers.GeneralExpenseSerializer
+
+    def post(self, request, *args, **kwargs):
+        required_columns = ['name', 'branch', 'total_price', 'quantity']  # adapt as needed
+        records = libs.get_csv_file_records(request, required_columns=required_columns)
+        if not records:
+            raise ValidationError(_("CSV file is empty or invalid"))
+        with transaction.atomic():
+            for record in records:
+                branch_name = record.get('branch')
+                branch_obj = models.Branch.objects.get(name=branch_name)
+
+                record['branch'] = branch_obj.id
+
+                serializer = serializers.GeneralExpenseSerializer(data=record, context={'request': request})
+                serializer.is_valid(raise_exception=True)
+                serializer.save()  
+        return Response({'message' : _("GeneralExpense File Created Successfully")}, status=status.HTTP_201_CREATED)
+    
+BulkCreate_GeneralExpense = CreateGeneralExpenseFromCsvFile.as_view()
 
 
 
@@ -205,6 +234,41 @@ class ListMaterialExpenseAPI(RoleAccessList, generics.ListAPIView):
         return super().list(request, *args, **kwargs)
     
 List_MaterialExpense = ListMaterialExpenseAPI.as_view()
+
+
+
+
+
+
+class CreateMaterialExpenseFromCsvFile(RoleAccessList, APIView):
+    permission_classes = [permissions.Authenticated, permissions.RoleAccess]
+    serializer_class   = serializers.MaterialExpenseSerializer
+
+    def post(self, request, *args, **kwargs):
+        required_columns = ['material', 'branch', 'quantity', 'total_price']  # adapt as needed
+        records = libs.get_csv_file_records(request, required_columns=required_columns)
+        if not records:
+            raise ValidationError(_("CSV file is empty or invalid"))
+        with transaction.atomic():
+            for record in records:
+                material_name = record.get('material')
+                branch_name = record.get('branch')
+
+                branch_obj = models.Branch.objects.get(name=branch_name)
+                material_obj = models.Material.objects.get(name=material_name)
+                branch_material = models.BranchMaterial.objects.get(material=material_obj, branch=branch_obj)
+
+                record['material'] = branch_material.id
+
+                record.pop('branch', None)
+
+                serializer = serializers.MaterialExpenseSerializer(data=record, context={'request': request})
+                serializer.is_valid(raise_exception=True)
+                serializer.save()  
+
+        return Response({'message' : _("MaterialExpense File Created Successfully")}, status=status.HTTP_201_CREATED)
+    
+BulkCreate_MaterialExpense = CreateMaterialExpenseFromCsvFile.as_view()
 
 
 

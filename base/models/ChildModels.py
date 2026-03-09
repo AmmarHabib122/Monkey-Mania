@@ -28,6 +28,11 @@ class Child(models.Model):
             "months" : months,
             "days"   : days,
         }
+
+    @property
+    def has_active_subscription(self):
+        latest = self.subscriptions_set.order_by('-created').first()
+        return bool(latest and latest.is_active)
     
 
 

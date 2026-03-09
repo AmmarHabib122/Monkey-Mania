@@ -107,9 +107,10 @@ class BillSerializer(serializers.ModelSerializer):
                 raise PermissionDenied(_("You Do Not have the permission to access this data"))
         data = super().to_representation(instance)
         if instance.is_active:
-            data['spent_time']  = libs.calculate_timesince(instance.created)
-            data["time_price"]  = libs.calculate_time_price(data['spent_time'], instance.hour_price, instance.half_hour_price) if not instance.is_subscription else 0
-            data["total_price"] = Decimal(data["time_price"]) + Decimal(instance.products_price)
+            data['spent_time']   = libs.calculate_timesince(instance.created)
+            remaining_spent_time = libs.calculate_subscription_time(data['spent_time'], instance.subscription) if instance.is_subscription else data['spent_time'] 
+            data["time_price"]   = libs.calculate_time_price(remaining_spent_time, instance.hour_price, instance.half_hour_price)
+            data["total_price"]  = Decimal(data["time_price"]) + Decimal(instance.products_price)
         created_by = instance.created_by
         finished_by = instance.finished_by
         calculations_updated_by = instance.calculations_updated_by
@@ -130,8 +131,9 @@ class BillSerializer(serializers.ModelSerializer):
             data['first_phone'] = first_phone.phone_number.value if first_phone else None
         if instance.is_subscription:
             data['subscription'] = {
-                'name'  : instance.subscription.name,
-                'hours' : instance.subscription.hours
+                'name'              : instance.subscription.name,
+                'base_hours'        : instance.subscription.base_hours,
+                'remaining_hours'   : instance.subscription.remaining_hours
             }
         else:
             data.pop('subscription', None)
@@ -373,6 +375,7 @@ class BillSerializer(serializers.ModelSerializer):
         validated_data['finished_by']  = user
         validated_data['spent_time']   = libs.calculate_timesince(instance.created)
         remaining_spent_time           = libs.calculate_subscription_time(validated_data['spent_time'], instance.subscription) if instance.is_subscription else validated_data['spent_time'] 
+        instance.subscription.save() if instance.subscription else None
         validated_data['time_price']   = libs.calculate_time_price(remaining_spent_time, instance.hour_price, instance.half_hour_price)
         validated_data['total_price']  = instance.products_price + validated_data['time_price']
         if validated_data['cash'] + validated_data['visa'] + validated_data['instapay'] != validated_data['total_price']:

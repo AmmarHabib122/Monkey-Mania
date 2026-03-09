@@ -159,19 +159,26 @@ def calculate_time_price(spent_time, hour_price, half_hour_price):
 
 def calculate_subscription_time(spent_time, subscription_instance):
     '''
-        spent time is in minutes but subscription_instance.hours is in hours
+        spent time is in minutes but subscription_instance.remaining_hours is in hours
     '''
+    spent_time = Decimal(spent_time)
     spent_time = max(spent_time - 15, 0)                 #extra 15 minutes allowed for clients without charges
-    if subscription_instance.hours > spent_time / 60:
-        hours                       = spent_time // 60; 
-        spent_time                 %= 60
-        subscription_instance.hours -= hours
-        subscription_instance.hours -= 0.5 if spent_time > 0 else 0 
-        spent_time                  = 0
+    
+    if subscription_instance.remaining_hours > spent_time / 60:
+        hours                        = spent_time // 60; 
+        spent_time                  %= 60
+        subscription_instance.remaining_hours -= hours
+        if spent_time > 30:
+            subscription_instance.remaining_hours -= Decimal("1.00")
+        elif spent_time > 0:
+            subscription_instance.remaining_hours -= Decimal("0.50")
+        spent_time                   = 0
+
     else:
-        spent_time -= (subscription_instance.hours * 60 + 15)
-        subscription_instance.hours = 0
-    subscription_instance.save()
+        spent_time -= (subscription_instance.remaining_hours * 60)
+        spent_time += 15 #add the extra 15 minutes allowed for clients again is they will be removed in calculating time price function
+        subscription_instance.remaining_hours = Decimal("0")
+
     return spent_time
         
 
@@ -296,5 +303,18 @@ def send_csv_file_response(data, filename="data.csv", columns=None):
     response = HttpResponse(buffer.getvalue(), content_type="text/csv; charset=utf-8")
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
     return response 
+
+
+
+
+
+def query_filter_by_single_field_from_filter_dict(request, query, filter_dict):
+    filter = request.query_params.get("filter")
+    if filter in filter_dict.keys():
+        return filter_dict[filter](query)
+    elif filter is None  or  filter == "":
+        return query
+    else:
+        raise ValidationError(_("Invalid filter value"))
 
             

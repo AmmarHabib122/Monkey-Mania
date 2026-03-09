@@ -180,7 +180,9 @@ class SubscriptionInstanceSerializer(serializers.ModelSerializer):
             'instapay',
             'visa',
             'price',
-            'hours',
+            'base_hours',
+            'remaining_hours',
+            'usable_in_branches',
             'expire_date',
             'subscription',
             'child',
@@ -191,7 +193,9 @@ class SubscriptionInstanceSerializer(serializers.ModelSerializer):
             'created_by',
         ]
         read_only_fields = [
-            'hours',
+            'usable_in_branches',
+            'base_hours',
+            'remaining_hours',
             'expire_date',
             'price',
             'is_active',
@@ -252,7 +256,7 @@ class SubscriptionInstanceSerializer(serializers.ModelSerializer):
         branch       = attrs.get('branch')
         subscription = attrs.get('subscription')
         if branch    and    subscription    and    branch not in subscription.creatable_in_branches.all():
-            raise PermissionDenied('This subscription is not allowed in this branch')
+            raise ValidationError('This subscription is not allowed in this branch')
         return super().validate(attrs)
     
 
@@ -260,14 +264,15 @@ class SubscriptionInstanceSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
-        user                           = self.context['request'].user
-        cash                           = validated_data.get('cash', 0)
-        visa                           = validated_data.get('visa', 0)
-        instapay                       = validated_data.get('instapay', 0)
-        validated_data['created_by']   = user
-        validated_data['expire_date']  = timezone.now().date() + timedelta(days = validated_data['subscription'].instance_duration)
-        validated_data['hours']        = validated_data['subscription'].hours
-        validated_data['price']        = validated_data['subscription'].price
+        user                                = self.context['request'].user
+        cash                                = validated_data.get('cash', 0)
+        visa                                = validated_data.get('visa', 0)
+        instapay                            = validated_data.get('instapay', 0)
+        validated_data['created_by']        = user
+        validated_data['expire_date']       = timezone.now().date() + timedelta(days = validated_data['subscription'].instance_duration)
+        validated_data['base_hours']        = validated_data['subscription'].hours
+        validated_data['remaining_hours']   = validated_data['subscription'].hours
+        validated_data['price']             = validated_data['subscription'].price
         if cash + visa + instapay  != validated_data['price']:
             raise ValidationError(_("The money Paid does not equal the price of the subscription"))
         validated_data['subscription'].sold_units += 1

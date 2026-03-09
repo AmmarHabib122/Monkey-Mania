@@ -13,7 +13,7 @@ class Bill(models.Model):
     total_price             = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
     products_price          = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
     is_subscription         = models.BooleanField(default = False) 
-    subscription            = models.ForeignKey('base.Subscription', on_delete = models.PROTECT, related_name = 'subscription_bills_set', null = True, blank = True)
+    subscription            = models.ForeignKey('base.SubscriptionInstance', on_delete = models.PROTECT, related_name = 'subscription_bills_set', null = True, blank = True)
     is_active               = models.BooleanField(default = True)
     is_calculations_updated = models.BooleanField(default = False) #define whether the bill calculations has been updated by a user
     is_allowed_age          = models.BooleanField(default = True)  #define whether one of the children in the bill must have his parents or not

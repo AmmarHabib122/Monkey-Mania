@@ -83,6 +83,7 @@ class ChildSerializer(serializers.ModelSerializer):
             'notes',
             'address',
             'is_active',
+            'has_active_subscription',
             'is_blocked',
             'special_needs',
             'created',
@@ -93,6 +94,7 @@ class ChildSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             'age',
+            'has_active_subscription',
             'is_active',
             'created',
             'updated',
