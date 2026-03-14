@@ -17,13 +17,13 @@ from base.serializers import *
 
 
 
-class CafeBillProductSerializer(serializers.ModelSerializer):
+class CafeBillItemSerializer(serializers.ModelSerializer):
     product_type = serializers.CharField(write_only=True)
     product_id   = serializers.IntegerField(write_only=True)
     product      = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
-        model = models.CafeBillProduct
+        model = models.CafeBillItem
         fields = [
             'id',
             'product_type',
@@ -38,7 +38,6 @@ class CafeBillProductSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         content_type_map = {
             'product': 'branchproduct',
-            'offer': 'branchoffer'
         }
         product_type = attrs['product_type'].lower()
         if product_type not in content_type_map:
@@ -78,13 +77,13 @@ class CafeBillProductSerializer(serializers.ModelSerializer):
 
 
 
-class CafeBillReturnedProductSerializer(serializers.ModelSerializer):
+class CafeBillReturnSerializer(serializers.ModelSerializer):
     product_type = serializers.CharField(write_only=True)
     product_id = serializers.IntegerField(write_only=True)
     product = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
-        model = models.CafeBillReturnedProduct
+        model = models.CafeBillReturn
         fields = [
             'id',
             'product_type',
@@ -143,8 +142,8 @@ class CafeBillReturnedProductSerializer(serializers.ModelSerializer):
 
 
 class CafeBillSerializer(serializers.ModelSerializer):
-    products            = CafeBillProductSerializer(many = True, required = True)
-    returned_products   = CafeBillReturnedProductSerializer(many = True, required = False)
+    products            = CafeBillItemSerializer(many = True, required = True)
+    returned_products   = CafeBillReturnSerializer(many = True, required = False)
     bill                = serializers.PrimaryKeyRelatedField(
         queryset = models.Bill.objects.all(), 
         required = True,
@@ -407,14 +406,14 @@ class CafeBillSerializer(serializers.ModelSerializer):
                 self.process_item(obj, quantity, 'add')
                 total_price += obj.price * quantity
                 # Create bill product record
-                bill_products.append(models.CafeBillProduct(
+                bill_products.append(models.CafeBillItem(
                     product_type = ContentType.objects.get_for_model(obj),
                     product_id   = obj.id,
                     quantity     = quantity,
                     notes        = data.get('notes', None)
                 ))
 
-            created_products = models.CafeBillProduct.objects.bulk_create(bill_products)
+            created_products = models.CafeBillItem.objects.bulk_create(bill_products)
             instance.products.add(*created_products)
             instance.total_price = total_price
             instance.save()
@@ -460,7 +459,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
                 self.process_item(obj, returned_quantity, 'return')
                 total_price -= obj.price * returned_quantity
                 # Create return record
-                returned_item  = models.CafeBillReturnedProduct.objects.create(
+                returned_item  = models.CafeBillReturn.objects.create(
                     product_type  = ContentType.objects.get_for_model(obj),
                     product_id    = obj.id,
                     quantity      = returned_quantity,
@@ -484,7 +483,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
                 self.process_item(obj, add_quantity, 'add')
                 total_price += obj.price * add_quantity
                 # Check if the product already exists in the bill
-                bill_item = models.CafeBillProduct.objects.filter(
+                bill_item = models.CafeBillItem.objects.filter(
                     product_type = ContentType.objects.get_for_model(obj),
                     product_id   = obj.id
                 ).first()
@@ -495,7 +494,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
                     bill_item.save()
                 else:
                     # Create new item
-                    bill_item = models.CafeBillProduct.objects.create(
+                    bill_item = models.CafeBillItem.objects.create(
                         product_type = ContentType.objects.get_for_model(obj),
                         product_id   = obj.id,
                         quantity     = add_quantity,
@@ -542,7 +541,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
     #                 raise ValidationError(_("{name} available units are less than the quantity you entered").format(name = product.name))
     #             else:
     #                 new_bill_products.append(
-    #                     models.CafeBillProduct(
+    #                     models.CafeBillItem(
     #                         product_bill = instance,
     #                         product      = product,
     #                         quantity     = quantity,
@@ -558,7 +557,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
     #                 total_price        += product.price * quantity
     #                 product.sold_units += quantity
     #                 product.save()
-    #         models.CafeBillProduct.objects.bulk_create(new_bill_products)
+    #         models.CafeBillItem.objects.bulk_create(new_bill_products)
     #         instance.total_price = total_price
     #         instance.bill.update_products_price()            #update the child bill price to reflect product bill price changes
     #         instance.save()
@@ -598,7 +597,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
     #                         product.sold_units -= instance_product.quantity - quantity
     #                     instance_product.delete()
     #                     new_bill_returned_products.append(
-    #                         models.CafeBillReturnedProduct(
+    #                         models.CafeBillReturn(
     #                             product_bill = instance,
     #                             product      = product,
     #                             quantity     = quantity,
@@ -617,7 +616,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
     #                     product.sold_units -= quantity
     #                     product.save()
             
-    #             models.CafeBillReturnedProduct.objects.bulk_create(new_bill_returned_products)
+    #             models.CafeBillReturn.objects.bulk_create(new_bill_returned_products)
 
     #         if products != []:
     #             products_check    = [data['product_object'].id for data in products]
@@ -639,7 +638,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
     #                     already_existing_product.save()
     #                 else:
     #                     new_bill_products.append(
-    #                         models.CafeBillProduct(
+    #                         models.CafeBillItem(
     #                             product_bill = instance,
     #                             product      = product,
     #                             quantity     = quantity,
@@ -655,7 +654,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
     #                     total_price        += product.price * quantity
     #                     product.sold_units += quantity
     #                     product.save()
-    #             models.CafeBillProduct.objects.bulk_create(new_bill_products)
+    #             models.CafeBillItem.objects.bulk_create(new_bill_products)
 
     #         instance.total_price = request_total_price if request_total_price else total_price
     #         instance.bill.update_products_price()         #update the child bill price to reflect product bill price changes
@@ -699,7 +698,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
 
 
 
-# class CafeBillProductSerializer(serializers.ModelSerializer):
+# class CafeBillItemSerializer(serializers.ModelSerializer):
 #     product   = serializers.PrimaryKeyRelatedField(
 #         queryset = models.BranchProduct.objects.all(), 
 #         required = True,
@@ -710,7 +709,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
 #         }
 #     ) 
 #     class Meta:
-#         model = models.CafeBillProduct
+#         model = models.CafeBillItem
 #         fields = [
 #             'id',
 #             'product',
@@ -726,7 +725,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
 
 
 
-# class CafeBillReturnedProductSerializer(serializers.ModelSerializer):
+# class CafeBillReturnSerializer(serializers.ModelSerializer):
 #     product   = serializers.PrimaryKeyRelatedField(
 #         queryset = models.BranchProduct.objects.all(), 
 #         required = True,
@@ -737,7 +736,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
 #         }
 #     ) 
 #     class Meta:
-#         model = models.CafeBillReturnedProduct
+#         model = models.CafeBillReturn
 #         fields = [
 #             'id',
 #             'product',
