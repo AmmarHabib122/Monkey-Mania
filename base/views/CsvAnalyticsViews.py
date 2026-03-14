@@ -56,7 +56,7 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
         elif type == 'products_sales':
             data = []
             products_sales = {}
-            query    = models.ProductBill.objects.filter(bill__branch__in = branches) if branches != ['all'] else models.ProductBill.objects.all()
+            query    = models.CafeBill.objects.filter(bill__branch__in = branches) if branches != ['all'] else models.CafeBill.objects.all()
             
             if is_date_range   and   start_date == end_date:
                 query = libs.get_all_instances_in_a_day_query(query, start_date)

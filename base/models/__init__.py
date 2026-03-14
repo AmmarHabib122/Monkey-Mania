@@ -6,9 +6,12 @@ from .StaffModels import *
 from .ImageModels import *
 from .ProductModels import *
 from .MaterialModels import *
-from .ProductBillModels import *
+from .CafeBillModels import *
 from .BillModels import *
 from .OfferModels import *
 from .DiscountsModels import *
 from .ExpenseModels import *
 from .SubscriptionModels import *
+from .CafeProductCategoryModels import *
+from .CafeProductAddOn import *
+from .CafeProductModels import *

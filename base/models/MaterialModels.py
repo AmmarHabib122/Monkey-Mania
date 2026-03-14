@@ -4,16 +4,17 @@ from django.db import models
 
 
 class Material(models.Model):
+    MATERIAL_TYPES = [
+        ('kids', 'kids'),
+        ('cafe', 'cafe'),
+    ]
+
     name          = models.CharField(max_length = 155, unique = True)
-    measure_unit  = models.CharField(max_length = 30)
+    type          = models.CharField(max_length = 50, choices=MATERIAL_TYPES, default='cafe')
     created       = models.DateTimeField(auto_now_add = True)
     updated       = models.DateTimeField(auto_now = True)
     created_by    = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_materials_set')
 
-
-    # @property
-    # def consumption(self):
-    #     self.branch_materials_set.aggregate(total_consumption = models.Sum('consumption'))['total_consumption'] or 0
 
     def __str__(self):
         return f"#{self.id} {self.name} (unit: {self.measure_unit})"
@@ -21,12 +22,10 @@ class Material(models.Model):
 
 
 
-
-
 class BranchMaterial(models.Model):
     material         = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'branch_materials_set')
     branch           = models.ForeignKey('base.Branch', on_delete = models.CASCADE, related_name = 'materials_set')
-    available_units  = models.DecimalField(max_digits = 14, decimal_places = 4)
+    warning_units    = models.IntegerField()
     created          = models.DateTimeField(auto_now_add = True)
     updated          = models.DateTimeField(auto_now = True)
     created_by       = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_branch_materials_set')
@@ -34,9 +33,12 @@ class BranchMaterial(models.Model):
     @property
     def name(self):
         return self.material.name
+
+
+    #TODO: calculate available units based on the transactions of this material in this branch (purchases, usages in cafe products, etc.)
     @property
-    def measure_unit(self):
-        return self.material.measure_unit
+    def available_units(self):
+        return 0
 
     class Meta:
         constraints = [
@@ -45,6 +47,21 @@ class BranchMaterial(models.Model):
                 name   = 'unique_branch_materials'
             )
         ]
-    
+
     def __str__(self):
-        return f"#{self.id} {self.material.name} branch {self.branch.name}"
+        return f"#{self.id} {self.material.name} ({self.branch.name})"
+
+
+
+class MaterialTransaction(models.Model):
+    TRANSACTION_TYPES = [
+        ('stock_out', 'stock_out'),
+        ('stock_in', 'stock_in'),
+    ]
+    material         = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'transactions_set')
+    branch           = models.ForeignKey('base.Branch', on_delete = models.CASCADE, related_name = 'material_transactions_set')
+    qty              = models.IntegerField()
+    transaction_type = models.CharField(max_length = 50, choices=TRANSACTION_TYPES)
+    created          = models.DateTimeField(auto_now_add = True)
+    updated          = models.DateTimeField(auto_now = True)
+    created_by       = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_material_transactions_set')
