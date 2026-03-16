@@ -69,30 +69,3 @@ class CafeBillReturn(models.Model):
 
 
 
-
-
-
-
-
-
-
-# class CafeBillProduct(models.Model):
-#     product_type = models.ForeignKey(ContentType, on_delete = models.CASCADE, related_name = 'products_set')
-#     product      = models.ForeignKey('base.BranchProduct', on_delete = models.PROTECT)
-#     quantity     = models.IntegerField()
-#     notes        = models.CharField(max_length = 75, null = True)
-
-
-
-
-
-
-
-
-# class CafeBillReturn(models.Model):
-#     product_bill = models.ForeignKey('base.CafeBill', on_delete = models.CASCADE, related_name = 'returned_products_set')
-#     product      = models.ForeignKey('base.BranchProduct', on_delete = models.PROTECT)
-#     quantity     = models.IntegerField()
-#     created_by   = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_returned_products_set')
-
-

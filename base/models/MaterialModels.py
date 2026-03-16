@@ -60,7 +60,7 @@ class MaterialTransaction(models.Model):
     ]
     material         = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'transactions_set')
     branch           = models.ForeignKey('base.Branch', on_delete = models.CASCADE, related_name = 'material_transactions_set')
-    qty              = models.IntegerField()
+    quantity         = models.IntegerField()
     transaction_type = models.CharField(max_length = 50, choices=TRANSACTION_TYPES)
     created          = models.DateTimeField(auto_now_add = True)
     updated          = models.DateTimeField(auto_now = True)
