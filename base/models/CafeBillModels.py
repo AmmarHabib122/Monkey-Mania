@@ -1,6 +1,10 @@
+import random
+
 from django.db import models
 from django.contrib.contenttypes import fields
 from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
+from datetime import timedelta
 
 
 
@@ -18,9 +22,18 @@ class CafeBill(models.Model):
     updated            = models.DateTimeField(auto_now = True)
 
     def save(self, force_insert = False, force_update = False, using = None, update_fields = None):
-        if not self.bill_number:
-            last_order = CafeBill.objects.filter(bill__branch=self.bill.branch).order_by('-bill_number').first()
-            self.bill_number = (last_order.bill_number + 1) if last_order else 1
+        last_bill           = CafeBill.objects.filter(bill__branch=self.bill.branch).order_by('-bill_number').first()
+        current_time        = timezone.now()
+        bill_number_array   = [111, 222, 333, 444, 555]  
+
+        if not last_bill:
+            self.bill_number = random.choice(bill_number_array)
+        
+        if current_time.hour == 9  and  (current_time - last_bill.created) >= timedelta(hours=3):
+            self.bill_number = random.choice(bill_number_array)
+        else:
+            self.bill_number = last_bill.bill_number + 1
+        
         super().save(force_insert, force_update, using, update_fields)
         
     def __str__(self):
@@ -38,6 +51,8 @@ class CafeBillItem(models.Model):
     branch_product  = models.ForeignKey('base.BranchCafeProduct', on_delete = models.PROTECT, related_name = 'cafe_bills_items_set')
     old_product_id  = models.PositiveIntegerField()
     quantity        = models.IntegerField()
+    sauces          = models.ManyToManyField('base.CafeProductSauces')
+    add_ons         = models.ManyToManyField('base.CafeProductAddOns')
     notes           = models.CharField(max_length = 75, null = True)
     created         = models.DateTimeField(auto_now_add = True)
     updated         = models.DateTimeField(auto_now = True)

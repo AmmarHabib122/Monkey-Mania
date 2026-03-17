@@ -76,7 +76,13 @@ class CafeBillSerializer(serializers.ModelSerializer):
             'created',
             'updated',
         ]
-        read_only_fields = ['bill_number', 'total_price', 'created_by', 'created', 'updated']
+        read_only_fields = [
+            'bill_number', 
+            'total_price', 
+            'created_by', 
+            'created', 
+            'updated'
+        ]
 
 
     def to_representation(self, instance):
@@ -135,7 +141,7 @@ class CafeBillSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         if value < 0:
             raise ValidationError(_("total-price can not be negative"))
-        if user.role in ['waiter', 'reception']:
+        if user.role in ['waiter', 'reception', 'manager']:
             raise PermissionDenied(_("You do not have the permission to set the bill price"))
         return value
 
@@ -146,40 +152,36 @@ class CafeBillSerializer(serializers.ModelSerializer):
         return value
 
     def validate_items(self, value):
-        if not self.instance:  # Create mode
-            if not value:
-                raise ValidationError(_("At least one added item must be provided"))
+        if self.instance and value:
+            raise ValidationError(_("Items cannot be modified when updating a bill."))
+        
+        if not value:
+            raise ValidationError(_("At least one added item must be provided"))
 
-            seen   = set()
-            bill_id = self.initial_data.get("bill")
-            try:
-                bill_obj = models.Bill.objects.get(id=bill_id)
-            except models.Bill.DoesNotExist:
-                raise ValidationError(_("Invalid bill ID."))
+        seen    = set()
+        bill_id = self.initial_data.get("bill")
+        try:
+            bill_obj = models.Bill.objects.get(id=bill_id)
+        except models.Bill.DoesNotExist:
+            raise ValidationError(_("Invalid bill ID."))
 
-            for data in value:
-                obj = data["branch_product"]
-                if hasattr(obj, "branch") and obj.branch != bill_obj.branch:
-                    raise ValidationError(
-                        _("{product} does not belong to branch {branch}").format(
-                            product=obj.name, branch=bill_obj.branch.name
-                        )
+        for data in value:
+            branch_product = data["branch_product"]
+            if hasattr(branch_product, "branch") and branch_product.branch != bill_obj.branch:
+                raise ValidationError(
+                    _("{product} does not belong to branch {branch}").format(
+                        product=branch_product.name, branch=bill_obj.branch.name
                     )
-                if obj.id in seen:
-                    raise ValidationError(_("Duplicate added items detected"))
-                seen.add(obj.id)
-
-        else:  # Update mode
-            if value:
-                raise ValidationError(_("Items cannot be modified when updating a bill."))
+                )
+            if branch_product.id in seen:
+                raise ValidationError(_("Duplicate added items detected"))
+            seen.add(branch_product.id)
 
         return value
 
     def validate_returns(self, value):
-        if not self.instance:  # Create mode
-            if value:
-                raise ValidationError(_("Returns are not allowed when creating a new bill."))
-            return value
+        if not self.instance  and  value:  # Create mode
+            raise ValidationError(_("Returns are not allowed when creating a new bill."))
 
         if not value:
             raise ValidationError(_("At least one returned item must be provided"))
@@ -188,16 +190,16 @@ class CafeBillSerializer(serializers.ModelSerializer):
         bill_obj = self.instance.bill
 
         for data in value:
-            obj = data["branch_product"]
-            if hasattr(obj, "branch") and obj.branch != bill_obj.branch:
+            branch_product = data["branch_product"]
+            if hasattr(branch_product, "branch") and branch_product.branch != bill_obj.branch:
                 raise ValidationError(
                     _("{product} does not belong to bill's branch {branch}").format(
-                        product=obj.name, branch=bill_obj.branch.name
+                        product=branch_product.name, branch=bill_obj.branch.name
                     )
                 )
-            if obj.id in seen:
+            if branch_product.id in seen:
                 raise ValidationError(_("Duplicate returned items detected"))
-            seen.add(obj.id)
+            seen.add(branch_product.id)
 
         return value
 
@@ -234,12 +236,12 @@ class CafeBillSerializer(serializers.ModelSerializer):
             bill_items  = []
 
             for data in items_data:
-                obj      = data['branch_product']
-                quantity = data['quantity']
-                self.process_item(obj, quantity, 'add')
-                total_price += obj.price * quantity
+                branch_product  = data['branch_product']
+                quantity        = data['quantity']
+                self.process_item(branch_product, quantity, 'add')
+                total_price += branch_product.price * quantity
                 bill_items.append(models.CafeBillItem(
-                    branch_product = obj,
+                    branch_product = branch_product,
                     quantity       = quantity,
                     notes          = data.get('notes', None)
                 ))
