@@ -22,7 +22,7 @@ class CafeBillItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = models.CafeBillItem
-        fields = ['id', 'old_product_id', 'branch_product', 'quantity', 'notes']
+        fields = ['id', 'old_branch_product', 'branch_product', 'quantity', 'notes']
 
     
 
@@ -41,7 +41,7 @@ class CafeBillReturnSerializer(serializers.ModelSerializer):
 
     class Meta:
         model          = models.CafeBillReturn
-        fields         = ['id', 'old_product_id', 'branch_product', 'quantity', 'created_by']
+        fields         = ['id', 'old_branch_product', 'branch_product', 'quantity', 'created_by']
         read_only_fields = ['created_by']
 
 
@@ -241,13 +241,13 @@ class CafeBillSerializer(serializers.ModelSerializer):
                 self.process_item(branch_product, quantity, 'add')
                 total_price += branch_product.price * quantity
                 bill_items.append(models.CafeBillItem(
+                    cafe_bill      = instance,
                     branch_product = branch_product,
                     quantity       = quantity,
                     notes          = data.get('notes', None)
                 ))
 
-            created_items = models.CafeBillItem.objects.bulk_create(bill_items)
-            instance.items.add(*created_items)
+            models.CafeBillItem.objects.bulk_create(bill_items)
             instance.total_price = total_price
             instance.save()
             instance.bill.update_products_price()
@@ -281,12 +281,12 @@ class CafeBillSerializer(serializers.ModelSerializer):
                     bill_item.delete()
                 self.process_item(obj, returned_quantity, 'return')
                 total_price  -= obj.price * returned_quantity
-                returned_item = models.CafeBillReturn.objects.create(
+                models.CafeBillReturn.objects.create(
+                    cafe_bill      = instance,
                     branch_product = obj,
                     quantity       = returned_quantity,
                     created_by     = user
                 )
-                instance.returns.add(returned_item)
 
             # Process additions
             seen = set()
@@ -303,12 +303,12 @@ class CafeBillSerializer(serializers.ModelSerializer):
                     bill_item.quantity += add_quantity
                     bill_item.save()
                 else:
-                    bill_item = models.CafeBillItem.objects.create(
+                    models.CafeBillItem.objects.create(
+                        cafe_bill      = instance,
                         branch_product = obj,
                         quantity       = add_quantity,
                         notes          = data.get('notes', None)
                     )
-                    instance.items.add(bill_item)
 
             instance.total_price = total_price
             instance.save()

@@ -15,8 +15,6 @@ class CafeBill(models.Model):
     take_away          = models.BooleanField()
     bill               = models.ForeignKey('base.Bill', on_delete = models.CASCADE, related_name = 'product_bills_set')
     total_price        = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
-    items              = models.ManyToManyField('base.CafeBillItem')
-    returns            = models.ManyToManyField('base.CafeBillReturn')
     created_by         = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_product_bills_set')
     created            = models.DateTimeField(auto_now_add = True)
     updated            = models.DateTimeField(auto_now = True)
@@ -48,14 +46,15 @@ class CafeBill(models.Model):
 
 
 class CafeBillItem(models.Model):
-    branch_product  = models.ForeignKey('base.BranchCafeProduct', on_delete = models.PROTECT, related_name = 'cafe_bills_items_set')
-    old_product_id  = models.PositiveIntegerField()
-    quantity        = models.IntegerField()
-    sauces          = models.ManyToManyField('base.CafeProductSauces')
-    add_ons         = models.ManyToManyField('base.CafeProductAddOns')
-    notes           = models.CharField(max_length = 75, null = True)
-    created         = models.DateTimeField(auto_now_add = True)
-    updated         = models.DateTimeField(auto_now = True)
+    cafe_bill           = models.ForeignKey('base.CafeBill', on_delete = models.CASCADE, related_name = 'items')
+    branch_product      = models.ForeignKey('base.BranchCafeProduct', on_delete = models.PROTECT, related_name = 'cafe_bills_items_set')
+    old_branch_product  = models.ForeignKey('base.BranchProduct', on_delete = models.SET_NULL, null = True, related_name = 'cafe_bills_old_products_set')
+    quantity            = models.IntegerField()
+    sauces              = models.ManyToManyField('base.CafeProductSauces')
+    add_ons             = models.ManyToManyField('base.CafeProductAddOns')
+    notes               = models.CharField(max_length = 75, null = True)
+    created             = models.DateTimeField(auto_now_add = True)
+    updated             = models.DateTimeField(auto_now = True)
 
 
 
@@ -65,12 +64,13 @@ class CafeBillItem(models.Model):
 
 
 class CafeBillReturn(models.Model):
-    branch_product  = models.ForeignKey('base.BranchCafeProduct', on_delete = models.PROTECT, related_name = 'cafe_bills_returns_set')
-    old_product_id  = models.PositiveIntegerField()
-    quantity        = models.IntegerField()
-    created         = models.DateTimeField(auto_now_add = True)
-    updated         = models.DateTimeField(auto_now = True)
-    created_by      = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_product_bill_returned_products_set')
+    cafe_bill           = models.ForeignKey('base.CafeBill', on_delete = models.CASCADE, related_name = 'returns')
+    branch_product      = models.ForeignKey('base.BranchCafeProduct', on_delete = models.PROTECT, related_name = 'cafe_bills_returns_set')
+    old_branch_product  = models.ForeignKey('base.BranchProduct', on_delete = models.SET_NULL, null = True, related_name = 'cafe_bills_old_returned_products_set')
+    quantity            = models.IntegerField()
+    created             = models.DateTimeField(auto_now_add = True)
+    updated             = models.DateTimeField(auto_now = True)
+    created_by          = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_product_bill_returned_products_set')
 
 
 
