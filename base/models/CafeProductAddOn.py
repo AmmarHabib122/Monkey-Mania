@@ -3,7 +3,7 @@ from django.db import models
 
 
 
-class CafeProductAddOn(models.Model):
+class CafeProductAddOns(models.Model):
     name                 = models.CharField(max_length = 150, unique = True)
     image                = models.CharField(max_length = 255)
     material             = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'cafe_product_toppings_set')
