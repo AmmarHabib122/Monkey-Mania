@@ -224,7 +224,7 @@ class DashboardSatistics(RoleAccessList, APIView):
         # )['total']
 
         # 4. main_interval Cafe Cales
-        product_bills_query = models.ProductBill.objects.filter(bill__branch__in = branch) if branch != ["all"] else models.ProductBill.objects.all()
+        product_bills_query = models.CafeBill.objects.filter(bill__branch__in = branch) if branch != ["all"] else models.CafeBill.objects.all()
         product_bills_query = libs.get_all_instances_in_a_date_range_query(product_bills_query, main_interval_start, main_interval_end)
         todays_product_bills_sales = product_bills_query.aggregate(
             total=Coalesce(Sum('total_price'), 0, output_field=DecimalField())
@@ -232,7 +232,7 @@ class DashboardSatistics(RoleAccessList, APIView):
         dashboard_statistics['todays_cafe_sales'] = f"{todays_product_bills_sales} ({product_bills_query.count()})"
 
         # 5. compare_interval Cafe Cales
-        product_bills_query = models.ProductBill.objects.filter(bill__branch__in = branch) if branch != ["all"] else models.ProductBill.objects.all()
+        product_bills_query = models.CafeBill.objects.filter(bill__branch__in = branch) if branch != ["all"] else models.CafeBill.objects.all()
         product_bills_query = libs.get_all_instances_in_a_date_range_query(product_bills_query, compare_interval_start, compare_interval_end)
         yesterdays_product_bills_sales = product_bills_query.aggregate(
             total=Coalesce(Sum('total_price'), 0, output_field=DecimalField())

@@ -99,12 +99,12 @@ urlpatterns = [
     path('bill/filter-keys/all/', views.List_Bill_FILTERS, name = 'List_Bill_FILTERS'),
     path('bill/<str:pk>/', views.Get_Bill, name = 'Get_Bill'),
 
-    #ProductBill
-    path('product_bill/create/', views.Create_ProductBill, name = 'Create_ProductBill'),
-    path('product_bill/<str:pk>/update/', views.Update_ProductBill, name = 'Update_ProductBill'),
-    path('product_bill/all/', views.List_ProductBill, name = 'List_ProductBill'),
-    path('product_bill/active/all/', views.List_ActiveProductBill, name = 'List_ActiveProductBill'),
-    path('product_bill/<str:pk>/', views.Get_ProductBill, name = 'Get_ProductBill'),
+    #CafeBill
+    path('product_bill/create/', views.Create_CafeBill, name = 'Create_CafeBill'),
+    path('product_bill/<str:pk>/update/', views.Update_CafeBill, name = 'Update_CafeBill'),
+    path('product_bill/all/', views.List_CafeBill, name = 'List_CafeBill'),
+    path('product_bill/active/all/', views.List_ActiveCafeBill, name = 'List_ActiveCafeBill'),
+    path('product_bill/<str:pk>/', views.Get_CafeBill, name = 'Get_CafeBill'),
 
     #Discount
     path('discount/create/', views.Create_Discount, name = 'Create_Discount'),

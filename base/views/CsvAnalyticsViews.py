@@ -53,10 +53,13 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             return libs.send_csv_file_response(data, 'phone_numbers.csv', ['value', 'created'])
         
         
+
+
+        
         elif type == 'products_sales':
             data = []
             products_sales = {}
-            query    = models.ProductBill.objects.filter(bill__branch__in = branches) if branches != ['all'] else models.ProductBill.objects.all()
+            query    = models.CafeBill.objects.filter(bill__branch__in = branches) if branches != ['all'] else models.CafeBill.objects.all()
             
             if is_date_range   and   start_date == end_date:
                 query = libs.get_all_instances_in_a_day_query(query, start_date)
@@ -73,6 +76,9 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             return libs.send_csv_file_response(data, 'products_sales.csv')
         
         
+
+
+
         elif type == 'bills_children_count':
             data = []
             bills_children_count = {}
@@ -90,6 +96,8 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             return libs.send_csv_file_response(data, 'children_count.csv')
         
         
+
+
         elif type == 'discounts':
             data = []
             dicount_bills_count = {}
@@ -105,6 +113,10 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             data.append(dicount_bills_count)  
             return libs.send_csv_file_response(data, 'discounts.csv')
         
+
+        
+
+
         elif type == 'current_material_quantities':
             branch_material_query = models.BranchMaterial.objects.all()
             branch_material_query = branch_material_query.filter(branch__in = branches) if branches != ['all'] else branch_material_query

@@ -1,3 +1,6 @@
+#will be no more used (replaced by cafe product)
+
+
 from django.db import models
 
 
