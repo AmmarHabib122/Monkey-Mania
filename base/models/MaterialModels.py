@@ -13,7 +13,7 @@ class Material(models.Model):
 
     name          = models.CharField(max_length = 155, unique = True)
     type          = models.CharField(max_length = 50, choices=MATERIAL_TYPES, default='cafe')
-    measure_unit  = models.CharField(max_length = 30)  #TODO : to be removed in furtuire
+    measure_unit  = models.CharField(max_length = 30, default='مللي/جرام')  #TODO : to be removed in furtuire
     created       = models.DateTimeField(auto_now_add = True)
     updated       = models.DateTimeField(auto_now = True)
     created_by    = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_materials_set')
