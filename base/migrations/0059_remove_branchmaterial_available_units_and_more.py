@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '0053_alter_bill_subscription'),
+        ('base', '0054_product_is_active'),
         ('contenttypes', '0002_remove_content_type_name'),
     ]
 

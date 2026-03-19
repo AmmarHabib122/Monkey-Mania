@@ -11,22 +11,13 @@ class Product(models.Model):
     name        = models.CharField(max_length = 150, unique = True)
     layer1      = models.CharField(max_length = 150) #TODO : remove in future
     layer2      = models.CharField(max_length = 150) #TODO : remove in future
-    layer3      = models.CharField(max_length = 150)                #TODO : remove in future
+    layer3      = models.CharField(max_length = 150)  #TODO : remove in future
     is_active   = models.BooleanField(default = True)
     category    = models.ForeignKey('base.ProductCategory', on_delete = models.PROTECT, related_name = 'products_set', null = True, blank = True)
     price       = models.DecimalField(max_digits = 10, decimal_places = 2)
     created     = models.DateTimeField(auto_now_add = True)
     updated     = models.DateTimeField(auto_now = True)
     created_by  = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_products_set')
-
-    
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields = ['layer2', 'layer3'],
-                name   = 'unique_product_name'
-            )
-        ]
 
 
     def __str__(self):
