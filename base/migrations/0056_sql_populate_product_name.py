@@ -4,7 +4,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '0053_alter_bill_subscription'),
+        ('base', '0059_remove_branchmaterial_available_units_and_more'),
     ]
 
     operations = [

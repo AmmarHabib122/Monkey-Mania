@@ -9,8 +9,8 @@ from django.db import models
 
 class Product(models.Model):
     name        = models.CharField(max_length = 150, unique = True)
-    layer1      = models.CharField(max_length = 150, db_index=True) #TODO : remove in future
-    layer2      = models.CharField(max_length = 150, db_index=True) #TODO : remove in future
+    layer1      = models.CharField(max_length = 150) #TODO : remove in future
+    layer2      = models.CharField(max_length = 150) #TODO : remove in future
     layer3      = models.CharField(max_length = 150)                #TODO : remove in future
     is_active   = models.BooleanField(default = True)
     category    = models.ForeignKey('base.ProductCategory', on_delete = models.PROTECT, related_name = 'products_set', null = True, blank = True)
