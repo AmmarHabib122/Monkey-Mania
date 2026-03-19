@@ -179,7 +179,7 @@ Get_BranchProduct = GetBranchProductAPI.as_view()
 
 
 class ListBranchProductAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.BranchProduct.objects.all().order_by('-id')
+    queryset           = models.BranchProduct.objects.filter(product__is_active = True).order_by('-id')
     pagination_class   = None
     serializer_class   = serializers.BranchProductSerializer
     role_access_list   = ['owner', 'admin', 'manager', 'reception', 'waiter']

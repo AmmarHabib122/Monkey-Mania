@@ -11,6 +11,7 @@ class Product(models.Model):
     layer1      = models.CharField(max_length = 150, db_index=True)
     layer2      = models.CharField(max_length = 150, db_index=True)
     layer3      = models.CharField(max_length = 150)
+    is_active   = models.BooleanField(default = True)
     created     = models.DateTimeField(auto_now_add = True)
     updated     = models.DateTimeField(auto_now = True)
     created_by  = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_products_set')
