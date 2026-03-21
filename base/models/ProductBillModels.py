@@ -13,6 +13,7 @@ class ProductBill(models.Model):
     total_price        = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
     products           = models.ManyToManyField('base.ProductBillProduct')
     returned_products  = models.ManyToManyField('base.ProductBillReturnedProduct')
+    notes              = models.CharField(max_length = 75, null = True)
     created_by         = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_product_bills_set')
     created            = models.DateTimeField(auto_now_add = True)
     updated            = models.DateTimeField(auto_now = True)
@@ -35,13 +36,15 @@ class ProductBill(models.Model):
 
 
 class ProductBillProduct(models.Model):
-    product_type   = models.ForeignKey(ContentType, on_delete = models.CASCADE)
-    product_id     = models.PositiveIntegerField()
-    product_object = fields.GenericForeignKey('product_type', 'product_id')
+    product_type   = models.ForeignKey(ContentType, on_delete = models.CASCADE)     #TODO: tobe removed
+    product_id     = models.PositiveIntegerField()                                  #TODO: tobe removed
+    product_object = fields.GenericForeignKey('product_type', 'product_id')         #TODO: tobe removed
+    branch_product = models.ForeignKey('base.BranchProduct', on_delete = models.PROTECT, related_name = 'productbill_products_set')
     quantity       = models.IntegerField()
+    unit_price     = models.DecimalField(max_digits = 10, decimal_places = 2, default = 0)
     notes          = models.CharField(max_length = 75, null = True)
-    created         = models.DateTimeField(auto_now_add = True)
-    updated         = models.DateTimeField(auto_now = True)
+    created        = models.DateTimeField(auto_now_add = True)
+    updated        = models.DateTimeField(auto_now = True)
 
 
 
@@ -51,13 +54,15 @@ class ProductBillProduct(models.Model):
 
 
 class ProductBillReturnedProduct(models.Model):
-    product_type   = models.ForeignKey(ContentType, on_delete = models.CASCADE)
-    product_id     = models.PositiveIntegerField()
-    product_object = fields.GenericForeignKey('product_type', 'product_id')
+    product_type   = models.ForeignKey(ContentType, on_delete = models.CASCADE) #TODO: tobe removed
+    product_id     = models.PositiveIntegerField()                              #TODO: tobe removed
+    product_object = fields.GenericForeignKey('product_type', 'product_id')     #TODO: tobe removed
+    branch_product = models.ForeignKey('base.BranchProduct', on_delete = models.PROTECT, related_name = 'productbill_products_set')
     quantity       = models.IntegerField()
+    unit_price     = models.DecimalField(max_digits = 10, decimal_places = 2, default = 0)
     created_by     = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_product_bill_returned_products_set')
-    created         = models.DateTimeField(auto_now_add = True)
-    updated         = models.DateTimeField(auto_now = True)
+    created        = models.DateTimeField(auto_now_add = True)
+    updated        = models.DateTimeField(auto_now = True)
 
 
 
