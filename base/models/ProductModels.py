@@ -9,6 +9,7 @@ from django.db import models
 
 class Product(models.Model):
     name        = models.CharField(max_length = 150, unique = True)
+    image       = models.CharField(max_length = 255)
     layer1      = models.CharField(max_length = 150) #TODO : remove in future
     layer2      = models.CharField(max_length = 150) #TODO : remove in future
     layer3      = models.CharField(max_length = 150)  #TODO : remove in future
@@ -126,7 +127,10 @@ class ProductCategory(models.Model):
 
 
 
-class ProductSauces(models.Model):
+class ProductOptions(models.Model):
+    # option like sauces or toppings that can be added to the product
+    name                 = models.CharField(max_length = 150)
+    image                = models.CharField(max_length = 255)
     product              = models.ForeignKey('base.Product', on_delete = models.PROTECT, related_name = 'sauces_set')
     material             = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'cafe_product_sauces_set')
     consumption          = models.IntegerField
@@ -142,8 +146,13 @@ class ProductSauces(models.Model):
     def __str__(self):
         return f"#{self.id} (المنتج = {self.product.name}) - (الصوص = {self.material.name})"
     
-
-
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields = ['product', 'material'],
+                name   = 'unique_product_material_option'
+            )
+        ]
 
 
 
@@ -157,3 +166,11 @@ class ProductReciepe(models.Model):
 
     def __str__(self):
         return f"#{self.id} {self.name}"
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields = ['product', 'material'],
+                name   = 'unique_product_material_reciepe'
+            )
+        ]
