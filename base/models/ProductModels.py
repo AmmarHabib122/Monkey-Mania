@@ -97,7 +97,7 @@ class ProductAddOns(models.Model):
     name                 = models.CharField(max_length = 150, unique = True)
     image                = models.CharField(max_length = 255)
     material             = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'cafe_product_toppings_set')
-    consumption          = models.IntegerField
+    consumption          = models.IntegerField()
     created              = models.DateTimeField(auto_now_add = True)
     updated              = models.DateTimeField(auto_now = True)
     created_by           = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_cafe_product_addons_set')
@@ -133,7 +133,7 @@ class ProductOptions(models.Model):
     image                = models.CharField(max_length = 255, null = True, blank = True)
     product              = models.ForeignKey('base.Product', on_delete = models.PROTECT, related_name = 'sauces_set')
     material             = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'cafe_product_sauces_set')
-    consumption          = models.IntegerField
+    consumption          = models.IntegerField()
     created              = models.DateTimeField(auto_now_add = True)
     updated              = models.DateTimeField(auto_now = True)
     created_by           = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_cafe_product_sauces_set')
@@ -159,7 +159,7 @@ class ProductOptions(models.Model):
 class ProductReciepe(models.Model):
     product              = models.ForeignKey('base.Product', on_delete = models.PROTECT, related_name = 'reciepe_set')
     material             = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'cafe_product_reciepe_set')
-    consumption          = models.IntegerField
+    consumption          = models.IntegerField()
     created              = models.DateTimeField(auto_now_add = True)
     updated              = models.DateTimeField(auto_now = True)
     created_by           = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_cafe_product_reciepes_set')

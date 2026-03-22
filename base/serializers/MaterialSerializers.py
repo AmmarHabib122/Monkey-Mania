@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
 from django.db import transaction
+from django.db.models import F
 
 from base import models
 from base import libs
@@ -233,5 +234,14 @@ class MaterialTransactionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['created_by'] = self.context['request'].user
-        return super().create(validated_data)
+        branch_material = validated_data.get('branch_material')
+        quantity = validated_data.get('quantity')
+        transaction_type = validated_data.get('transaction_type')
+        sign = 1 if transaction_type == 'stock_in' else -1
+        with transaction.atomic():
+            instance = super().create(validated_data)
+            models.BranchMaterial.objects.filter(id=branch_material.id).update(
+                available_units=F('available_units') + (sign * quantity)
+            )
+        return instance
 

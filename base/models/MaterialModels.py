@@ -31,6 +31,7 @@ class BranchMaterial(models.Model):
     material         = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'branch_materials_set')
     branch           = models.ForeignKey('base.Branch', on_delete = models.CASCADE, related_name = 'materials_set')
     warning_units    = models.IntegerField()
+    available_units  = models.DecimalField(max_digits=14, decimal_places=3, default=0)
     created          = models.DateTimeField(auto_now_add = True)
     updated          = models.DateTimeField(auto_now = True)
     created_by       = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_branch_materials_set')
@@ -39,10 +40,7 @@ class BranchMaterial(models.Model):
     def name(self):
         return self.material.name
     
-    #TODO: calculate available units based on the transactions of this material in this branch (purchases, usages in cafe products, etc.)
-    @property
-    def available_units(self):
-        return 0
+    # available_units is a materialized running balance (cached in DB)
 
     class Meta:
         constraints = [
@@ -74,3 +72,8 @@ class MaterialTransaction(models.Model):
     created          = models.DateTimeField(auto_now_add = True)
     updated          = models.DateTimeField(auto_now = True)
     created_by       = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_material_transactions_set')
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['branch_material', 'transaction_type', 'created']),
+        ]
