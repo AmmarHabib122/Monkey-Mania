@@ -64,7 +64,7 @@ class MaterialTransaction(models.Model):
         ('stock_out', 'stock_out'),
         ('stock_in', 'stock_in'),
     ]
-    material         = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'transactions_set')
+    branch_material  = models.ForeignKey('base.BranchMaterial', on_delete = models.PROTECT, related_name = 'transactions_set', null = True, blank = True)
     branch           = models.ForeignKey('base.Branch', on_delete = models.CASCADE, related_name = 'material_transactions_set')
     quantity         = models.IntegerField()
     transaction_type = models.CharField(max_length = 50, choices=TRANSACTION_TYPES)

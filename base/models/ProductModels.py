@@ -9,7 +9,7 @@ from django.db import models
 
 class Product(models.Model):
     name        = models.CharField(max_length = 150, unique = True)
-    image       = models.CharField(max_length = 255)
+    image       = models.CharField(max_length = 255, null = True, blank = True)
     layer1      = models.CharField(max_length = 150) #TODO : remove in future
     layer2      = models.CharField(max_length = 150) #TODO : remove in future
     layer3      = models.CharField(max_length = 150)  #TODO : remove in future
@@ -113,7 +113,7 @@ class ProductAddOns(models.Model):
 
 class ProductCategory(models.Model):
     name                 = models.CharField(max_length = 150, unique = True)
-    image                = models.CharField(max_length = 255)
+    image                = models.CharField(max_length = 255, null = True, blank = True)
     created              = models.DateTimeField(auto_now_add = True)
     updated              = models.DateTimeField(auto_now = True)
     created_by           = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_product_categories_set')
@@ -130,7 +130,7 @@ class ProductCategory(models.Model):
 class ProductOptions(models.Model):
     # option like sauces or toppings that can be added to the product
     name                 = models.CharField(max_length = 150)
-    image                = models.CharField(max_length = 255)
+    image                = models.CharField(max_length = 255, null = True, blank = True)
     product              = models.ForeignKey('base.Product', on_delete = models.PROTECT, related_name = 'sauces_set')
     material             = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'cafe_product_sauces_set')
     consumption          = models.IntegerField

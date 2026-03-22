@@ -18,57 +18,48 @@ from base.serializers import *
 
 
 class ProductBillProductSerializer(serializers.ModelSerializer):
-    product_type = serializers.CharField(write_only=True)
-    product_id   = serializers.IntegerField(write_only=True)
-    product      = serializers.SerializerMethodField(read_only=True)
+    branch_product = serializers.PrimaryKeyRelatedField(
+        queryset  = models.BranchProduct.objects.all(),
+        required  = True,
+        error_messages={
+            'does_not_exist': _('You must provide a valid branch product ID.'),
+            'incorrect_type': _('Branch product must be identified by an integer ID.')
+        }
+    )
+    options = serializers.PrimaryKeyRelatedField(
+        queryset = models.ProductOptions.objects.all(),
+        many     = True,
+        required = False,
+    )
+    add_ons = serializers.PrimaryKeyRelatedField(
+        queryset = models.ProductAddOns.objects.all(),
+        many     = True,
+        required = False,
+    )
 
     class Meta:
         model = models.ProductBillProduct
         fields = [
             'id',
-            'product_type',
-            'product_id',
-            'product',
+            'branch_product',
+            'options',
+            'add_ons',
             'quantity',
-            'notes'
+            'unit_price',
+            'notes',
+            'created',
+            'updated',
         ]
+        read_only_fields = ['unit_price', 'created', 'updated']
 
-    
-
-    def validate(self, attrs):
-        content_type_map = {
-            'product': 'branchproduct',
-            'offer': 'branchoffer'
-        }
-        product_type = attrs['product_type'].lower()
-        if product_type not in content_type_map:
-            raise ValidationError(
-                _("Invalid product type. Allowed values: product, offer.")
-            )
-        try:
-            model_type = content_type_map[attrs['product_type'].lower()]
-            content_type = ContentType.objects.get(model=model_type)
-            obj = content_type.get_object_for_this_type(id=attrs['product_id'])
-        except (KeyError, ContentType.DoesNotExist, ObjectDoesNotExist):
-            raise ValidationError(_("Invalid product type or ID"))
-
-        attrs['product_object'] = obj
-        attrs['product_type'] = content_type
-        attrs['product_id'] = attrs['product_id']
-        return attrs
-    
-
-    
-    def get_product(self, obj):
-        if isinstance(obj.product_object, models.BranchProduct):
-            data = BranchProductSerializer(obj.product_object).data
-            data['type'] = 'product'
-            return data
-        elif isinstance(obj.product_object, models.BranchOffer):
-            data = BranchOfferSerializer(obj.product_object).data
-            data['type'] = 'offer'
-            return data
-        return None
+    def to_representation(self, instance):
+        data           = super().to_representation(instance)
+        branch_product = instance.branch_product
+        data['branch_product']    = {'id': branch_product.id, 'name': branch_product.name} if branch_product else None
+        data['branch_product_id'] = branch_product.id if branch_product else None
+        data['options'] = ProductOptionsSerializer(instance.options.all(), many=True).data
+        data['add_ons'] = ProductAddOnsSerializer(instance.add_ons.all(), many=True).data
+        return data
 
 
 
@@ -79,56 +70,48 @@ class ProductBillProductSerializer(serializers.ModelSerializer):
 
 
 class ProductBillReturnedProductSerializer(serializers.ModelSerializer):
-    product_type = serializers.CharField(write_only=True)
-    product_id = serializers.IntegerField(write_only=True)
-    product = serializers.SerializerMethodField(read_only=True)
+    branch_product = serializers.PrimaryKeyRelatedField(
+        queryset  = models.BranchProduct.objects.all(),
+        required  = True,
+        error_messages={
+            'does_not_exist': _('You must provide a valid branch product ID.'),
+            'incorrect_type': _('Branch product must be identified by an integer ID.')
+        }
+    )
+    options = serializers.PrimaryKeyRelatedField(
+        queryset = models.ProductOptions.objects.all(),
+        many     = True,
+        required = False,
+    )
+    add_ons = serializers.PrimaryKeyRelatedField(
+        queryset = models.ProductAddOns.objects.all(),
+        many     = True,
+        required = False,
+    )
 
     class Meta:
         model = models.ProductBillReturnedProduct
         fields = [
             'id',
-            'product_type',
-            'product_id',
-            'product',
+            'branch_product',
+            'options',
+            'add_ons',
             'quantity',
-            'created_by'
+            'unit_price',
+            'created_by',
+            'created',
+            'updated',
         ]
-        read_only_fields = ['created_by']
+        read_only_fields = ['unit_price', 'created_by', 'created', 'updated']
 
-    
-
-    def validate(self, attrs):
-        content_type_map = {
-            'product': 'branchproduct',
-            'offer': 'branchoffer'
-        }
-        product_type = attrs['product_type'].lower()
-        if product_type not in content_type_map:
-            raise ValidationError(
-                _("Invalid product type. Allowed values: product, offer.")
-            )
-        try:
-            model_type = content_type_map[attrs['product_type'].lower()]
-            content_type = ContentType.objects.get(model=model_type)
-            obj = content_type.get_object_for_this_type(id=attrs['product_id'])
-        except (KeyError, ContentType.DoesNotExist, ObjectDoesNotExist):
-            raise ValidationError(_("Invalid product type or ID"))
-
-        attrs['product_object'] = obj
-        attrs['product_type'] = content_type
-        attrs['product_id'] = attrs['product_id']
-        return attrs
-
-    def get_product(self, obj):
-        if isinstance(obj.product_object, models.BranchProduct):
-            data = BranchProductSerializer(obj.product_object).data
-            data['type'] = 'product'
-            return data
-        elif isinstance(obj.product_object, models.BranchOffer):
-            data = BranchOfferSerializer(obj.product_object).data
-            data['type'] = 'offer'
-            return data
-        return None
+    def to_representation(self, instance):
+        data           = super().to_representation(instance)
+        branch_product = instance.branch_product
+        data['branch_product']    = {'id': branch_product.id, 'name': branch_product.name} if branch_product else None
+        data['branch_product_id'] = branch_product.id if branch_product else None
+        data['options'] = ProductOptionsSerializer(instance.options.all(), many=True).data
+        data['add_ons'] = ProductAddOnsSerializer(instance.add_ons.all(), many=True).data
+        return data
 
 
 
@@ -165,6 +148,7 @@ class ProductBillSerializer(serializers.ModelSerializer):
             'bill',
             'products',
             'returned_products',
+            'notes',
             'created_by',
             'created',
             'updated',
@@ -516,244 +500,4 @@ class ProductBillSerializer(serializers.ModelSerializer):
 
 
 
-
-
-
-
-   
-
-    '''my first methods withour including the offers'''
-    # def create(self, validated_data):
-    #     validated_data.pop('total_price', None)
-    #     user                               = self.context['request'].user
-    #     validated_data['created_by']       = user
-    #     products                           = validated_data.pop('products', None)
-
-    #     with transaction.atomic():
-    #         instance             = super().create(validated_data)
-    #         total_price          = 0
-    #         new_bill_products    = []
-
-    #         for data in products:
-    #             product  = data['product_object']
-    #             quantity = data['quantity']
-
-    #             if product.available_units < quantity:
-    #                 raise ValidationError(_("{name} available units are less than the quantity you entered").format(name = product.name))
-    #             else:
-    #                 new_bill_products.append(
-    #                     models.ProductBillProduct(
-    #                         product_bill = instance,
-    #                         product      = product,
-    #                         quantity     = quantity,
-    #                     )
-    #                 )
-    #                 '''substracting the material used in manifacturing the product'''
-    #                 for data in product.material_consumptions_set.all():
-    #                     product_material_consumption = data.consumption 
-    #                     material                     = data.material
-    #                     material.available_units    -= product_material_consumption
-    #                     material.save()
-
-    #                 total_price        += product.price * quantity
-    #                 product.sold_units += quantity
-    #                 product.save()
-    #         models.ProductBillProduct.objects.bulk_create(new_bill_products)
-    #         instance.total_price = total_price
-    #         instance.bill.update_products_price()            #update the child bill price to reflect product bill price changes
-    #         instance.save()
-    #         return instance
-    
-
-
-    # def update(self, instance, validated_data):
-    #     user                               = self.context['request'].user
-    #     products                           = validated_data.pop('products', [])
-    #     returned_products                  = validated_data.pop('returned_products', [])
-    #     request_total_price                = validated_data.pop('total_price', None)
-    #     total_price                        = instance.total_price
-
-    #     if user.role in ['reception', 'waiter']:
-    #         if instance.bill.is_active == False:
-    #             raise PermissionDenied(_("You can not edit this bill anymore"))
-
-    #     with transaction.atomic():
-    #         instance = super().update(instance, validated_data)
-    #         if returned_products != []:
-    #             new_bill_returned_products = []
-
-    #             for data in returned_products:
-    #                 product          = data['product_object']
-    #                 quantity         = data['quantity']
-    #                 instance_product = instance.products.filter(product = product).first()
-    #                 if    not instance_product    or    instance_product.quantity < quantity:
-    #                     raise ValidationError(_("{name} units in the bill is less than the desired returned units").format(name = product.name))
-    #                 else:
-    #                     if instance_product.quantity > quantity:
-    #                         products.append({            #ex: the user tried to return just one-item-quntity  from the item qunaitity so we return the whole and add one again in the produts
-    #                             "product"  : data['product_object'],
-    #                             "quantity" : instance_product.quantity - quantity,
-    #                         })
-    #                         total_price        -= product.price * (instance_product.quantity - quantity)
-    #                         product.sold_units -= instance_product.quantity - quantity
-    #                     instance_product.delete()
-    #                     new_bill_returned_products.append(
-    #                         models.ProductBillReturnedProduct(
-    #                             product_bill = instance,
-    #                             product      = product,
-    #                             quantity     = quantity,
-    #                             created_by   = user,
-    #                         )
-    #                     )
-                        
-    #                     '''adding the material substracted in creating the products for the bill cause the product is not manifactured yet'''
-    #                     for data in product.material_consumptions_set.all():
-    #                         product_material_consumption = data.consumption 
-    #                         material                     = data.material
-    #                         material.available_units    += quantity * product_material_consumption
-    #                         material.save()
-
-    #                     total_price        -= product.price * quantity
-    #                     product.sold_units -= quantity
-    #                     product.save()
-            
-    #             models.ProductBillReturnedProduct.objects.bulk_create(new_bill_returned_products)
-
-    #         if products != []:
-    #             products_check    = [data['product_object'].id for data in products]
-    #             if len(products_check) != len(set(products_check)):
-    #                 raise ValidationError(_("You tried to add and return the same product at the same time"))
-                
-    #             new_bill_products = []
-    #             for data in products:
-    #                 product  = data['product_object']
-    #                 quantity = data['quantity']
-    #                 already_existing_product = instance.products.all().filter(id = product.id).first()
-
-
-    #                 if product.available_units < quantity:
-    #                     raise ValidationError(_("{name} available units are less than the quantity you entered").format(name = product.name))
-    #                 elif already_existing_product:
-    #                     already_existing_product.quantity    += quantity
-    #                     total_price                          += already_existing_product.product.price * quantity
-    #                     already_existing_product.save()
-    #                 else:
-    #                     new_bill_products.append(
-    #                         models.ProductBillProduct(
-    #                             product_bill = instance,
-    #                             product      = product,
-    #                             quantity     = quantity,
-    #                         )
-    #                     )
-    #                     '''substracting the material used in manifacturing the product'''
-    #                     for data in product.material_consumptions_set.all():
-    #                         product_material_consumption = data.consumption 
-    #                         material                     = data.material
-    #                         material.available_units    -= quantity * product_material_consumption
-    #                         material.save()
-
-    #                     total_price        += product.price * quantity
-    #                     product.sold_units += quantity
-    #                     product.save()
-    #             models.ProductBillProduct.objects.bulk_create(new_bill_products)
-
-    #         instance.total_price = request_total_price if request_total_price else total_price
-    #         instance.bill.update_products_price()         #update the child bill price to reflect product bill price changes
-    #         instance.save()
-    #         return instance
-                
-        
-
-  # def to_representation(self, instance):
-    #     request = self.context.get('request')
-    #     data    = super().to_representation(instance)
-
-    #     for product_data in data.get('products', []):
-    #         product  = product_data['product']
-    #         product  = models.BranchProduct.objects.filter(id = product_data['product']).first()
-    #         for product_data in data['products']:
-    #             product = product_data['product']
-    #             product_data.update({
-    #                 'unit_price': product.get('price', 0),
-    #                 'total_price': product.get('price', 0) * product_data['quantity'],
-    #                 'type': 'offer' if 'BranchOffer' in str(product) else 'product'
-    #             })
-            
-    #     if request.user.role not in ['waiter', 'reception']:
-    #         data.pop('returned_products', None)
-    #     else:
-    #         for product_data in data.get('returned_products', []):
-    #             product = models.BranchProduct.objects.filter(id = product_data['product']).first()
-    #             if product:
-    #                 product  = product_data['product']
-    #                 product_data['name']  = product.name
-
-    #     return data
-
-
-
-
-
-
-
-
-
-
-# class ProductBillProductSerializer(serializers.ModelSerializer):
-#     product   = serializers.PrimaryKeyRelatedField(
-#         queryset = models.BranchProduct.objects.all(), 
-#         required = True,
-#         error_messages={
-#             'invalid': _('Invalid product ID.'),
-#             'does_not_exist': _('You must provide a valid product ID.'),
-#             'incorrect_type': _('product must be identified by an integer ID.')
-#         }
-#     ) 
-#     class Meta:
-#         model = models.ProductBillProduct
-#         fields = [
-#             'id',
-#             'product',
-#             'quantity',
-#             'notes',
-#         ]
-#     def validate_quantity(self, value):
-#         if value <= 0: 
-#             raise ValidationError(_("Quantity can not be negative or equal to zero"))
-#         return value
-    
-
-
-
-
-# class ProductBillReturnedProductSerializer(serializers.ModelSerializer):
-#     product   = serializers.PrimaryKeyRelatedField(
-#         queryset = models.BranchProduct.objects.all(), 
-#         required = True,
-#         error_messages={
-#             'invalid': _('Invalid product ID.'),
-#             'does_not_exist': _('You must provide a valid product ID.'),
-#             'incorrect_type': _('product must be identified by an integer ID.')
-#         }
-#     ) 
-#     class Meta:
-#         model = models.ProductBillReturnedProduct
-#         fields = [
-#             'id',
-#             'product',
-#             'quantity',
-#             'created_by'
-#         ]
-#         read_only_fields = [
-#             'created_by',
-#         ]
-#     def validate_quantity(self, value):
-#         if value <= 0: 
-#             raise ValidationError(_("Quantity can not be negative or equal to zero"))
-#         return value
-    
-#     def create(self, validated_data):
-#         user                           = self.context['request'].user
-#         validated_data['created_by']   = user
-#         return super().create(validated_data)
 

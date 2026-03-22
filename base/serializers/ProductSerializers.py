@@ -14,20 +14,35 @@ from base import libs
 '''##############################ProductSrializers######################################'''
 
 class ProductSerializer(serializers.ModelSerializer):
+    category = serializers.PrimaryKeyRelatedField(
+        queryset = models.ProductCategory.objects.all(),
+        required = False,
+        allow_null = True,
+        error_messages={
+            'does_not_exist': _('You must provide a valid category ID.'),
+            'incorrect_type': _('Category must be identified by an integer ID.')
+        }
+    )
     class Meta:
         model = models.Product
         fields = [
             'id',
+            'name',
+            'image',
             'layer1',
             'layer2',
             'layer3',
-            'sold_units',
+            'is_active',
+            'category',
+            'price',
             'created',
             'updated',
             'created_by',
         ]
         read_only_fields = [
-            'sold_units',
+            'layer1',
+            'layer2',
+            'layer3',
             'created',
             'updated',
             'created_by',
@@ -35,16 +50,22 @@ class ProductSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         created_by = instance.created_by
-        data['created_by'] = created_by.username if created_by else None
+        category   = instance.category
+        data['created_by']    = created_by.username if created_by else None
         data['created_by_id'] = created_by.id if created_by else None
+        data['category']      = category.name if category else None
+        data['category_id']   = category.id if category else None
         return data
-        
+
+    def validate_name(self, value):
+        return value.lower()
+
     def validate_layer1(self, value):
         return value.lower()
-    
+
     def validate_layer2(self, value):
         return value.lower()
-    
+
     def validate_layer3(self, value):
         return value.lower()
     
@@ -61,7 +82,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 '''##############################BranchProductMaterialSrializers######################################'''
-
+#TODO: to be removed in future 
 class BranchProductMaterialSerializer(serializers.ModelSerializer):
     material  = serializers.PrimaryKeyRelatedField(
         queryset = models.BranchMaterial.objects.all(), 
@@ -113,37 +134,31 @@ class BranchProductMaterialSerializer(serializers.ModelSerializer):
 class BranchProductSerializer(serializers.ModelSerializer):
     material_consumptions_set = BranchProductMaterialSerializer(many = True)
     product      = serializers.PrimaryKeyRelatedField(
-        queryset = models.Product.objects.all(), 
+        queryset = models.Product.objects.all(),
         required = True,
         error_messages={
             'invalid': _('Invalid product ID.'),
             'does_not_exist': _('You must provide a valid product ID.'),
             'incorrect_type': _('Branch must be identified by an integer ID.')
         }
-    ) 
+    )
     branch  = serializers.PrimaryKeyRelatedField(
-        queryset = models.Branch.objects.all(), 
+        queryset = models.Branch.objects.all(),
         required = True,
         error_messages={
             'invalid': _('Invalid branch ID.'),
             'does_not_exist': _('You must provide a valid branch ID.'),
             'incorrect_type': _('Branch must be identified by an integer ID.')
         }
-    ) 
+    )
     class Meta:
         model = models.BranchProduct
         fields = [
             'id',
-            'layer1',
-            'layer2',
-            'layer3',
             'name',
             'product',
             'branch',
-            'warning_units',
             'available_units',
-            'warning_message',
-            'sold_units',
             'price',
             'material_consumptions_set',
             'created',
@@ -151,13 +166,8 @@ class BranchProductSerializer(serializers.ModelSerializer):
             'created_by',
         ]
         read_only_fields = [
-            'layer1',
-            'layer2',
-            'layer3',
             'name',
             'available_units',
-            'warning_message',
-            'sold_units',
             'created',
             'updated',
             'created_by',
@@ -188,11 +198,6 @@ class BranchProductSerializer(serializers.ModelSerializer):
 
 
 
-    def validate_warning_units(self, value):
-        if value < 0: 
-            raise ValidationError(_("Warning Units can not be negative."))
-        return value
-    
     def validate_price(self, value):
         if value <= 0: 
             raise ValidationError(_("Price can not be negative or equal to zero."))
@@ -284,8 +289,138 @@ class BranchProductSerializer(serializers.ModelSerializer):
                 models.BranchProductMaterial.objects.bulk_create(materials_list)
             instance.save()
             return instance
-    
 
 
 
 
+'''##############################ProductCategorySerializer######################################'''
+
+class ProductCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ProductCategory
+        fields = [
+            'id',
+            'name',
+            'image',
+            'created',
+            'updated',
+            'created_by',
+        ]
+        read_only_fields = [
+            'created',
+            'updated',
+            'created_by',
+        ]
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        data['created_by']    = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        return data
+
+    def create(self, validated_data):
+        validated_data['created_by'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+
+
+'''##############################ProductAddOnsSerializer######################################'''
+
+class ProductAddOnsSerializer(serializers.ModelSerializer):
+    material = serializers.PrimaryKeyRelatedField(
+        queryset = models.Material.objects.all(),
+        required = True,
+        error_messages={
+            'does_not_exist': _('You must provide a valid material ID.'),
+            'incorrect_type': _('Material must be identified by an integer ID.')
+        }
+    )
+    class Meta:
+        model = models.ProductAddOns
+        fields = [
+            'id',
+            'name',
+            'image',
+            'material',
+            'created',
+            'updated',
+            'created_by',
+        ]
+        read_only_fields = [
+            'created',
+            'updated',
+            'created_by',
+        ]
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        material   = instance.material
+        data['created_by']    = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['material']      = material.name if material else None
+        data['material_id']   = material.id if material else None
+        return data
+
+    def create(self, validated_data):
+        validated_data['created_by'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+
+
+'''##############################ProductOptionsSerializer######################################'''
+
+class ProductOptionsSerializer(serializers.ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(
+        queryset = models.Product.objects.all(),
+        required = True,
+        error_messages={
+            'does_not_exist': _('You must provide a valid product ID.'),
+            'incorrect_type': _('Product must be identified by an integer ID.')
+        }
+    )
+    material = serializers.PrimaryKeyRelatedField(
+        queryset = models.Material.objects.all(),
+        required = True,
+        error_messages={
+            'does_not_exist': _('You must provide a valid material ID.'),
+            'incorrect_type': _('Material must be identified by an integer ID.')
+        }
+    )
+    class Meta:
+        model = models.ProductOptions
+        fields = [
+            'id',
+            'name',
+            'image',
+            'product',
+            'material',
+            'created',
+            'updated',
+            'created_by',
+        ]
+        read_only_fields = [
+            'created',
+            'updated',
+            'created_by',
+        ]
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        created_by = instance.created_by
+        material   = instance.material
+        product    = instance.product
+        data['created_by']    = created_by.username if created_by else None
+        data['created_by_id'] = created_by.id if created_by else None
+        data['material']      = material.name if material else None
+        data['material_id']   = material.id if material else None
+        data['product']       = product.name if product else None
+        data['product_id']    = product.id if product else None
+        return data
+
+    def create(self, validated_data):
+        validated_data['created_by'] = self.context['request'].user
+        return super().create(validated_data)
