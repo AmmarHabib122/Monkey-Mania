@@ -100,6 +100,9 @@ class ChildSerializer(serializers.ModelSerializer):
             'updated',
             'created_by',
         ]
+        extra_kwargs = {
+            'name': {'validators': []},
+        }
 
     def to_representation(self, instance):
         data =  super().to_representation(instance)
