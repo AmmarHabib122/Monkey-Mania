@@ -8,30 +8,17 @@ from django.db import models
 
 
 class Product(models.Model):
-    layer1      = models.CharField(max_length = 150, db_index=True)
-    layer2      = models.CharField(max_length = 150, db_index=True)
-    layer3      = models.CharField(max_length = 150)
+    name        = models.CharField(max_length = 150, unique = True)
+    image       = models.CharField(max_length = 255, null = True, blank = True)
+    layer1      = models.CharField(max_length = 150) #TODO : remove in future
+    layer2      = models.CharField(max_length = 150) #TODO : remove in future
+    layer3      = models.CharField(max_length = 150)  #TODO : remove in future
     is_active   = models.BooleanField(default = True)
+    category    = models.ForeignKey('base.ProductCategory', on_delete = models.PROTECT, related_name = 'products_set', null = True, blank = True)
+    price       = models.DecimalField(max_digits = 10, decimal_places = 2)
     created     = models.DateTimeField(auto_now_add = True)
     updated     = models.DateTimeField(auto_now = True)
     created_by  = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_products_set')
-
-    @property
-    def name(self):
-        return f"{self.layer2} {self.layer3}"
-    
-    
-    @property
-    def sold_units(self):
-        return self.branch_products_set.aggregate(total_units=models.Sum('sold_units'))['total_units'] or 0
-    
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields = ['layer2', 'layer3'],
-                name   = 'unique_product_name'
-            )
-        ]
 
 
     def __str__(self):
@@ -45,65 +32,23 @@ class Product(models.Model):
 
 
 
-
-
-
 class BranchProduct(models.Model):
     product         = models.ForeignKey('base.Product', on_delete = models.PROTECT, related_name = 'branch_products_set')
     branch          = models.ForeignKey('base.Branch', on_delete = models.CASCADE, related_name = 'products_set')
-    warning_units   = models.IntegerField()
-    sold_units      = models.IntegerField(default = 0)
-    price           = models.DecimalField(max_digits = 10, decimal_places = 2)
+    price           = models.DecimalField(max_digits = 10, decimal_places = 2, null = True, blank = True)  #TODO : to be removed in future and use the price from the product model instead
     created         = models.DateTimeField(auto_now_add = True)
     updated         = models.DateTimeField(auto_now = True)
     created_by      = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_branch_products_set')
-    
-
-    @property
-    def layer1(self):
-        return self.product.layer1 
-    
-    @property
-    def layer2(self):
-        return self.product.layer2 
-    
-    @property
-    def layer3(self):
-        return self.product.layer3 
     
     @property
     def name(self):
         return self.product.name 
     
+    #TODO: calculate available units based on the reciepe and available materials in the branch
     @property
     def available_units(self):
-        material_consumptions_data          = self.material_consumptions_set.all()
-        min_product_material_avalible_units = float('inf')
-
-        for data in material_consumptions_data:
-            material_available_units             = data.material.available_units
-            product_material_consumption         = data.consumption
-            product_material_avalible_units      = material_available_units / (product_material_consumption or 1)
-            min_product_material_avalible_units  = min(min_product_material_avalible_units, product_material_avalible_units)
-
-        return min_product_material_avalible_units if min_product_material_avalible_units != float('inf') else 0
+        return 0
     
-    @property
-    def warning_message(self):
-        if self.available_units <= self.warning_units:
-            limiting_material = next(
-                (data.material for data in self.material_consumptions_set.all()
-                if data.material.available_units / (data.consumption or 1) == self.available_units),
-                None
-            )
-            limiting_material = limiting_material.name if limiting_material else "unknown"
-            return f"{self.name} has now {self.available_units} units available. Check material {limiting_material}."
-        return None
-    
-
-
-
-
 
     class Meta:
         constraints = [
@@ -118,19 +63,12 @@ class BranchProduct(models.Model):
         ]
     
     def __str__(self):
-        return f"#{self.id} {self.branch.name} {self.product.name}" if self.branch else f"#{self.id}"
-    
+        return f"#{self.id} {self.name} ({self.branch.name})"
 
 
 
 
-
-
-
-
-
-
-
+#TODO : to be reomved in future
 class BranchProductMaterial(models.Model):
     product      = models.ForeignKey('base.BranchProduct', on_delete = models.CASCADE, related_name = 'material_consumptions_set')
     material     = models.ForeignKey('base.BranchMaterial', on_delete = models.CASCADE, related_name = 'branch_product_materials_set')
@@ -149,3 +87,90 @@ class BranchProductMaterial(models.Model):
 
     def __str__(self):
         return f"#{self.id} {self.product.branch.name} {self.product.name} (material : {self.material.material.name})" if self.product.branch else f"#{self.id}"
+
+
+
+
+
+
+class ProductAddOns(models.Model):
+    name                 = models.CharField(max_length = 150, unique = True)
+    image                = models.CharField(max_length = 255)
+    material             = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'cafe_product_toppings_set')
+    consumption          = models.IntegerField()
+    created              = models.DateTimeField(auto_now_add = True)
+    updated              = models.DateTimeField(auto_now = True)
+    created_by           = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_cafe_product_addons_set')
+
+    
+    def __str__(self):
+        return f"#{self.id} {self.name}"
+    
+
+
+
+
+
+class ProductCategory(models.Model):
+    name                 = models.CharField(max_length = 150, unique = True)
+    image                = models.CharField(max_length = 255, null = True, blank = True)
+    created              = models.DateTimeField(auto_now_add = True)
+    updated              = models.DateTimeField(auto_now = True)
+    created_by           = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_product_categories_set')
+    
+    def __str__(self):
+        return f"#{self.id} {self.name}"
+
+
+
+
+
+
+
+class ProductOptions(models.Model):
+    # option like sauces or toppings that can be added to the product
+    name                 = models.CharField(max_length = 150)
+    image                = models.CharField(max_length = 255, null = True, blank = True)
+    product              = models.ForeignKey('base.Product', on_delete = models.PROTECT, related_name = 'sauces_set')
+    material             = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'cafe_product_sauces_set')
+    consumption          = models.IntegerField()
+    created              = models.DateTimeField(auto_now_add = True)
+    updated              = models.DateTimeField(auto_now = True)
+    created_by           = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_cafe_product_sauces_set')
+
+    #TODO: calculate available units based on the reciepe and available materials in the branch
+    @property
+    def available_units(self):
+        return 0
+
+    def __str__(self):
+        return f"#{self.id} (المنتج = {self.product.name}) - (الصوص = {self.material.name})"
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields = ['product', 'material'],
+                name   = 'unique_product_material_option'
+            )
+        ]
+
+
+
+class ProductReciepe(models.Model):
+    product              = models.ForeignKey('base.Product', on_delete = models.PROTECT, related_name = 'reciepe_set')
+    material             = models.ForeignKey('base.Material', on_delete = models.PROTECT, related_name = 'cafe_product_reciepe_set')
+    consumption          = models.IntegerField()
+    created              = models.DateTimeField(auto_now_add = True)
+    updated              = models.DateTimeField(auto_now = True)
+    created_by           = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_cafe_product_reciepes_set')
+
+    def __str__(self):
+        return f"#{self.id} {self.name}"
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields = ['product', 'material'],
+                name   = 'unique_product_material_reciepe'
+            )
+        ]
