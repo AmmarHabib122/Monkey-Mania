@@ -21,25 +21,25 @@ class RoleAccessList:
 
 
 
-class CreateProductBillAPI(RoleAccessList, generics.CreateAPIView):
-    queryset           = models.ProductBill.objects.all()
-    serializer_class   = serializers.ProductBillSerializer
+class CreateCafeBillAPI(RoleAccessList, generics.CreateAPIView):
+    queryset           = models.CafeBill.objects.all()
+    serializer_class   = serializers.CafeBillSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         response.data['message'] = _("Cafe Bill Created successfully")
         return response
-Create_ProductBill = CreateProductBillAPI.as_view()
+Create_CafeBill = CreateCafeBillAPI.as_view()
 
 
 
 
 
 
-class UpdateProductBillAPI(RoleAccessList, generics.UpdateAPIView):
-    queryset           = models.ProductBill.objects.all()
-    serializer_class   = serializers.ProductBillSerializer
+class UpdateCafeBillAPI(RoleAccessList, generics.UpdateAPIView):
+    queryset           = models.CafeBill.objects.all()
+    serializer_class   = serializers.CafeBillSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     lookup_field       = "pk"
     
@@ -58,14 +58,14 @@ class UpdateProductBillAPI(RoleAccessList, generics.UpdateAPIView):
         responseData['message'] = _("Cafe Bill Updated successfully")
         return Response(responseData)
     
-Update_ProductBill = UpdateProductBillAPI.as_view()
+Update_CafeBill = UpdateCafeBillAPI.as_view()
 
 
 
 
-class GetProductBillAPI(RoleAccessList, generics.RetrieveAPIView):
-    queryset           = models.ProductBill.objects.all()
-    serializer_class   = serializers.ProductBillSerializer
+class GetCafeBillAPI(RoleAccessList, generics.RetrieveAPIView):
+    queryset           = models.CafeBill.objects.all()
+    serializer_class   = serializers.CafeBillSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     lookup_field       = "pk"
 
@@ -81,16 +81,16 @@ class GetProductBillAPI(RoleAccessList, generics.RetrieveAPIView):
         if not bill.is_active    and    request.user.role in ['waiter']:
                 raise PermissionDenied(_("You do not have the permission to access this data"))
         return response
-Get_ProductBill = GetProductBillAPI.as_view()
+Get_CafeBill = GetCafeBillAPI.as_view()
 
 
 
 
 
-class ListActiveProductBillAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.ProductBill.objects.filter(bill__is_active = True).order_by('-id')
+class ListActiveCafeBillAPI(RoleAccessList, generics.ListAPIView):
+    queryset           = models.CafeBill.objects.filter(bill__is_active = True).order_by('-id')
     pagination_class   = None
-    serializer_class   = serializers.ProductBillSerializer
+    serializer_class   = serializers.CafeBillSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['bill__children__name', 'table_number', 'bill_number'] 
@@ -107,7 +107,7 @@ class ListActiveProductBillAPI(RoleAccessList, generics.ListAPIView):
             return libs.send_csv_file_response(serializer.data, "active_cafe_bills.csv")
         return super().list(request, *args, **kwargs)
     
-List_ActiveProductBill = ListActiveProductBillAPI.as_view()
+List_ActiveCafeBill = ListActiveCafeBillAPI.as_view()
 
 
 
@@ -116,9 +116,9 @@ List_ActiveProductBill = ListActiveProductBillAPI.as_view()
 
 
 
-class ListProductBillAPI(RoleAccessList, generics.ListAPIView):
-    queryset           = models.ProductBill.objects.all().order_by('-id')
-    serializer_class   = serializers.ProductBillSerializer
+class ListCafeBillAPI(RoleAccessList, generics.ListAPIView):
+    queryset           = models.CafeBill.objects.all().order_by('-id')
+    serializer_class   = serializers.CafeBillSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
     search_fields      = ['bill__children__name', 'table_number', 'bill_number'] 
@@ -140,7 +140,7 @@ class ListProductBillAPI(RoleAccessList, generics.ListAPIView):
             return libs.send_csv_file_response(serializer.data, "all_cafe_bills.csv")
         return super().list(request, *args, **kwargs)
     
-List_ProductBill = ListProductBillAPI.as_view()
+List_CafeBill = ListCafeBillAPI.as_view()
 
 
 

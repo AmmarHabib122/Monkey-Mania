@@ -8,7 +8,7 @@ from .ImageSerializers import *
 from .ProductSerializers import *
 from .MaterialSerializers import *
 from .BillSerializers import *
-from .ProductBillSerializers import *
+from .CafeBillSerializers import *
 from .DiscountSerializers import *
 from .ExpenseSerializers import *
 from .SubscriptionSerializers import *
