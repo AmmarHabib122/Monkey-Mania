@@ -250,6 +250,8 @@ class ProductBillSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         if user.branch   and   value.branch != user.branch:
             raise PermissionDenied(_("You can not create a bill with a different branch"))
+        if not value.is_active:
+            raise PermissionDenied(_("You can not add cafe products to a closed bill"))
         return value
     
     def validate_products(self, value):
