@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -W all -m pytest tests/branch/ -x --no-header -q)"
+    ]
+  }
+}

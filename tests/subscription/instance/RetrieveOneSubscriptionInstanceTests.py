@@ -12,7 +12,7 @@ class TestSubscriptionInstanceRetrieve(SetUpDataClass):
     def test_user_with_no_branch_get_subscription_instance(self):
         self.authenticate(self.admin_user_1)
 
-        url = reverse('Get_SubscriptionInstance', kwargs={'pk': 1})  #admin get SubscriptionInstance
+        url = reverse('Get_SubscriptionInstance', kwargs={'pk': self.subscription_instance_1.id})  #admin get SubscriptionInstance
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -22,7 +22,7 @@ class TestSubscriptionInstanceRetrieve(SetUpDataClass):
     def test_user_with_a_branch_get_subscription_instance(self):
 
         self.authenticate(self.reception_user_1)
-        url = reverse('Get_SubscriptionInstance', kwargs={'pk': 1})  #manager get  SubscriptionInstance
+        url = reverse('Get_SubscriptionInstance', kwargs={'pk': self.subscription_instance_1.id})  #manager get  SubscriptionInstance
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -34,7 +34,7 @@ class TestSubscriptionInstanceRetrieve(SetUpDataClass):
     def test_user_with_no_permission_get_subscription_instance(self):
         self.authenticate(self.waiter_user_1)
         
-        url = reverse('Get_SubscriptionInstance', kwargs={'pk': 1})  #waiter get subscription_instance
+        url = reverse('Get_SubscriptionInstance', kwargs={'pk': self.subscription_instance_1.id})  #waiter get subscription_instance
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 

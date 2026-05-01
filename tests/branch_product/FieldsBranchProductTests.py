@@ -54,7 +54,7 @@ class TestBranchProductFields(SetUpDataClass):
         self.assertIn("Materials must be provided.", response.data['message'])
         
         data.clear()
-        url = reverse('Update_BranchProduct', kwargs = {'pk' : 1})  
+        url = reverse('Update_BranchProduct', kwargs = {'pk' : self.branch_product_1.id})
 
         data['material_consumptions_set'] = self.test_branch_product_1['material_consumptions_set']
         response = self.client.patch(url, data, format = 'json')     #admin add material

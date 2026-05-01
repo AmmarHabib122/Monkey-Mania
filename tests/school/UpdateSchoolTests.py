@@ -10,7 +10,7 @@ from .SetUpSchoolTests import SetUpDataClass
 
 class TestSchoolUpdate(SetUpDataClass):
     def test_user_with_no_branch_update_school(self):
-        url = reverse('Update_School', kwargs = {'pk' : 1})
+        url = reverse('Update_School', kwargs = {'pk' : self.school_1.id})
         self.authenticate(user = self.admin_user_1)
         
         response = self.client.patch(url, self.test_school_1, format = 'json') #admin update Branch
@@ -20,7 +20,7 @@ class TestSchoolUpdate(SetUpDataClass):
 
 
     def test_user_with_a_branch_update_school(self):
-        url = reverse('Update_School', kwargs = {'pk' : 1})
+        url = reverse('Update_School', kwargs = {'pk' : self.school_1.id})
         self.authenticate(self.reception_user_1)
         
         response = self.client.patch(url, self.test_school_2, format = 'json') #reception update School
@@ -35,7 +35,7 @@ class TestSchoolUpdate(SetUpDataClass):
 
 
     def test_user_with_no_permission_update_school(self):
-        url = reverse('Update_School', kwargs = {'pk' : 1})
+        url = reverse('Update_School', kwargs = {'pk' : self.school_1.id})
         self.authenticate(user = self.waiter_user_1)
     
         response = self.client.patch(url, self.test_school_1, format = 'json') #waiter update Branch

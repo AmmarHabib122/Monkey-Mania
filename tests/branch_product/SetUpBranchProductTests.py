@@ -179,45 +179,45 @@ class SetUpDataClass(TestCase):
         )
 
         cls.test_branch_product_1 = {
-            "product"        : 1,
-            "branch"         : 1,
+            "product"        : cls.product_1.id,
+            "branch"         : cls.branch_1.id,
             "warning_units"  : 150,
             "price"          : 231,
             "material_consumptions_set" : [
                 {
-                    'material' : 1,
+                    'material' : cls.branch_material_1.id,
                     'consumption' : 0.1,
                 },
                 {
-                    'material' : 2,
+                    'material' : cls.branch_material_2.id,
                     'consumption' : 0.1,
                 }
             ]
         }
         cls.test_branch_product_2 = {
-            "product"        : 3,
-            "branch"         : 1,
+            "product"        : cls.product_3.id,
+            "branch"         : cls.branch_1.id,
             "warning_units"  : 5,
             "price"          : 231,
             "material_consumptions_set" : [
                 {
-                    'material' : 1,
+                    'material' : cls.branch_material_1.id,
                     'consumption' : 0.2,
                 },
                 {
-                    'material' : 2,
+                    'material' : cls.branch_material_2.id,
                     'consumption' : 0.2,
                 }
             ]
         }
         cls.test_branch_product_3 = {
-            "product"        : 3,
-            "branch"         : 1,
+            "product"        : cls.product_3.id,
+            "branch"         : cls.branch_1.id,
             "warning_units"  : 5,
             "price"          : 231,
             "material_consumptions_set" : [
                 {
-                    'material' : 3,
+                    'material' : cls.branch_material_3.id,
                     'consumption' : 0.3,
                 }
             ]

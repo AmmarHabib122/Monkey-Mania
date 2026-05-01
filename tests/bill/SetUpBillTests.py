@@ -244,25 +244,25 @@ class SetUpDataClass(TestCase):
 
         cls.test_bill_1 = {
             "children" : [
-                1,
-                2,
+                cls.child_1.id,
+                cls.child_2.id,
             ],
-            'branch' : 1,
+            'branch' : cls.branch_1.id,
         }
         cls.test_bill_duplicate = {
             "children" : [
-                1,
-                2,
+                cls.child_1.id,
+                cls.child_2.id,
             ],
-            'branch' : 2,
+            'branch' : cls.branch_2.id,
         }
         cls.test_bill_2 = {
             "children" : [
-                3,
-                4,
-                5,
+                cls.child_3.id,
+                cls.child_4.id,
+                cls.child_5.id,
             ],
-            'branch' : 1,
+            'branch' : cls.branch_1.id,
         }
 
 

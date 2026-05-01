@@ -206,70 +206,72 @@ class SetUpDataClass(TestCase):
         models.HourPrice.objects.bulk_create(hour_prices_data_1)
 
         branch_product_1 = {
-            "product"        : 1,
-            "branch"         : 1,
+            "product"        : cls.product_1.id,
+            "branch"         : cls.branch_1.id,
             "warning_units"  : 150,
             "price"          : 100,
             "material_consumptions_set" : [
                 {
-                    'material' : 1,
+                    'material' : cls.branch_material_1.id,
                     'consumption' : 0.1,
                 },
                 {
-                    'material' : 2,
+                    'material' : cls.branch_material_2.id,
                     'consumption' : 0.1,
                 }
             ]
         }
         branch_product_2 = {
-            "product"        : 3,
-            "branch"         : 1,
+            "product"        : cls.product_3.id,
+            "branch"         : cls.branch_1.id,
             "warning_units"  : 5,
             "price"          : 150,
             "material_consumptions_set" : [
                 {
-                    'material' : 1,
+                    'material' : cls.branch_material_1.id,
                     'consumption' : 0.2,
                 },
                 {
-                    'material' : 2,
+                    'material' : cls.branch_material_2.id,
                     'consumption' : 0.2,
                 }
             ]
         }
-        
+
         url = reverse('Create_BranchProduct')
-        response = cls.client.post(url, branch_product_1, format = 'json') 
+        response = cls.client.post(url, branch_product_1, format = 'json')
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
-        response = cls.client.post(url, branch_product_2, format = 'json') 
+        bp1_id = response.data['id']
+        response = cls.client.post(url, branch_product_2, format = 'json')
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
+        bp2_id = response.data['id']
 
         bill_1 = {
             "children" : [
-                1,
-                2,
+                cls.child_1.id,
+                cls.child_2.id,
             ],
-            'branch' : 1,
+            'branch' : cls.branch_1.id,
         }
         bill_duplicate = {
             "children" : [
-                1,
-                2,
+                cls.child_1.id,
+                cls.child_2.id,
             ],
-            'branch' : 2,
+            'branch' : cls.branch_2.id,
         }
         bill_2 = {
             "children" : [
-                3,
-                4,
-                5,
+                cls.child_3.id,
+                cls.child_4.id,
+                cls.child_5.id,
             ],
-            'branch' : 1,
+            'branch' : cls.branch_1.id,
         }
         url = reverse('Create_Bill')
-        response = cls.client.post(url, bill_1, format = 'json') 
+        response = cls.client.post(url, bill_1, format = 'json')
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
-        response = cls.client.post(url, bill_2, format = 'json') 
+        response = cls.client.post(url, bill_2, format = 'json')
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
 
         cls.offer_1 = models.Offer.objects.create(
@@ -286,54 +288,55 @@ class SetUpDataClass(TestCase):
         )
 
         branch_offer_1 = {
-            'offer' : 3,
-            'branch' : 1,
+            'offer' : cls.offer_3.id,
+            'branch' : cls.branch_1.id,
             'price' : 300,
             'expire_date' : '2026-5-3',
             'products_set' : [
                 {
-                    'product' : 1,
+                    'product' : bp1_id,
                     'quantity' : 2,
                 },
                 {
-                    'product' : 2,
+                    'product' : bp2_id,
                     'quantity' : 1,
                 },
             ]
         }
 
         url = reverse('Create_BranchOffer')
-        response = cls.client.post(url, branch_offer_1, format = 'json') 
+        response = cls.client.post(url, branch_offer_1, format = 'json')
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
-        
+        cls.branch_offer_1_id = response.data['id']
+
         cls.test_branch_offer_1 = {
-            "offer" : 1,
-            "branch" : 1,
+            "offer" : cls.offer_1.id,
+            "branch" : cls.branch_1.id,
             "price" : 300,
             "expire_date" : "2026-5-3",
             "products_set" : [
                 {
-                    "product" : 1,
+                    "product" : bp1_id,
                     "quantity" : 2,
                 },
                 {
-                    "product" : 2,
+                    "product" : bp2_id,
                     "quantity" : 1,
                 },
             ]
         }
         cls.test_branch_offer_2 = {
-            'offer' : 2,
-            'branch' : 1,
+            'offer' : cls.offer_2.id,
+            'branch' : cls.branch_1.id,
             'price' : 200,
             'expire_date' : '2026-5-3',
             'products_set' : [
                 {
-                    'product' : 1,
+                    'product' : bp1_id,
                     'quantity' : 1,
                 },
                 {
-                    'product' : 2,
+                    'product' : bp2_id,
                     'quantity' : 2,
                 },
             ]

@@ -229,8 +229,8 @@ class SetUpDataClass(TestCase):
 
             ],
             "creatable_in_branches" : [
-                1,
-                2,
+                cls.branch_1.id,
+                cls.branch_2.id,
             ],
         }
         cls.test_subscription_2 = {
@@ -239,10 +239,10 @@ class SetUpDataClass(TestCase):
             "instance_duration" : 30,
             "price"             : 1200,
             "usable_in_branches"    : [
-                1
+                cls.branch_1.id
             ],
             "creatable_in_branches" : [
-                2,
+                cls.branch_2.id,
             ],
         }
 

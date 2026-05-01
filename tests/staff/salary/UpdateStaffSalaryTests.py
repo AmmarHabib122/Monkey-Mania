@@ -14,8 +14,9 @@ class TestStaffSalaryUpdate(SetUpDataClass):
         url = reverse('Create_StaffSalary')
         response = self.client.post(url, self.test_staff_salary_1, format = 'json') #admin add StaffSalary
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        salary_id = response.data['id']
 
-        url = reverse('Update_StaffSalary', kwargs = {'pk' : 1})
+        url = reverse('Update_StaffSalary', kwargs = {'pk' : salary_id})
 
         self.test_staff_salary_1.pop('staff')
         response = self.client.patch(url, self.test_staff_salary_1, format = 'json') #admin update StaffSalary
@@ -29,8 +30,9 @@ class TestStaffSalaryUpdate(SetUpDataClass):
         url = reverse('Create_StaffSalary')
         response = self.client.post(url, self.test_staff_salary_1, format = 'json') #admin add StaffSalary
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        salary_id = response.data['id']
 
-        url = reverse('Update_StaffSalary', kwargs = {'pk' : 1})
+        url = reverse('Update_StaffSalary', kwargs = {'pk' : salary_id})
 
         self.test_staff_salary_1.pop('staff')
         response = self.client.patch(url, self.test_staff_salary_1, format = 'json') #manager update StaffSalary
@@ -45,8 +47,9 @@ class TestStaffSalaryUpdate(SetUpDataClass):
         url = reverse('Create_StaffSalary')
         response = self.client.post(url, self.test_staff_salary_1, format = 'json') #admin add StaffSalary
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        salary_id = response.data['id']
 
-        url = reverse('Update_StaffSalary', kwargs = {'pk' : 1})
+        url = reverse('Update_StaffSalary', kwargs = {'pk' : salary_id})
         self.authenticate(user = self.waiter_user_1)
 
         self.test_staff_salary_1.pop('staff')

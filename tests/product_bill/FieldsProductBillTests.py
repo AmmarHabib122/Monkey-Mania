@@ -7,14 +7,6 @@ from .SetUpProductBillTests import SetUpDataClass
 
 
 
-
-
-
-
-
-
-
-
 class TestProductBillFields(SetUpDataClass):
     def test_table_number(self):
         ...
@@ -32,31 +24,31 @@ class TestProductBillFields(SetUpDataClass):
         response = self.client.post(url, self.test_product_bill_1, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(float(response.data['total_price']), 950)
+        product_bill_id = response.data['id']
 
-        url = reverse('Update_ProductBill', kwargs = {'pk' : 1})
+        url = reverse('Update_ProductBill', kwargs = {'pk' : product_bill_id})
 
         data = {
             'returned_products' : [
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : self.bp1_id,
                     'quantity' : 2,
                 },
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 2,
+                    'product_id'  : self.bp2_id,
                     'quantity' : 3,
                 },
             ]
         }
-        response = self.client.patch(url, data, format = 'json') 
+        response = self.client.patch(url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(float(response.data['total_price']), 300)
 
-        response = self.client.patch(url, self.test_product_bill_2, format = 'json') 
+        response = self.client.patch(url, self.test_product_bill_2, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(float(response.data['total_price']), 1450)
-
 
 
 
@@ -68,7 +60,7 @@ class TestProductBillFields(SetUpDataClass):
         self.test_product_bill_1['products'].append(
             {
                 'product_type'  : 'product',
-                'product_id'  : 1,
+                'product_id'  : self.bp1_id,
                 'quantity' : 3,
                 'notes' : 'help'
             },
@@ -80,36 +72,34 @@ class TestProductBillFields(SetUpDataClass):
         self.test_product_bill_1['products'].pop(-1)
         response = self.client.post(url, self.test_product_bill_1, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        product_bill_id = response.data['id']
 
-        url = reverse('Update_ProductBill', kwargs = {'pk' : 1})
+        url = reverse('Update_ProductBill', kwargs = {'pk' : product_bill_id})
 
         data = {
             'products' : [
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : self.bp1_id,
                     'quantity' : 2,
                     'notes' : 'help'
                 },
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : self.bp1_id,
                     'quantity' : 3,
                     'notes' : 'help'
                 },
-                
+
             ]
         }
-        response = self.client.patch(url, {"products" : []}, format = 'json') 
+        response = self.client.patch(url, {"products" : []}, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['message'], "At least one added item must be provided")
 
-        response = self.client.patch(url, data, format = 'json') 
+        response = self.client.patch(url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['message'], "Duplicate added items detected")
-
-
-
 
 
 
@@ -121,7 +111,7 @@ class TestProductBillFields(SetUpDataClass):
         self.test_product_bill_1['returned_products'] = [
             {
                 'product_type'  : 'product',
-                'product_id'  : 1,
+                'product_id'  : self.bp1_id,
                 'quantity' : 3,
             },
         ]
@@ -132,29 +122,30 @@ class TestProductBillFields(SetUpDataClass):
         self.test_product_bill_1.pop("returned_products")
         response = self.client.post(url, self.test_product_bill_1, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        product_bill_id = response.data['id']
 
-        url = reverse('Update_ProductBill', kwargs = {'pk' : 1})
+        url = reverse('Update_ProductBill', kwargs = {'pk' : product_bill_id})
 
         data = {
             'returned_products' : [
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : self.bp1_id,
                     'quantity' : 2,
                 },
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : self.bp1_id,
                     'quantity' : 3,
                 },
-                
+
             ]
         }
-        response = self.client.patch(url, {"returned_products" : []}, format = 'json') 
+        response = self.client.patch(url, {"returned_products" : []}, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['message'], "At least one returned item must be provided")
 
-        response = self.client.patch(url, data, format = 'json') 
+        response = self.client.patch(url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['message'], "Duplicate returned items detected")
 
@@ -162,18 +153,18 @@ class TestProductBillFields(SetUpDataClass):
             'returned_products' : [
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : self.bp1_id,
                     'quantity' : 2,
                 },
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 2,
+                    'product_id'  : self.bp2_id,
                     'quantity' : 6,
                 },
-                
+
             ]
         }
-        response = self.client.patch(url, data, format = 'json') 
+        response = self.client.patch(url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['message'], "Not enough tajin pistachio units to return")
 
@@ -181,42 +172,31 @@ class TestProductBillFields(SetUpDataClass):
             'returned_products' : [
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : self.bp1_id,
                     'quantity' : 2,
                 },
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 2,
+                    'product_id'  : self.bp2_id,
                     'quantity' : 4,
                 },
-                
+
             ]
         }
-        response = self.client.patch(url, data, format = 'json') 
+        response = self.client.patch(url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = {
             'returned_products' : [
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : self.bp1_id,
                     'quantity' : 1,
-                },   
+                },
             ]
         }
-        response = self.client.patch(url, data, format = 'json') 
+        response = self.client.patch(url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['message'], "Not enough waffle nutella units to return")
-
-
-
-
-
-
-    
-
-
-
-
 
 

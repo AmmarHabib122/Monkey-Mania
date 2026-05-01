@@ -78,19 +78,19 @@ class SetUpDataClass(TestCase):
         )
         cls.test_general_expense_1 = {
             "name"            : 'testgeneral_expense1',
-            "branch"          : 1,
+            "branch"          : cls.branch_1.id,
             "total_price"     : 10000,
             "quantity"        : 10,
         }
         cls.test_general_expense_2 = {
             "name"            : 'testgeneral_expense1',
-            "branch"          : 1,
+            "branch"          : cls.branch_1.id,
             "total_price"     : 10000,
             "quantity"        : 100,
         }
         cls.test_general_expense_3 = {
             "name"            : 'testgeneral_expense1',
-            "branch"          : 1,
+            "branch"          : cls.branch_1.id,
             "total_price"     : 10000,
             "quantity"        : 50,
         }

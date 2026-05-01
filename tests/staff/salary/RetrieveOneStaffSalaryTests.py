@@ -14,8 +14,9 @@ class TestStaffSalaryRetrieve(SetUpDataClass):
         self.authenticate(user = self.admin_user_1)
         response = self.client.post(url, self.test_staff_salary_1, format = 'json') #admin add StaffSalary
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        salary_id = response.data['id']
 
-        url = reverse('Get_StaffSalary', kwargs={'pk': 1})
+        url = reverse('Get_StaffSalary', kwargs={'pk': salary_id})
         self.authenticate(self.admin_user_1)
 
         response = self.client.get(url)                     #admin get StaffSalary
@@ -31,8 +32,9 @@ class TestStaffSalaryRetrieve(SetUpDataClass):
         self.authenticate(user = self.admin_user_1)
         response = self.client.post(url, self.test_staff_salary_1, format = 'json') #admin add StaffSalary
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        salary_id = response.data['id']
 
-        url = reverse('Get_StaffSalary', kwargs={'pk': 1}) 
+        url = reverse('Get_StaffSalary', kwargs={'pk': salary_id})
         self.authenticate(self.manager_user_1)
 
         response = self.client.get(url)                     #manager get StaffSalary
@@ -47,9 +49,10 @@ class TestStaffSalaryRetrieve(SetUpDataClass):
         self.authenticate(user = self.admin_user_1)
         response = self.client.post(url, self.test_staff_salary_1, format = 'json') #admin add StaffSalary
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        salary_id = response.data['id']
 
         self.authenticate(self.waiter_user_1)
-        url = reverse('Get_StaffSalary', kwargs={'pk': 1}) 
+        url = reverse('Get_StaffSalary', kwargs={'pk': salary_id})
 
         response = self.client.get(url)                     #waiter get StaffSalary
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

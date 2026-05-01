@@ -174,17 +174,17 @@ class SetUpDataClass(TestCase):
         )
       
         cls.test_staff_fine_1 = {
-            "staff"          : 1,
+            "staff"          : cls.staff1.id,
             "reason"         : 'using phone',
             "value"          : 0.25,
         }
         cls.test_staff_fine_2 = {
-            "staff"          : 1,
+            "staff"          : cls.staff1.id,
             "reason"         : 'using phone',
             "value"          : 0.25,
         }
         cls.test_staff_fine_3 = {
-            "staff"          : 1,
+            "staff"          : cls.staff1.id,
             "reason"         : 'using phone',
             "value"          : 0.25,
         }

@@ -10,7 +10,7 @@ from .SetUpDiscountTests import SetUpDataClass
 
 class TestDiscountUpdate(SetUpDataClass):
     def test_user_with_no_branch_update_discount(self):
-        url = reverse('Update_Discount', kwargs = {'pk' : 1})
+        url = reverse('Update_Discount', kwargs = {'pk' : self.discount_1.id})
         self.authenticate(user = self.admin_user_1)
         
         data = {
@@ -28,7 +28,7 @@ class TestDiscountUpdate(SetUpDataClass):
 
 
     def test_user_with_no_permission_update_discount(self):
-        url = reverse('Update_Discount', kwargs = {'pk' : 1})
+        url = reverse('Update_Discount', kwargs = {'pk' : self.discount_1.id})
         self.authenticate(user = self.manager_user_1)
 
         data = {

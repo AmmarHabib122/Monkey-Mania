@@ -14,9 +14,10 @@ class TestProductBillUpdate(SetUpDataClass):
         url = reverse('Create_ProductBill')
         response = self.client.post(url, self.test_product_bill_1, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
-        url = reverse('Update_ProductBill', kwargs = {'pk' : 1})
-        
+        product_bill_id = response.data['id']
+
+        url = reverse('Update_ProductBill', kwargs = {'pk' : product_bill_id})
+
         response = self.client.patch(url, self.test_product_bill_2, format = 'json') #admin update Branch
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -28,8 +29,9 @@ class TestProductBillUpdate(SetUpDataClass):
         url = reverse('Create_ProductBill')
         response = self.client.post(url, self.test_product_bill_2, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        url = reverse('Update_ProductBill', kwargs = {'pk' : 1})
-        
+        product_bill_id = response.data['id']
+        url = reverse('Update_ProductBill', kwargs = {'pk' : product_bill_id})
+
         response = self.client.patch(url, self.test_product_bill_1, format = 'json') #waiter update ProductBill
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 

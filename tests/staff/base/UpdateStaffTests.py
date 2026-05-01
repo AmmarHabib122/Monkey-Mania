@@ -13,8 +13,9 @@ class TestStaffUpdate(SetUpDataClass):
         self.authenticate(user = self.admin_user_1)
         response = self.client.post(reverse('Create_Staff'), self.test_staff_1, format = 'multipart')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        new_staff_id = response.data['id']
 
-        url = reverse('Update_Staff', kwargs = {'pk' : 3})
+        url = reverse('Update_Staff', kwargs = {'pk' : new_staff_id})
         self.test_staff_2.pop('branch')
         response = self.client.patch(url, self.test_staff_2, format = 'multipart') #admin update Branch
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -26,8 +27,9 @@ class TestStaffUpdate(SetUpDataClass):
         self.authenticate(self.admin_user_1)
         response = self.client.post(reverse('Create_Staff'), self.test_staff_1, format = 'multipart')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        new_staff_id = response.data['id']
         self.authenticate(self.manager_user_1)
-        url = reverse('Update_Staff', kwargs = {'pk' : 3})
+        url = reverse('Update_Staff', kwargs = {'pk' : new_staff_id})
         self.test_staff_3.pop('branch')
         
         response = self.client.patch(url, self.test_staff_2, format = 'multipart') #manager change staff branch
@@ -43,8 +45,9 @@ class TestStaffUpdate(SetUpDataClass):
     def test_user_with_no_permission_update_staff(self):
         self.authenticate(self.admin_user_1)
         response = self.client.post(reverse('Create_Staff'), self.test_staff_1, format = 'multipart')
+        new_staff_id = response.data['id']
         self.authenticate(user = self.reception_user_1)
-        url = reverse('Update_Staff', kwargs = {'pk' : 3})
+        url = reverse('Update_Staff', kwargs = {'pk' : new_staff_id})
         self.test_staff_1.pop('branch')
     
         response = self.client.patch(url, self.test_staff_1, format = 'multipart') #reception update Branch

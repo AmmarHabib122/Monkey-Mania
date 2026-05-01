@@ -10,7 +10,7 @@ from .SetUpGeneralExpenseTests import SetUpDataClass
 
 class TestGeneralExpenseUpdate(SetUpDataClass):
     def test_user_with_no_branch_update_general_expense(self):
-        url = reverse('Update_GeneralExpense', kwargs = {'pk' : 1})
+        url = reverse('Update_GeneralExpense', kwargs = {'pk' : self.general_expense_1.id})
         self.authenticate(user = self.admin_user_1)
         
         response = self.client.patch(url, self.test_general_expense_1, format = 'json') #admin update Branch
@@ -20,7 +20,7 @@ class TestGeneralExpenseUpdate(SetUpDataClass):
 
 
     def test_user_with_a_branch_update_general_expense(self):
-        url = reverse('Update_GeneralExpense', kwargs = {'pk' : 1})
+        url = reverse('Update_GeneralExpense', kwargs = {'pk' : self.general_expense_1.id})
 
         self.authenticate(self.manager_user_1)
         response = self.client.patch(url, self.test_general_expense_1, format = 'json') #manager update GeneralExpense
@@ -31,7 +31,7 @@ class TestGeneralExpenseUpdate(SetUpDataClass):
 
 
     def test_user_with_no_permission_update_general_expense(self):
-        url = reverse('Update_GeneralExpense', kwargs = {'pk' : 1})
+        url = reverse('Update_GeneralExpense', kwargs = {'pk' : self.general_expense_1.id})
         self.authenticate(user = self.waiter_user_1)
     
         response = self.client.patch(url, self.test_general_expense_1, format = 'json') #waiter update Branch

@@ -10,7 +10,7 @@ from .SetUpStaffFineTests import SetUpDataClass
 
 class TestStaffFineUpdate(SetUpDataClass):
     def test_user_with_no_branch_update_staff_fine(self):
-        url = reverse('Update_StaffFine', kwargs = {'pk' : 1})
+        url = reverse('Update_StaffFine', kwargs = {'pk' : self.fine1.id})
         self.authenticate(user = self.admin_user_1)
         
         self.test_staff_fine_1.pop('staff')
@@ -21,7 +21,7 @@ class TestStaffFineUpdate(SetUpDataClass):
 
 
     def test_user_with_a_branch_update_staff_fine(self):
-        url = reverse('Update_StaffFine', kwargs = {'pk' : 1})
+        url = reverse('Update_StaffFine', kwargs = {'pk' : self.fine1.id})
         self.authenticate(self.manager_user_1)
 
         self.test_staff_fine_1.pop('staff')
@@ -33,7 +33,7 @@ class TestStaffFineUpdate(SetUpDataClass):
 
 
     def test_user_with_no_permission_update_staff_fine(self):
-        url = reverse('Update_StaffFine', kwargs = {'pk' : 1})
+        url = reverse('Update_StaffFine', kwargs = {'pk' : self.fine1.id})
         self.authenticate(user = self.waiter_user_1)
 
         self.test_staff_fine_1.pop('staff')

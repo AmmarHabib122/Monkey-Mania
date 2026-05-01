@@ -15,8 +15,8 @@ class TestBranchProductListRetrieve(SetUpDataClass):
 
         resverse_url = reverse('List_BranchProduct')       #admin get all BranchProduct with name = branch_product1
         query_params = {
-            'search': 'pistachio',  
-            'branch_id' : 1
+            'search': 'pistachio',
+            'branch_id' : self.branch_1.id
         }
         query_string = urlencode(query_params, doseq=True)
         url = f"{resverse_url}?{query_string}"
@@ -24,10 +24,10 @@ class TestBranchProductListRetrieve(SetUpDataClass):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
 
-        resverse_url = reverse('List_BranchProduct')       #admin get all BranchProductes from  branch 1
+        resverse_url = reverse('List_BranchProduct')       #admin get all BranchProductes from branch 2
         query_params = {
-            'search': '',  
-            'branch_id' : 2
+            'search': '',
+            'branch_id' : self.branch_2.id
         }
         query_string = urlencode(query_params, doseq=True)
         url = f"{resverse_url}?{query_string}"
@@ -43,8 +43,8 @@ class TestBranchProductListRetrieve(SetUpDataClass):
 
         resverse_url = reverse('List_BranchProduct')       #manager get all BranchProductes from his branch
         query_params = {
-            'search': '',  
-            'branch_id' : 1
+            'search': '',
+            'branch_id' : self.branch_1.id
         }
         query_string = urlencode(query_params, doseq=True)
         url = f"{resverse_url}?{query_string}"
@@ -54,8 +54,8 @@ class TestBranchProductListRetrieve(SetUpDataClass):
 
         resverse_url = reverse('List_BranchProduct')       #manager get all BranchProductes from another branch but get his branch
         query_params = {
-            'search': '',  
-            'branch_id' : 2
+            'search': '',
+            'branch_id' : self.branch_2.id
         }
         query_string = urlencode(query_params, doseq=True)
         url = f"{resverse_url}?{query_string}"

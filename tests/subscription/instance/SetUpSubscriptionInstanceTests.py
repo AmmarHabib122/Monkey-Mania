@@ -240,7 +240,6 @@ class SetUpDataClass(TestCase):
             visa              = 50,
             instapay          = 50,
             price             = 150,
-            hours             = 15,
             subscription      = cls.subscription_1,
             child             = cls.child_1,
             branch            = cls.branch_1,
@@ -252,7 +251,6 @@ class SetUpDataClass(TestCase):
             visa              = 50,
             instapay          = 50,
             price             = 150,
-            hours             = 15,
             subscription      = cls.subscription_2,
             child             = cls.child_2,
             branch            = cls.branch_1,
@@ -264,17 +262,17 @@ class SetUpDataClass(TestCase):
             "cash"              : 50,
             "visa"              : 50,
             "instapay"          : 50,
-            "subscription"      : 1,
-            "child"             : 3,
-            "branch"            : 1,
+            "subscription"      : cls.subscription_1.id,
+            "child"             : cls.child_3.id,
+            "branch"            : cls.branch_1.id,
         }
         cls.test_subscription_instance_2 = {
             "cash"              : 50,
             "visa"              : 50,
             "instapay"          : 50,
-            "subscription"      : 2,
-            "child"             : 4,
-            "branch"            : 2,
+            "subscription"      : cls.subscription_2.id,
+            "child"             : cls.child_4.id,
+            "branch"            : cls.branch_2.id,
         }
 
         

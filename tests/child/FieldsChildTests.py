@@ -77,7 +77,7 @@ class TestChildFields(SetUpDataClass):
 
         
     def test_special_needs(self):
-        url = reverse('Update_Child', kwargs = {'pk' : 1})
+        url = reverse('Update_Child', kwargs = {'pk' : self.child_1.id})
         data = {
             "special_needs" : True
         }
@@ -148,7 +148,7 @@ class TestChildFields(SetUpDataClass):
         self.assertIn('Child Phone Numbers must be provided.', response.data['message'])
 
         #test child_phone_numbers_set is [] in update
-        url = reverse('Update_Child', kwargs = {'pk' : 2})
+        url = reverse('Update_Child', kwargs = {'pk' : self.child_2.id})
         response = self.client.patch(url, self.test_child_2, format = 'json') 
         data = {
             'child_phone_numbers_set' : []

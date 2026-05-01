@@ -12,7 +12,7 @@ class TestChildUpdate(SetUpDataClass):
     def test_user_with_no_branch_update_child(self):
         self.authenticate(user = self.admin_user_1)
         
-        url = reverse('Update_Child', kwargs = {'pk' : 1})
+        url = reverse('Update_Child', kwargs = {'pk' : self.child_1.id})
         response = self.client.patch(url, self.test_child_1, format = 'json') #admin update Branch
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -22,7 +22,7 @@ class TestChildUpdate(SetUpDataClass):
 
 
     def test_user_with_a_branch_update_child(self):
-        url = reverse('Update_Child', kwargs = {'pk' : 2})
+        url = reverse('Update_Child', kwargs = {'pk' : self.child_2.id})
         self.authenticate(self.reception_user_1)
         
         response = self.client.patch(url, self.test_child_2, format = 'json') #reception update Child
@@ -50,7 +50,7 @@ class TestChildUpdate(SetUpDataClass):
     def test_user_with_no_permission_update_child(self):
         self.authenticate(user = self.waiter_user_1)
         
-        url = reverse('Update_Child', kwargs = {'pk' : 1})
+        url = reverse('Update_Child', kwargs = {'pk' : self.child_1.id})
         response = self.client.patch(url, self.test_child_1, format = 'json') #waiter update Branch
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         

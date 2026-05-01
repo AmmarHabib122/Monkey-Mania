@@ -306,7 +306,7 @@ class SetUpDataClass(TestCase):
             "type"        : 'percentage',
             "expire_date" : '2055-5-25',
             'branches' : [
-                1
+                cls.branch_1.id
             ]
         }
         cls.test_discount_2 = {
@@ -315,7 +315,7 @@ class SetUpDataClass(TestCase):
             "type"        : 'fixed',
             "expire_date" : '2055-5-25',
             'branches' : [
-                1
+                cls.branch_1.id
             ]
         }
         cls.test_discount_3 = {
@@ -324,8 +324,8 @@ class SetUpDataClass(TestCase):
             "type"        : 'new value',
             "expire_date" : '2025-5-25',
             'branches' : [
-                1,
-                2
+                cls.branch_1.id,
+                cls.branch_2.id
             ]
         }
 

@@ -10,7 +10,7 @@ from .SetUpSchoolTests import SetUpDataClass
 
 class TestSchoolRetrieve(SetUpDataClass):
     def test_user_with_no_branch_get_school(self):
-        url = reverse('Get_School', kwargs={'pk': 2})
+        url = reverse('Get_School', kwargs={'pk': self.school_2.id})
         self.authenticate(self.admin_user_1)
 
         response = self.client.get(url)                     #admin get School
@@ -22,7 +22,7 @@ class TestSchoolRetrieve(SetUpDataClass):
 
 
     def test_user_with_role_a_branch_get_school(self):
-        url = reverse('Get_School', kwargs={'pk': 1}) 
+        url = reverse('Get_School', kwargs={'pk': self.school_1.id})
         self.authenticate(self.reception_user_1)
 
         response = self.client.get(url)                     #reception get School
@@ -34,7 +34,7 @@ class TestSchoolRetrieve(SetUpDataClass):
 
     def test_user_with_no_permission_get_school(self):
         self.authenticate(self.waiter_user_1)
-        url = reverse('Get_School', kwargs={'pk': 2}) 
+        url = reverse('Get_School', kwargs={'pk': self.school_2.id})
 
         response = self.client.get(url)                     #waiter get School
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

@@ -49,12 +49,12 @@ class TestUserCreation(SetUpDataClass):
         self.authenticate(self.manager_user_1)
         
         response = self.client.post(url, self.test_waiter_user_2, format = 'multipart')
-        self.assertEqual(self.manager_user_1.branch.id, response.data["branch"]) #manager add waiter
+        self.assertEqual(self.manager_user_1.branch.id, response.data["branch_id"]) #manager add waiter
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.image1.seek(0); self.image2.seek(0); self.image3.seek(0); self.image4.seek(0); self.image5.seek(0); self.image6.seek(0);
-        
+
         response = self.client.post(url, self.test_reception_user_2, format = 'multipart') #manager add reception
-        self.assertEqual(self.manager_user_1.branch.id, response.data["branch"])
+        self.assertEqual(self.manager_user_1.branch.id, response.data["branch_id"])
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.image1.seek(0); self.image2.seek(0); self.image3.seek(0); self.image4.seek(0); self.image5.seek(0); self.image6.seek(0);
 

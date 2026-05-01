@@ -14,7 +14,8 @@ class TestProductBillRetrieve(SetUpDataClass):
         url = reverse('Create_ProductBill')
         response = self.client.post(url, self.test_product_bill_1, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        url = reverse('Get_ProductBill', kwargs={'pk': 1})
+        product_bill_id = response.data['id']
+        url = reverse('Get_ProductBill', kwargs={'pk': product_bill_id})
 
         response = self.client.get(url)                     #admin get ProductBill
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -29,7 +30,8 @@ class TestProductBillRetrieve(SetUpDataClass):
         url = reverse('Create_ProductBill')
         response = self.client.post(url, self.test_product_bill_1, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        url = reverse('Get_ProductBill', kwargs={'pk': 1}) 
+        product_bill_id = response.data['id']
+        url = reverse('Get_ProductBill', kwargs={'pk': product_bill_id})
 
         response = self.client.get(url)                     #reception get ProductBill
         self.assertEqual(response.status_code, status.HTTP_200_OK)

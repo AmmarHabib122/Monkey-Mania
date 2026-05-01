@@ -165,7 +165,7 @@ class SetUpDataClass(TestCase):
             "salary"         : 456132,
             'allowed_absence_days'  : 2,
             'shift_hours'    : 5,
-            'branch'         : 1,
+            'branch'         : cls.branch_1.id,
             'images'         : cls.image1
         }
         cls.test_staff_2 = {
@@ -175,7 +175,7 @@ class SetUpDataClass(TestCase):
             'allowed_absence_days'  : 2,
             'shift_hours'    : 5,
             "salary"         : 456132,
-            'branch'         : 2,
+            'branch'         : cls.branch_2.id,
             'images'         : [
                 cls.image2
             ],
@@ -187,7 +187,7 @@ class SetUpDataClass(TestCase):
             'shift_hours'    : 5,
             "phone_number"   : '01030261393',
             "salary"         : 2000,
-            'branch'         : 1,
+            'branch'         : cls.branch_1.id,
             'images'         : [
                 cls.image4,
                 cls.image5,

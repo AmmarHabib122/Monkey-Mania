@@ -192,7 +192,7 @@ class SetUpDataClass(TestCase):
             created_by  = cls.owner_user_1,
         )
         cls.test_staff_salary_1 = {
-            "staff"        : 1,
+            "staff"        : cls.staff1.id,
             "delay_time"   : 59,
             "minus_time"   : 0,
             "over_time"    : 90,
@@ -200,7 +200,7 @@ class SetUpDataClass(TestCase):
             "bonus_value"  : 100,
         }
         cls.test_staff_salary_2 = {
-            "staff"        : 1,
+            "staff"        : cls.staff1.id,
             "delay_time"   : 65,
             "minus_time"   : 50,
             "over_time"    : 150,
@@ -208,7 +208,7 @@ class SetUpDataClass(TestCase):
             "bonus_value"  : 1000,
         }
         cls.test_staff_salary_3 = {
-            "staff"        : 2,
+            "staff"        : cls.staff2.id,
             "delay_time"   : 59,
             "minus_time"   : 630,
             "over_time"    : 2921,

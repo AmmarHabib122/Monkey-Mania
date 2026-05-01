@@ -63,7 +63,7 @@ class TestBranchFields(SetUpDataClass):
 
 
     def test_manager(self):
-        url = reverse('Update_Branch', kwargs = {'pk' : 1})
+        url = reverse('Update_Branch', kwargs = {'pk' : self.branch_1.id})
         self.authenticate(self.admin_user_1)
 
         #test manager correct id
@@ -78,26 +78,26 @@ class TestBranchFields(SetUpDataClass):
         self.manager_user_6.branch = self.branch_2
         self.manager_user_6.save()
         data = {
-            'manager' : 10
+            'manager' : self.manager_user_6.id
         }
-        response = self.client.patch(url, data, format = 'json') 
+        response = self.client.patch(url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('You can not set a user from another branch to be the manager of this branch.', response.data['message'])
 
         #test manager can not be a waiter or reception
         data = {
-            'manager' : 4
+            'manager' : self.reception_user_1.id
         }
-        response = self.client.patch(url, data, format = 'json') 
+        response = self.client.patch(url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('You can only set a user with a manager role or higher to the branch manager field.', response.data['message'])
 
         
         #test manager is already a manager of another branch 
         data = {
-            'manager' : 6
+            'manager' : self.manager_user_2.id
         }
-        response = self.client.patch(url, data, format = 'json') 
+        response = self.client.patch(url, data, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('You can not set a user from another branch to be the manager of this branch.', response.data['message'])
 

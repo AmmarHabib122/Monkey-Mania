@@ -206,87 +206,93 @@ class SetUpDataClass(TestCase):
         models.HourPrice.objects.bulk_create(hour_prices_data_1)
 
         test_branch_product_1 = {
-            "product"        : 1,
-            "branch"         : 1,
+            "product"        : cls.product_1.id,
+            "branch"         : cls.branch_1.id,
             "warning_units"  : 150,
             "price"          : 100,
             "material_consumptions_set" : [
                 {
-                    'material' : 1,
+                    'material' : cls.branch_material_1.id,
                     'consumption' : 0.1,
                 },
                 {
-                    'material' : 2,
+                    'material' : cls.branch_material_2.id,
                     'consumption' : 0.1,
                 }
             ]
         }
         test_branch_product_2 = {
-            "product"        : 3,
-            "branch"         : 1,
+            "product"        : cls.product_3.id,
+            "branch"         : cls.branch_1.id,
             "warning_units"  : 5,
             "price"          : 150,
             "material_consumptions_set" : [
                 {
-                    'material' : 1,
+                    'material' : cls.branch_material_1.id,
                     'consumption' : 0.2,
                 },
                 {
-                    'material' : 2,
+                    'material' : cls.branch_material_2.id,
                     'consumption' : 0.2,
                 }
             ]
         }
-        
+
         url = reverse('Create_BranchProduct')
-        response = cls.client.post(url, test_branch_product_1, format = 'json') 
+        response = cls.client.post(url, test_branch_product_1, format = 'json')
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
-        response = cls.client.post(url, test_branch_product_2, format = 'json') 
+        bp1_id = response.data['id']
+        cls.bp1_id = bp1_id
+        response = cls.client.post(url, test_branch_product_2, format = 'json')
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
+        bp2_id = response.data['id']
+        cls.bp2_id = bp2_id
 
         test_bill_1 = {
             "children" : [
-                1,
-                2,
+                cls.child_1.id,
+                cls.child_2.id,
             ],
-            'branch' : 1,
+            'branch' : cls.branch_1.id,
         }
         test_bill_duplicate = {
             "children" : [
-                1,
-                2,
+                cls.child_1.id,
+                cls.child_2.id,
             ],
-            'branch' : 2,
+            'branch' : cls.branch_2.id,
         }
         test_bill_2 = {
             "children" : [
-                3,
-                4,
-                5,
+                cls.child_3.id,
+                cls.child_4.id,
+                cls.child_5.id,
             ],
-            'branch' : 1,
+            'branch' : cls.branch_1.id,
         }
         url = reverse('Create_Bill')
-        response = cls.client.post(url, test_bill_1, format = 'json') 
+        response = cls.client.post(url, test_bill_1, format = 'json')
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
-        response = cls.client.post(url, test_bill_2, format = 'json') 
+        bill1_id = response.data['id']
+        response = cls.client.post(url, test_bill_2, format = 'json')
         assert response.status_code == status.HTTP_201_CREATED, f"Expected 201, got {response.status_code}"
+        bill2_id = response.data['id']
 
         cls.test_product_bill_1 = {
             "products" : [
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : bp1_id,
                     'quantity' : 2,
                 },
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 2,
+                    'product_id'  : bp2_id,
                     'quantity' : 5,
                     'notes' : 'extra sauce',
                 },
             ],
-            'bill'         : 1,
+            'bill'         : bill1_id,
             'table_number' : 1,
             'take_away'    : True,
         }
@@ -294,18 +300,18 @@ class SetUpDataClass(TestCase):
             "products" : [
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 1,
+                    'product_id'  : bp1_id,
                     'quantity' : 4,
                     'notes' : 'extra sauce',
                 },
                 {
                     'product_type'  : 'product',
-                    'product_id'  : 2,
+                    'product_id'  : bp2_id,
                     'quantity' : 5,
                     'notes' : 'extra sauce',
                 },
             ],
-            'bill'         : 1,
+            'bill'         : bill1_id,
             'table_number' : 4,
             'take_away'    : False,
         }
@@ -313,18 +319,18 @@ class SetUpDataClass(TestCase):
             "products" : [
                 {
                     "product_type"  : "product",
-                    "product_id"  : 1,
+                    "product_id"  : bp1_id,
                     "quantity" : 2,
                     "notes" : "extra sauce"
                 },
                 {
                     "product_type"  : "product",
-                    "product_id"  : 2,
+                    "product_id"  : bp2_id,
                     "quantity" : 5,
                     "notes" : "extra sauce"
                 },
             ],
-            "bill"         : 2,
+            "bill"         : bill2_id,
             "table_number" : 3,
             "take_away"    : False
         }

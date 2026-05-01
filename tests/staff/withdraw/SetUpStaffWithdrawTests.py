@@ -172,15 +172,15 @@ class SetUpDataClass(TestCase):
         )
       
         cls.test_staff_withdraw_1 = {
-            "staff"          : 1,
+            "staff"          : cls.staff1.id,
             "value"          : 500,
         }
         cls.test_staff_withdraw_2 = {
-            "staff"          : 1,
+            "staff"          : cls.staff1.id,
             "value"          : 500,
         }
         cls.test_staff_withdraw_3 = {
-            "staff"          : 1,
+            "staff"          : cls.staff1.id,
             "value"          : 500,
         }
 

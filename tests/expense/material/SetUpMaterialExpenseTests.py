@@ -261,12 +261,12 @@ class SetUpDataClass(TestCase):
             created_by = cls.admin_user_1,
         )
         cls.test_material_expense_1 = {
-            'material' : 1,
+            'material' : cls.branch_material_1.id,
             'total_price' : 100,
             'quantity' : 10,
         }
         cls.test_material_expense_2 = {
-            "material" : 2,
+            "material" : cls.branch_material_2.id,
             "total_price" : 100,
             "quantity" : 5,
         }
