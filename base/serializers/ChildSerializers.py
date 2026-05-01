@@ -125,7 +125,7 @@ class ChildSerializer(serializers.ModelSerializer):
         value = value.strip().lower()
         child = models.Child.objects.filter(name__iexact=value).first()
         if child  and  child != self.instance:
-            raise ValidationError(_("The child name {name} already exists.").format(name = value))
+            raise ValidationError(_("The child name ({name}) already exists.").format(name = value))
         return value
 
     def validate_special_needs(self, value):
