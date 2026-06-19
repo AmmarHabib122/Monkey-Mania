@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-31 11:11+0200\n"
+"POT-Creation-Date: 2026-06-20 02:49+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,18 +16,20 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: .\MonkeyMania\settings.py:105
+#: .\MonkeyMania\settings.py:109
 msgid "English"
 msgstr "إنجليزي"
 
-#: .\MonkeyMania\settings.py:106
+#: .\MonkeyMania\settings.py:110
 msgid "Arabic"
 msgstr "عربي"
 
-#: .\base\admin.py:60 .\base\admin.py:101 .\base\admin.py:183
-#: .\base\admin.py:225 .\base\views\SchoolViews.py:109
+#: .\base\admin.py:60 .\base\admin.py:114 .\base\admin.py:207
+#: .\base\admin.py:259 .\base\views\ExpenseViews.py:118
+#: .\base\views\ExpenseViews.py:251 .\base\views\SchoolViews.py:109
 msgid "CSV file is empty or invalid"
 msgstr "ملف CSV فارغ أو غير صالح"
 
@@ -49,30 +51,36 @@ msgstr "يجب أن يحتوي رقم الهاتف على أرقام فقط."
 msgid "Phone number must be exactly 11 digits long."
 msgstr "يجب أن يكون رقم الهاتف بالضبط 11 رقمًا."
 
-#: .\base\libs\main.py:253
+#: .\base\libs\main.py:260
 msgid "Start date cannot be bigger than the end date"
 msgstr "لا يمكن أن يكون تاريخ البدء أكبر من تاريخ الانتهاء"
 
-#: .\base\libs\main.py:255
+#: .\base\libs\main.py:262
 msgid "Start and End dates must be provided together"
 msgstr "يجب توفير تواريخ البدء والنهاية معًا"
 
-#: .\base\libs\main.py:265
+#: .\base\libs\main.py:272
 msgid "Csv file must be provided"
 msgstr "يجب توفير ملف CSV"
 
-#: .\base\libs\main.py:267
+#: .\base\libs\main.py:274
 msgid "The file provided must be in .csv format"
 msgstr "يجب أن يكون الملف المقدم في فورمات .csv"
 
-#: .\base\libs\main.py:271
+#: .\base\libs\main.py:278
 #, python-brace-format
 msgid "Wrong column format, The correct Format is {required_columns}"
 msgstr "تنسيق العمود الخاطئ ، التنسيق الصحيح هو {required_columns}"
 
-#: .\base\libs\main.py:288
+#: .\base\libs\main.py:295
 msgid "Only True or False are allowed for is_csv_response parameter"
 msgstr "يسمح فقط صحيح أو خطأ بمعلمة IS_CSV_RESPONSE"
+
+#: .\base\libs\main.py:318
+#, fuzzy
+#| msgid "Invalid item data"
+msgid "Invalid filter value"
+msgstr "بيانات عنصر غير صالحة"
 
 #: .\base\permissions\main.py:18
 msgid "User is not logged in"
@@ -144,106 +152,101 @@ msgstr "يجب عليك توفير ID فرع صالح."
 msgid "branch must be identified by an integer ID."
 msgstr "يجب تحديد الفرع بواسطة ID عدد صحيح."
 
-#: .\base\serializers\BillSerializers.py:107
+#: .\base\serializers\BillSerializers.py:110
 #: .\base\serializers\BranchSerializers.py:84
 #: .\base\serializers\StaffSerializers.py:54
 #: .\base\serializers\UserSerializers.py:76
 msgid "You Do Not have the permission to access this data"
 msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
 
-#: .\base\serializers\BillSerializers.py:214
-#: .\base\serializers\SubscriptionSerializers.py:221
+#: .\base\serializers\BillSerializers.py:219
+#: .\base\serializers\SubscriptionSerializers.py:225
 msgid "cash can not be negative"
 msgstr "لا يمكن أن يكون الكاش عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:219
-#: .\base\serializers\SubscriptionSerializers.py:226
+#: .\base\serializers\BillSerializers.py:224
+#: .\base\serializers\SubscriptionSerializers.py:230
 msgid "instapay can not be negative"
 msgstr "لا يمكن أن يكون انستاباي عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:224
-#: .\base\serializers\SubscriptionSerializers.py:231
+#: .\base\serializers\BillSerializers.py:229
+#: .\base\serializers\SubscriptionSerializers.py:235
 msgid "visa can not be negative"
 msgstr "لا يمكن أن تكون الفيزا عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:230
-#: .\base\serializers\BillSerializers.py:275 .\base\views\BillViews.py:115
-msgid ""
-"Couldn't find a discount available to this branch with the given "
-"credentials."
+#: .\base\serializers\BillSerializers.py:235
+#: .\base\serializers\BillSerializers.py:280 .\base\views\BillViews.py:131
+msgid "Couldn't find a discount available to this branch with the given credentials."
 msgstr "لا يمكن العثور على خصم متاح لهذا الفرع مع البيانات المرسلة."
 
-#: .\base\serializers\BillSerializers.py:236
+#: .\base\serializers\BillSerializers.py:241
 msgid "Time Price can not be negative"
 msgstr "لا يمكن أن يكون سعر الوقت عدد سلبي"
 
-#: .\base\serializers\BillSerializers.py:238
+#: .\base\serializers\BillSerializers.py:243
 msgid "You do not have the permission to set the bill Time Price"
 msgstr "ليس لديك إذن لتحديد سعر وقت الفاتورة"
 
-#: .\base\serializers\BillSerializers.py:244
+#: .\base\serializers\BillSerializers.py:249
 msgid "Cafe Price can not be negative"
 msgstr "لا يمكن أن يكون سعر المقهى عدد سالب"
 
-#: .\base\serializers\BillSerializers.py:246
+#: .\base\serializers\BillSerializers.py:251
 msgid "You do not have the permission to set the bill Cafe Price"
 msgstr "ليس لديك إذن لتعيين سعر فاتورة الكافيه"
 
-#: .\base\serializers\BillSerializers.py:252
+#: .\base\serializers\BillSerializers.py:257
 #: .\base\serializers\ProductBillSerializers.py:252
 msgid "You can not create a bill with a different branch"
 msgstr "لا يمكنك إنشاء فاتورة مع فرع مختلف"
 
-#: .\base\serializers\BillSerializers.py:257
+#: .\base\serializers\BillSerializers.py:262
 msgid "Children list can not be empty"
 msgstr "لا يمكن أن تكون قائمة الأطفال فارغة"
 
-#: .\base\serializers\BillSerializers.py:261
+#: .\base\serializers\BillSerializers.py:266
 #, python-brace-format
 msgid "Child {name} is currently registered in another bill"
 msgstr "الطفل {name} مسجل حاليًا في فاتورة أخرى"
 
-#: .\base\serializers\BillSerializers.py:263
+#: .\base\serializers\BillSerializers.py:268
 #, python-brace-format
-msgid ""
-"Child {name} is BLOCKED, reach out to the branch manager to unblock him "
-"first"
+msgid "Child {name} is BLOCKED, reach out to the branch manager to unblock him first"
 msgstr "الطفل {name} محظور، تواصل مع مدير الفرع لإلغاء الحظر عنه أولاً"
 
-#: .\base\serializers\BillSerializers.py:265
+#: .\base\serializers\BillSerializers.py:270
 msgid "You tried to add the same child more than once"
 msgstr "حاولت إضافة نفس الطفل أكثر من مرة"
 
-#: .\base\serializers\BillSerializers.py:312
+#: .\base\serializers\BillSerializers.py:317
 msgid "Subscription bill cannot have more than one child"
 msgstr "لا يمكن أن يكون فاتورة الاشتراك أكثر من طفل"
 
-#: .\base\serializers\BillSerializers.py:317
+#: .\base\serializers\BillSerializers.py:322
 #, python-brace-format
 msgid "The Child {name} has no current active subscription"
 msgstr "لا يوجد لدى الطفل {name} اشتراك نشط حاليًا"
 
-#: .\base\serializers\BillSerializers.py:321
-#: .\base\serializers\BillSerializers.py:323
+#: .\base\serializers\BillSerializers.py:326
+#: .\base\serializers\BillSerializers.py:328
 #, python-brace-format
 msgid "The Child {name} is not allowed to visit this branch"
 msgstr "لا يُسمح للطفل {name} بزيارة هذا الفرع"
 
-#: .\base\serializers\BillSerializers.py:332
+#: .\base\serializers\BillSerializers.py:337
 #, python-brace-format
-msgid ""
-"There is no hour prices found for {children_count} children in this branch."
+msgid "There is no hour prices found for {children_count} children in this branch."
 msgstr "لا توجد أسعار ساعة موجودة للأطفال {children_count} في هذا الفرع."
 
-#: .\base\serializers\BillSerializers.py:354
+#: .\base\serializers\BillSerializers.py:359
 msgid "The bill is already closed"
 msgstr "الفاتورة مغلقة بالفعل"
 
-#: .\base\serializers\BillSerializers.py:357
+#: .\base\serializers\BillSerializers.py:362
 msgid "You can not close a bill from a different branch"
 msgstr "لا يمكنك إغلاق فاتورة من فرع مختلف"
 
-#: .\base\serializers\BillSerializers.py:379
+#: .\base\serializers\BillSerializers.py:385
 msgid "Total price does not equal the money client paid"
 msgstr "إجمالي السعر لا يساوي المال الذي دفعه العميل"
 
@@ -264,9 +267,7 @@ msgid "Age can not be negative or equal to zero"
 msgstr "لا يمكن أن يكون العمر عدد سلبي أو يساوي الصفر"
 
 #: .\base\serializers\BranchSerializers.py:105
-msgid ""
-"You can only set a user with a manager role or higher to the branch manager "
-"field."
+msgid "You can only set a user with a manager role or higher to the branch manager field."
 msgstr "يمكنك فقط تعيين مستخدم له دور المدير أو أعلى إلى حقل مدير الفرع."
 
 #: .\base\serializers\BranchSerializers.py:110
@@ -291,7 +292,10 @@ msgid ""
 "You can not set a user from another branch to be the manager of this branch."
 msgstr "لا يمكنك تعيين مستخدم من فرع آخر ليكون مدير هذا الفرع."
 
+#. Translators: This string is used as a separator between list elements
 #: .\base\serializers\ChildSerializers.py:59
+#: .\venv\Lib\site-packages\django\utils\text.py:306
+#: .\venv\Lib\site-packages\django\utils\timesince.py:135
 msgid ", "
 msgstr "و"
 
@@ -307,29 +311,30 @@ msgstr "يجب عليك تقديم ID مدرسة صالح."
 msgid "school must be identified by an integer ID."
 msgstr "يجب تحديد المدرسة من خلال ID عدد صحيح."
 
-#: .\base\serializers\ChildSerializers.py:120
-#, python-brace-format
-msgid "The child name {name} already exists."
+#: .\base\serializers\ChildSerializers.py:128
+#, fuzzy, python-brace-format
+#| msgid "The child name {name} already exists."
+msgid "The child name ({name}) already exists."
 msgstr "اسم الطفل {name} موجود بالفعل."
 
-#: .\base\serializers\ChildSerializers.py:126
-#: .\base\serializers\ChildSerializers.py:132
+#: .\base\serializers\ChildSerializers.py:134
+#: .\base\serializers\ChildSerializers.py:140
 msgid "You Do Not have the permission to perform this action."
 msgstr "ليس لديك إذن لأداء هذا الإجراء."
 
-#: .\base\serializers\ChildSerializers.py:137
+#: .\base\serializers\ChildSerializers.py:145
 msgid "Birth-Date can not be in the future."
 msgstr "لا يمكن أن يكون تاريخ الميلاد في المستقبل."
 
-#: .\base\serializers\ChildSerializers.py:143
+#: .\base\serializers\ChildSerializers.py:151
 msgid "Each Phone-number must be unique per child."
 msgstr "يجب أن يكون كل رقم هاتف فريدًا لكل طفل."
 
-#: .\base\serializers\ChildSerializers.py:161
+#: .\base\serializers\ChildSerializers.py:169
 msgid "Child Phone Numbers must be provided."
 msgstr "يجب توفير أرقام هواتف الطفل."
 
-#: .\base\serializers\ChildSerializers.py:191
+#: .\base\serializers\ChildSerializers.py:199
 msgid "You Do Not have the permission to delete all Child numbers."
 msgstr "ليس لديك إذن لحذف جميع أرقام الأطفال."
 
@@ -354,7 +359,7 @@ msgid "Discount allowed types are {allowed_values}."
 msgstr "أنواع الخصم المسموح بها هي {allowed_values}."
 
 #: .\base\serializers\DiscountSerializers.py:86
-#: .\base\serializers\SubscriptionSerializers.py:236
+#: .\base\serializers\SubscriptionSerializers.py:240
 msgid "Expire-Date must be in the future."
 msgstr "يجب أن يكون انتهاء الصلاحية في المستقبل."
 
@@ -477,7 +482,7 @@ msgid "Invalid product type or ID"
 msgstr "نوع المنتج غير صالح أو ID"
 
 #: .\base\serializers\ProductBillSerializers.py:152
-#: .\base\serializers\ProductBillSerializers.py:266
+#: .\base\serializers\ProductBillSerializers.py:268
 msgid "Invalid bill ID."
 msgstr "ID فاتورة غير صالح."
 
@@ -501,75 +506,81 @@ msgstr "لا يمكن أن يكون إجمالي السعر عدد سلبي"
 msgid "You do not have the permission to set the bill price"
 msgstr "ليس لديك إذن لتعيين سعر الفاتورة"
 
-#: .\base\serializers\ProductBillSerializers.py:258
+#: .\base\serializers\ProductBillSerializers.py:254
+#, fuzzy
+#| msgid "You can not add a product to this branch"
+msgid "You can not add cafe products to a closed bill"
+msgstr "لا يمكنك إضافة منتج إلى هذا الفرع"
+
+#: .\base\serializers\ProductBillSerializers.py:260
 msgid "At least one added item must be provided"
 msgstr "يجب توفير عنصر واحد على الأقل إضافي"
 
-#: .\base\serializers\ProductBillSerializers.py:270
-#: .\base\serializers\ProductBillSerializers.py:311
+#: .\base\serializers\ProductBillSerializers.py:272
+#: .\base\serializers\ProductBillSerializers.py:313
 msgid "Invalid item data"
 msgstr "بيانات عنصر غير صالحة"
 
-#: .\base\serializers\ProductBillSerializers.py:277
+#: .\base\serializers\ProductBillSerializers.py:279
 #, python-brace-format
 msgid "{product} does not belong to branch {branch}"
 msgstr "{product} لا ينتمي إلى فرع {branch}"
 
-#: .\base\serializers\ProductBillSerializers.py:284
+#: .\base\serializers\ProductBillSerializers.py:286
 msgid "Duplicate added items detected"
 msgstr "تم اكتشاف عناصر مكررة"
 
-#: .\base\serializers\ProductBillSerializers.py:289
+#: .\base\serializers\ProductBillSerializers.py:291
 #, fuzzy
 #| msgid "You cannot return items when creating a bill."
 msgid "Products cannot be modified when updating a bill."
 msgstr "لا يمكنك إرجاع العناصر عند إنشاء فاتورة."
 
-#: .\base\serializers\ProductBillSerializers.py:299
+#: .\base\serializers\ProductBillSerializers.py:301
 #, fuzzy
 #| msgid "You cannot return items when creating a bill."
 msgid "Returned products are not allowed when creating a new bill."
 msgstr "لا يمكنك إرجاع العناصر عند إنشاء فاتورة."
 
-#: .\base\serializers\ProductBillSerializers.py:304
+#: .\base\serializers\ProductBillSerializers.py:306
 msgid "At least one returned item must be provided"
 msgstr "يجب توفير عنصر واحد على الأقل"
 
-#: .\base\serializers\ProductBillSerializers.py:318
+#: .\base\serializers\ProductBillSerializers.py:320
 #, python-brace-format
 msgid "{product} does not belong to bill's branch {branch}"
 msgstr "{product} لا ينتمي إلى فرع Bill {branch}"
 
-#: .\base\serializers\ProductBillSerializers.py:325
+#: .\base\serializers\ProductBillSerializers.py:327
 msgid "Duplicate returned items detected"
 msgstr "تم اكتشاف العناصر التي تم إرجاعها مكررة"
 
-#: .\base\serializers\ProductBillSerializers.py:343
+#: .\base\serializers\ProductBillSerializers.py:345
 #, python-brace-format
 msgid "{name} has only {available} units"
 msgstr "{name} لديه وحدات {available} فقط"
 
-#: .\base\serializers\ProductBillSerializers.py:362
+#: .\base\serializers\ProductBillSerializers.py:364
 #, python-brace-format
 msgid "{product} in offer {offer} has only {available} units available"
 msgstr "{product} في العرض {offer} يحتوي فقط على {available} وحدات متوفرة"
 
-#: .\base\serializers\ProductBillSerializers.py:395
+#: .\base\serializers\ProductBillSerializers.py:397
 msgid "You cannot return items when creating a bill."
 msgstr "لا يمكنك إرجاع العناصر عند إنشاء فاتورة."
 
-#: .\base\serializers\ProductBillSerializers.py:437
+#: .\base\serializers\ProductBillSerializers.py:439
 #, fuzzy
 #| msgid "You do not have the permission to set the bill price"
 msgid "You do not have the permissio to edit closed bills"
 msgstr "ليس لديك إذن لتعيين سعر الفاتورة"
 
-#: .\base\serializers\ProductBillSerializers.py:451
+#: .\base\serializers\ProductBillSerializers.py:453
 #, python-brace-format
 msgid "Not enough {name} units to return"
 msgstr "لا تكفي {name} وحدات للارجاع"
 
-#: .\base\serializers\ProductBillSerializers.py:481
+#: .\base\serializers\ProductBillSerializers.py:483
 msgid "Duplicate items detected"
 msgstr "تم اكتشاف عناصر مكررة"
 
@@ -735,16 +746,16 @@ msgstr "يجب عليك تقديم ID اشتراك صالح."
 msgid "subscription must be identified by an integer ID."
 msgstr "يجب تحديد الاشتراك بواسطة ID عدد صحيح."
 
-#: .\base\serializers\SubscriptionSerializers.py:242
+#: .\base\serializers\SubscriptionSerializers.py:246
 msgid "You can not create a subscription with a different branch"
 msgstr "لا يمكنك إنشاء اشتراك مع فرع مختلف"
 
-#: .\base\serializers\SubscriptionSerializers.py:248
+#: .\base\serializers\SubscriptionSerializers.py:252
 msgid "This child already has an active subscription"
 msgstr "هذا الطفل لديه بالفعل اشتراك نشط"
 
-#: .\base\serializers\SubscriptionSerializers.py:272
-#: .\base\serializers\SubscriptionSerializers.py:289
+#: .\base\serializers\SubscriptionSerializers.py:277
+#: .\base\serializers\SubscriptionSerializers.py:294
 msgid "The money Paid does not equal the price of the subscription"
 msgstr "الأموال المدفوعة لا تساوي سعر الاشتراك"
 
@@ -810,55 +821,55 @@ msgstr "لقد تم تسجيل الدخول بنجاح."
 msgid "Valid Refresh Token is Required"
 msgstr "مطلوب Refresh Token صالح"
 
-#: .\base\views\BillViews.py:32
+#: .\base\views\BillViews.py:48
 msgid "Bill Created successfully"
 msgstr "تم انشاء الفاتورة بنجاح"
 
-#: .\base\views\BillViews.py:50
+#: .\base\views\BillViews.py:66
 msgid "Wrong data for closing the bill"
 msgstr "بيانات خاطئة لإغلاق الفاتورة"
 
-#: .\base\views\BillViews.py:52
+#: .\base\views\BillViews.py:68
 msgid "Bill Closed successfully"
 msgstr "تم اغلاق الفاتورة بنجاح"
 
-#: .\base\views\BillViews.py:72
+#: .\base\views\BillViews.py:88
 #, fuzzy
 #| msgid "Wrong data for closing the bill"
 msgid "Wrong data for updating the bill"
 msgstr "بيانات خاطئة لإغلاق الفاتورة"
 
-#: .\base\views\BillViews.py:74
+#: .\base\views\BillViews.py:90
 #, fuzzy
 #| msgid "You cannot return items when creating a bill."
 msgid "You can not provide a negative value while updating the bill"
 msgstr "لا يمكنك إرجاع العناصر عند إنشاء فاتورة."
 
-#: .\base\views\BillViews.py:78
+#: .\base\views\BillViews.py:94
 msgid "Values must be in Decimal formal"
 msgstr "يجب أن تكون القيم في عشرية رسمية"
 
-#: .\base\views\BillViews.py:83
+#: .\base\views\BillViews.py:99
 msgid "The bill is still active, You can not update it right now"
 msgstr "لا تزال الفاتورة نشطة ، لا يمكنك تحديثها الآن"
 
-#: .\base\views\BillViews.py:94
+#: .\base\views\BillViews.py:110
 #, fuzzy
 #| msgid "Subscription Updated successfully"
 msgid "Caculations Updated Successfully"
 msgstr "تم تحديث الاشتراك بنجاح"
 
-#: .\base\views\BillViews.py:111
+#: .\base\views\BillViews.py:127
 msgid "Discount must be provided"
 msgstr "يجب ادراج الخصم"
 
-#: .\base\views\BillViews.py:130
+#: .\base\views\BillViews.py:146
 msgid "Discount Applied successfully"
 msgstr "تم تطبيق الخصم بنجاح"
 
-#: .\base\views\BillViews.py:147 .\base\views\BillViews.py:150
-#: .\base\views\DiscountViews.py:64 .\base\views\ExpenseViews.py:68
-#: .\base\views\ExpenseViews.py:173 .\base\views\MaterialViews.py:165
+#: .\base\views\BillViews.py:163 .\base\views\BillViews.py:166
+#: .\base\views\DiscountViews.py:64 .\base\views\ExpenseViews.py:72
+#: .\base\views\ExpenseViews.py:202 .\base\views\MaterialViews.py:165
 #: .\base\views\OfferViews.py:168 .\base\views\ProductBillViews.py:82
 #: .\base\views\ProductViews.py:170 .\base\views\StaffViews.py:134
 #: .\base\views\StaffViews.py:236 .\base\views\StaffViews.py:338
@@ -866,6 +877,23 @@ msgstr "تم تطبيق الخصم بنجاح"
 #: .\base\views\UserViews.py:72
 msgid "You do not have the permission to access this data"
 msgstr "ليس لديك إذن للوصول إلى هذه البيانات"
+
+#: .\base\views\BillViews.py:262
+#, fuzzy
+#| msgid "You can not close a bill from a different branch"
+msgid "You cannot edit notes for a bill from a different branch"
+msgstr "لا يمكنك إغلاق فاتورة من فرع مختلف"
+
+#: .\base\views\BillViews.py:267
+msgid ""
+"You cannot edit notes for a bill that has been closed for more than one hour"
+msgstr "لا يمكنك تعديل الملاحظات الخاصة بفاتورة تم إغلاقها لأكثر من ساعة واحدة"
+
+#: .\base\views\BillViews.py:274
+#, fuzzy
+#| msgid "User Updated successfully"
+msgid "Notes updated successfully"
+msgstr "تم تحديث المستخدم بنجاح"
 
 #: .\base\views\BranchViews.py:29
 msgid "Branch Created successfully"
@@ -883,10 +911,14 @@ msgstr "تم تسجيل الطفل بنجاح"
 msgid "Child Updated successfully"
 msgstr "تم تحديث الطفل بنجاح"
 
-#: .\base\views\CsvAnalyticsViews.py:80
+#: .\base\views\CsvAnalyticsViews.py:176
+#, fuzzy
+#| msgid ""
+#| "Allowed values for type are [\"phone_number\", \"products_sales\", "
+#| "\"bills_children_count\"]"
 msgid ""
 "Allowed values for type are [\"phone_number\", \"products_sales\", "
-"\"bills_children_count\"]"
+"\"bills_children_count\", \"discounts\"]"
 msgstr ""
 "القيم المسموح بها للنوع هي [\"phone_number\"، \"products_sales\"، "
 "\"bills_children_count\"]"
@@ -899,21 +931,33 @@ msgstr "الخصم تم إنشاؤه بنجاح"
 msgid "Discount Updated successfully"
 msgstr "الخصم تم تحديثه بنجاح"
 
-#: .\base\views\ExpenseViews.py:34
+#: .\base\views\ExpenseViews.py:38
 msgid "GeneralExpense Created successfully"
 msgstr "تم انشاء مصروفات عامة بنجاح"
 
-#: .\base\views\ExpenseViews.py:52
+#: .\base\views\ExpenseViews.py:56
 msgid "GeneralExpense Updated successfully"
 msgstr "تم تحديث المصروفات العامة بنجاح"
 
-#: .\base\views\ExpenseViews.py:139
+#: .\base\views\ExpenseViews.py:129
+#, fuzzy
+#| msgid "GeneralExpense Created successfully"
+msgid "GeneralExpense File Created Successfully"
+msgstr "تم انشاء مصروفات عامة بنجاح"
+
+#: .\base\views\ExpenseViews.py:168
 msgid "MaterialExpense Created successfully"
 msgstr "تم إنشاء مصروفات الخامات بنجاح"
 
-#: .\base\views\ExpenseViews.py:157
+#: .\base\views\ExpenseViews.py:186
 msgid "MaterialExpense Updated successfully"
 msgstr "تم تحديث مصروفات الخامات بنجاح"
+
+#: .\base\views\ExpenseViews.py:269
+#, fuzzy
+#| msgid "MaterialExpense Created successfully"
+msgid "MaterialExpense File Created Successfully"
+msgstr "تم إنشاء مصروفات الخامات بنجاح"
 
 #: .\base\views\MaterialViews.py:25
 msgid "Material Created successfully"
@@ -1056,6 +1100,1343 @@ msgstr "تم إنشاء المستخدم بنجاح"
 #: .\base\views\UserViews.py:55
 msgid "User Updated successfully"
 msgstr "تم تحديث المستخدم بنجاح"
+
+#: .\venv\Lib\site-packages\django\contrib\messages\apps.py:16
+msgid "Messages"
+msgstr "رسائل"
+
+#: .\venv\Lib\site-packages\django\contrib\sitemaps\apps.py:8
+msgid "Site Maps"
+msgstr "خرائط الموقع"
+
+#: .\venv\Lib\site-packages\django\contrib\staticfiles\apps.py:9
+msgid "Static Files"
+msgstr "الملفات الثابتة"
+
+#: .\venv\Lib\site-packages\django\contrib\syndication\apps.py:7
+msgid "Syndication"
+msgstr "النقابة"
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: .\venv\Lib\site-packages\django\core\paginator.py:30
+msgid "…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:32
+#, fuzzy
+#| msgid "table-number can not be negative"
+msgid "That page number is not an integer"
+msgstr "لا يمكن أن يكون رقم الجدول عدد سلبي"
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:33
+msgid "That page number is less than 1"
+msgstr "رقم الصفحة هذا أقل من 1"
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:34
+msgid "That page contains no results"
+msgstr "هذه الصفحة لا تحتوي على أي نتائج"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:22
+msgid "Enter a valid value."
+msgstr "أدخل قيمة صالحة."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:70
+msgid "Enter a valid domain name."
+msgstr "أدخل اسم مجال صالحًا."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:153
+#: .\venv\Lib\site-packages\django\forms\fields.py:775
+msgid "Enter a valid URL."
+msgstr "أدخل عنوان URL صالحًا."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:200
+msgid "Enter a valid integer."
+msgstr "أدخل عددًا صحيحًا صالحًا."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:211
+msgid "Enter a valid email address."
+msgstr "أدخل عنوان بريد إلكتروني صالحًا."
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: .\venv\Lib\site-packages\django\core\validators.py:289
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+"أدخل \"رمزًا ثابتًا\" صالحًا يتكون من أحرف أو أرقام أو شرطات سفلية أو واصلات."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:297
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+"أدخل \"رمزًا ثابتًا\" صالحًا يتكون من أحرف Unicode أو أرقام أو شرطات سفلية أو "
+"واصلات."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:309
+#: .\venv\Lib\site-packages\django\core\validators.py:318
+#: .\venv\Lib\site-packages\django\core\validators.py:332
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2220
+#, python-format
+msgid "Enter a valid %(protocol)s address."
+msgstr "أدخل عنوان %(بروتوكول)s صالحًا."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:311
+msgid "IPv4"
+msgstr "IPv4"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:320
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:43
+msgid "IPv6"
+msgstr "IPv6"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:334
+msgid "IPv4 or IPv6"
+msgstr "IPv4 أو IPv6"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:375
+msgid "Enter only digits separated by commas."
+msgstr "أدخل فقط أرقامًا مفصولة بفواصل."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:381
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr "تأكد من أن هذه القيمة هي %(limit_value)s (وهي %(show_value)s)."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:416
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr "تأكد من أن هذه القيمة أقل من أو تساوي %(limit_value)s."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:425
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr "تأكد من أن هذه القيمة أكبر من أو تساوي %(limit_value)s."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:434
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr "تأكد من أن هذه القيمة من مضاعفات حجم الخطوة %(limit_value)s."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:441
+#, python-format
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr ""
+"تأكد من أن هذه القيمة هي من مضاعفات حجم الخطوة %(limit_value)s، بدءًا من "
+"%(offset)s، على سبيل المثال. %(الإزاحة)s، %(valid_value1)s، "
+"%(valid_value2)s، وما إلى ذلك."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:473
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:491
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:514
+#: .\venv\Lib\site-packages\django\forms\fields.py:366
+#: .\venv\Lib\site-packages\django\forms\fields.py:405
+msgid "Enter a number."
+msgstr "أدخل رقما."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:516
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:521
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:526
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:597
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+"ملحق الملف \"%(ملحق)s\" غير مسموح به. الامتدادات المسموح بها هي: "
+"%(allowed_extensions)s."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:659
+#, fuzzy
+#| msgid "Duplicate products are not allowed."
+msgid "Null characters are not allowed."
+msgstr "المنتجات المكررة غير مسموح بها."
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1600
+#: .\venv\Lib\site-packages\django\forms\models.py:908
+msgid "and"
+msgstr "و"
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1602
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr "%(model_name)s مع %(field_labels)s هذا موجود بالفعل."
+
+#: .\venv\Lib\site-packages\django\db\models\constraints.py:22
+#, python-format
+msgid "Constraint “%(name)s” is violated."
+msgstr "تم انتهاك القيد \"%(name)s\"."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:134
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr "القيمة %(value)r ليست اختياراً صالحاً."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:135
+#, fuzzy
+#| msgid "Time Price can not be negative"
+msgid "This field cannot be null."
+msgstr "لا يمكن أن يكون سعر الوقت عدد سلبي"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:136
+msgid "This field cannot be blank."
+msgstr "لا يمكن أن يكون هذا الحقل فارغاً."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:137
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr "%(model_name)s بهذا %(field_label)s موجود بالفعل."
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or
+#. 'month'. Eg: "Title must be unique for pub_date year"
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:141
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+"يجب أن يكون %(field_label)s فريدًا لـ %(date_field_label)s %(lookup_type)s."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:180
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr "حقل النوع: %(field_type)s"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1162
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr "يجب أن تكون قيمة \"%(value)s\" إما True أو False."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1163
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr "يجب أن تكون قيمة \"%(value)s\" إما True أو False أو لا شيء."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1165
+msgid "Boolean (Either True or False)"
+msgstr "منطقية (سواء كانت صحيحة أو خاطئة)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1215
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr "السلسلة (حتى %(max_length)s)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1217
+msgid "String (unlimited)"
+msgstr "سلسلة (غير محدودة)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1326
+msgid "Comma-separated integers"
+msgstr "أعداد صحيحة مفصولة بفواصل"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1427
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+"تحتوي القيمة \"%(value)s\" على تنسيق تاريخ غير صالح. ويجب أن يكون بتنسيق "
+"YYYY-MM-DD."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1431
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1566
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+"القيمة \"%(value)s\" لها التنسيق الصحيح (YYYY-MM-DD) ولكنها تاريخ غير صالح."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1435
+msgid "Date (without time)"
+msgstr "التاريخ (بدون وقت)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1562
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+"القيمة \"%(value)s\" لها تنسيق غير صالح. يجب أن يكون بالتنسيق YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ]."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1570
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+"قيمة \"%(value)s\" لها التنسيق الصحيح (YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]) "
+"ولكنها تاريخ/وقت غير صالح."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1575
+msgid "Date (with time)"
+msgstr "التاريخ (مع الوقت)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1702
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr "يجب أن تكون قيمة \"%(value)s\" رقمًا عشريًا."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1704
+msgid "Decimal number"
+msgstr "رقم عشري"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1864
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+"القيمة \"%(value)s\" لها تنسيق غير صالح. يجب أن يكون بتنسيق [DD] "
+"[[HH:]MM:]ss[.uuuuuu]."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1868
+msgid "Duration"
+msgstr "مدة"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1920
+msgid "Email address"
+msgstr "عنوان البريد الإلكتروني"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1945
+msgid "File path"
+msgstr "مسار الملف"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2023
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr "يجب أن تكون قيمة \"%(value)s\" عائمة."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2025
+msgid "Floating point number"
+msgstr "رقم النقطة العائمة"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2065
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr "يجب أن تكون قيمة \"%(value)s\" عددًا صحيحًا."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2067
+msgid "Integer"
+msgstr "عدد صحيح"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2163
+msgid "Big (8 byte) integer"
+msgstr "عدد صحيح كبير (8 بايت)."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2180
+msgid "Small integer"
+msgstr "عدد صحيح صغير"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2188
+msgid "IPv4 address"
+msgstr "عنوان IPv4"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2219
+msgid "IP address"
+msgstr "عنوان IP"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2310
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2311
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr "يجب أن تكون قيمة \"%(value)s\" إما بلا أو True أو False."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2313
+msgid "Boolean (Either True, False or None)"
+msgstr "منطقية (إما صحيح أو خطأ أو لا شيء)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2364
+msgid "Positive big integer"
+msgstr "عدد صحيح كبير موجب"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2379
+msgid "Positive integer"
+msgstr "عدد صحيح موجب"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2394
+msgid "Positive small integer"
+msgstr "عدد صحيح صغير موجب"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2410
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr "سبيكة صلبة (حتى %(max_length)s)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2446
+msgid "Text"
+msgstr "نص"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2526
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+"القيمة \"%(value)s\" لها تنسيق غير صالح. يجب أن يكون بتنسيق "
+"HH:MM[:ss[.uuuuuu]]."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2530
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+"القيمة \"%(value)s\" لها التنسيق الصحيح (HH:MM[:ss[.uuuuuu]]) ولكنها وقت غير "
+"صالح."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2534
+msgid "Time"
+msgstr "وقت"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2642
+msgid "URL"
+msgstr "عنوان URL"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2666
+msgid "Raw binary data"
+msgstr "البيانات الثنائية الخام"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2731
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr "\"%(value)s\" ليس UUID صالحًا."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2733
+msgid "Universally unique identifier"
+msgstr "معرف فريد عالميًا"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:244
+msgid "File"
+msgstr "ملف"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:420
+msgid "Image"
+msgstr "صورة"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:24
+msgid "A JSON object"
+msgstr "كائن JSON"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:26
+msgid "Value must be valid JSON."
+msgstr "يجب أن تكون القيمة صالحة بتنسيق JSON."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:978
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
+msgstr "مثيل %(model)s مع %(field)s %(value)r ليس خيارًا صالحًا."
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:981
+msgid "Foreign Key (type determined by related field)"
+msgstr "المفتاح الخارجي (النوع المحدد حسب الحقل ذي الصلة)"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1275
+msgid "One-to-one relationship"
+msgstr "علاقة فردية"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1332
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr "العلاقة %(من)s-%(إلى)s"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1334
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr "العلاقات %(من)s-%(إلى)s"
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1382
+msgid "Many-to-many relationship"
+msgstr "علاقة كثير إلى كثير"
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: .\venv\Lib\site-packages\django\forms\boundfield.py:185
+msgid ":?.!"
+msgstr ":؟.!"
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:95
+msgid "This field is required."
+msgstr "هذه الخانة مطلوبه."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:315
+msgid "Enter a whole number."
+msgstr "أدخل رقمًا صحيحًا."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:486
+#: .\venv\Lib\site-packages\django\forms\fields.py:1267
+msgid "Enter a valid date."
+msgstr "أدخل تاريخًا صالحًا."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:509
+#: .\venv\Lib\site-packages\django\forms\fields.py:1268
+msgid "Enter a valid time."
+msgstr "أدخل وقتًا صالحًا."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:536
+msgid "Enter a valid date/time."
+msgstr "أدخل تاريخًا/وقتًا صالحًا."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:570
+msgid "Enter a valid duration."
+msgstr "أدخل مدة صالحة."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:571
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr "يجب أن يتراوح عدد الأيام بين {min_days} و{max_days}."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:640
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr "لم يتم تقديم أي ملف. التحقق من نوع الترميز في النموذج."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:641
+msgid "No file was submitted."
+msgstr "لم يتم تقديم أي ملف."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:642
+msgid "The submitted file is empty."
+msgstr "الملف المقدم فارغ."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:644
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:649
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr "يرجى إما إرسال ملف أو تحديد خانة الاختيار الواضحة، وليس كليهما."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:717
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+"قم بتحميل صورة صالحة. الملف الذي قمت بتحميله لم يكن صورة أو صورة تالفة."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:889
+#: .\venv\Lib\site-packages\django\forms\fields.py:975
+#: .\venv\Lib\site-packages\django\forms\models.py:1592
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr "حدد خيارًا صالحًا. %(value)s ليس أحد الخيارات المتاحة."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:977
+#: .\venv\Lib\site-packages\django\forms\fields.py:1096
+#: .\venv\Lib\site-packages\django\forms\models.py:1590
+msgid "Enter a list of values."
+msgstr "أدخل قائمة القيم."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1097
+msgid "Enter a complete value."
+msgstr "أدخل قيمة كاملة."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1339
+msgid "Enter a valid UUID."
+msgstr "أدخل UUID صالحًا."
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1369
+msgid "Enter a valid JSON."
+msgstr "أدخل JSON صالحًا."
+
+#. Translators: This is the default suffix added to form field labels
+#: .\venv\Lib\site-packages\django\forms\forms.py:97
+msgid ":"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\forms.py:239
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr "(الحقل المخفي %(الاسم)s) %(خطأ)s"
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+"بيانات ManagementForm مفقودة أو تم العبث بها. الحقول المفقودة: "
+"%(field_names)s. قد تحتاج إلى تقديم تقرير بالأخطاء إذا استمرت المشكلة."
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:65
+#, python-format
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:70
+#, python-format
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:484
+#: .\venv\Lib\site-packages\django\forms\formsets.py:491
+msgid "Order"
+msgstr "طلب"
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:499
+msgid "Delete"
+msgstr "يمسح"
+
+#: .\venv\Lib\site-packages\django\forms\models.py:901
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr "الرجاء تصحيح البيانات المكررة لـ %(field)s."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:906
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr "الرجاء تصحيح البيانات المكررة لـ %(field)s، والتي يجب أن تكون فريدة."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:913
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+"الرجاء تصحيح البيانات المكررة لـ %(field_name)s والتي يجب أن تكون فريدة لـ "
+"%(lookup)s في %(date_field)s."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:922
+msgid "Please correct the duplicate values below."
+msgstr "الرجاء تصحيح القيم المكررة أدناه."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1359
+msgid "The inline value did not match the parent instance."
+msgstr "لم تتطابق القيمة المضمنة مع المثيل الأصلي."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1450
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr "حدد خيارًا صالحًا. وهذا الاختيار ليس من الخيارات المتاحة."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1594
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr "\"%(pk)s\" ليست قيمة صالحة."
+
+#: .\venv\Lib\site-packages\django\forms\utils.py:229
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+"لا يمكن تفسير %(datetime)s بالمنطقة الزمنية %(current_timezone)s; قد تكون "
+"غامضة أو قد لا تكون موجودة."
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:527
+msgid "Clear"
+msgstr "واضح"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:528
+msgid "Currently"
+msgstr "حالياً"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:529
+msgid "Change"
+msgstr "يتغير"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:866
+msgid "Unknown"
+msgstr "مجهول"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:867
+msgid "Yes"
+msgstr "نعم"
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:868
+msgid "No"
+msgstr "لا"
+
+#. Translators: Please do not add spaces around commas.
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:873
+msgid "yes,no,maybe"
+msgstr "نعم، لا، ربما"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:903
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:920
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:922
+#, python-format
+msgid "%s KB"
+msgstr "%s كيلو بايت"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:924
+#, python-format
+msgid "%s MB"
+msgstr "%s ميغابايت"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:926
+#, python-format
+msgid "%s GB"
+msgstr "%s غيغابايت"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:928
+#, python-format
+msgid "%s TB"
+msgstr "%s تيرابايت"
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:930
+#, python-format
+msgid "%s PB"
+msgstr "%s بي بي"
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:74
+msgid "p.m."
+msgstr "مساءً."
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:75
+msgid "a.m."
+msgstr "أكون."
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:80
+msgid "PM"
+msgstr "مساءً"
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:81
+msgid "AM"
+msgstr "أكون"
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:153
+msgid "midnight"
+msgstr "منتصف الليل"
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:155
+msgid "noon"
+msgstr "ظهرا"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Monday"
+msgstr "الاثنين"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:8
+msgid "Tuesday"
+msgstr "يوم الثلاثاء"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:9
+msgid "Wednesday"
+msgstr "الأربعاء"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Thursday"
+msgstr "يوم الخميس"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Friday"
+msgstr "جمعة"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:12
+msgid "Saturday"
+msgstr "السبت"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:13
+msgid "Sunday"
+msgstr "الأحد"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:16
+msgid "Mon"
+msgstr "الاثنين"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:17
+msgid "Tue"
+msgstr "الثلاثاء"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:18
+msgid "Wed"
+msgstr "تزوج"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "Thu"
+msgstr "الخميس"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "Fri"
+msgstr "الجمعة"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:21
+msgid "Sat"
+msgstr "قعد"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:22
+msgid "Sun"
+msgstr "شمس"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:25
+msgid "January"
+msgstr "يناير"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:26
+msgid "February"
+msgstr "فبراير"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:27
+msgid "March"
+msgstr "يمشي"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:28
+msgid "April"
+msgstr "أبريل"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:29
+msgid "May"
+msgstr "يمكن"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:30
+msgid "June"
+msgstr "يونيو"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:31
+msgid "July"
+msgstr "يوليو"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:32
+msgid "August"
+msgstr "أغسطس"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:33
+msgid "September"
+msgstr "سبتمبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:34
+msgid "October"
+msgstr "أكتوبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:35
+msgid "November"
+msgstr "نوفمبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:36
+msgid "December"
+msgstr "ديسمبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:39
+msgid "jan"
+msgstr "يناير"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:40
+msgid "feb"
+msgstr "فبراير"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:41
+msgid "mar"
+msgstr "مار"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:42
+msgid "apr"
+msgstr "أبريل"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:43
+msgid "may"
+msgstr "يمكن"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:44
+msgid "jun"
+msgstr "يونيو"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:45
+msgid "jul"
+msgstr "يوليو"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:46
+msgid "aug"
+msgstr "أغسطس"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:47
+msgid "sep"
+msgstr "سبتمبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:48
+msgid "oct"
+msgstr "أكتوبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:49
+msgid "nov"
+msgstr "نوفمبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:50
+msgid "dec"
+msgstr "ديسمبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:53
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr "يناير"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:54
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr "فبراير"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:55
+msgctxt "abbrev. month"
+msgid "March"
+msgstr "يمشي"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:56
+msgctxt "abbrev. month"
+msgid "April"
+msgstr "أبريل"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:57
+msgctxt "abbrev. month"
+msgid "May"
+msgstr "يمكن"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:58
+msgctxt "abbrev. month"
+msgid "June"
+msgstr "يونيو"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:59
+msgctxt "abbrev. month"
+msgid "July"
+msgstr "يوليو"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:60
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr "أغسطس."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:61
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr "سبتمبر."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:62
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr "أكتوبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:63
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr "نوفمبر."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:64
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr "ديسمبر."
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:67
+msgctxt "alt. month"
+msgid "January"
+msgstr "يناير"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:68
+msgctxt "alt. month"
+msgid "February"
+msgstr "فبراير"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:69
+msgctxt "alt. month"
+msgid "March"
+msgstr "يمشي"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:70
+msgctxt "alt. month"
+msgid "April"
+msgstr "أبريل"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:71
+msgctxt "alt. month"
+msgid "May"
+msgstr "يمكن"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:72
+msgctxt "alt. month"
+msgid "June"
+msgstr "يونيو"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:73
+msgctxt "alt. month"
+msgid "July"
+msgstr "يوليو"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:74
+msgctxt "alt. month"
+msgid "August"
+msgstr "أغسطس"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:75
+msgctxt "alt. month"
+msgid "September"
+msgstr "سبتمبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:76
+msgctxt "alt. month"
+msgid "October"
+msgstr "أكتوبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:77
+msgctxt "alt. month"
+msgid "November"
+msgstr "نوفمبر"
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:78
+msgctxt "alt. month"
+msgid "December"
+msgstr "ديسمبر"
+
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:20
+msgid "This is not a valid IPv6 address."
+msgstr "هذا ليس عنوان IPv6 صالحًا."
+
+#: .\venv\Lib\site-packages\django\utils\text.py:76
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr "%(truncated_text)s..."
+
+#: .\venv\Lib\site-packages\django\utils\text.py:287
+msgid "or"
+msgstr "أو"
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:8
+#, python-format
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:9
+#, python-format
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:10
+#, python-format
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:11
+#, python-format
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:12
+#, python-format
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:13
+#, python-format
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:29
+msgid "Forbidden"
+msgstr "مُحرَّم"
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:30
+msgid "CSRF verification failed. Request aborted."
+msgstr "فشل التحقق من CSRF. تم إحباط الطلب."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:34
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+"تظهر لك هذه الرسالة لأن موقع HTTPS هذا يتطلب إرسال \"رأس المرجع\" بواسطة "
+"متصفح الويب الخاص بك، ولكن لم يتم إرسال أي شيء. هذا الرأس مطلوب لأسباب "
+"أمنية، لضمان عدم اختراق متصفحك من قبل أطراف ثالثة."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:40
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+"إذا قمت بتكوين متصفحك لتعطيل رؤوس \"المرجع\"، فيرجى إعادة تمكينها، على الأقل "
+"لهذا الموقع، أو لاتصالات HTTPS، أو لطلبات \"نفس المصدر\"."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:45
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+"إذا كنت تستخدم العلامة <meta name=\"referrer\" content=\"no-referrer\"> أو "
+"تتضمن رأس \"Referrer-Policy: no-referrer\"، فيرجى إزالتها. تتطلب حماية CSRF "
+"أن يقوم رأس \"المُحيل\" بإجراء فحص صارم للمُحيل. إذا كنت مهتمًا بالخصوصية، "
+"فاستخدم بدائل مثل <a rel=\"noreferrer\" …> للروابط إلى مواقع الجهات الخارجية."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:54
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+"أنت ترى هذه الرسالة لأن هذا الموقع يتطلب ملف تعريف الارتباط CSRF عند إرسال "
+"النماذج. ملف تعريف الارتباط هذا مطلوب لأسباب أمنية، لضمان عدم اختراق متصفحك "
+"من قبل أطراف ثالثة."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:60
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+"إذا قمت بتكوين متصفحك لتعطيل ملفات تعريف الارتباط، فيرجى إعادة تمكينها، على "
+"الأقل لهذا الموقع، أو لطلبات \"نفس المصدر\"."
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:66
+msgid "More information is available with DEBUG=True."
+msgstr "يتوفر المزيد من المعلومات مع DEBUG=True."
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:44
+msgid "No year specified"
+msgstr "لم يتم تحديد سنة"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:64
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:115
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:214
+msgid "Date out of range"
+msgstr "التاريخ خارج النطاق"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:94
+msgid "No month specified"
+msgstr "لم يتم تحديد شهر"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:147
+msgid "No day specified"
+msgstr "لم يتم تحديد يوم"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:194
+msgid "No week specified"
+msgstr "لم يتم تحديد اسبوع"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:353
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:384
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr "لا يوجد %(verbose_name_plural)s متاح"
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:680
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+"المستقبل %(verbose_name_plural)s غير متاح لأن %(class_name)s.allow_future "
+"خطأ."
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:720
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr "سلسلة تاريخ غير صالحة \"%(datestr)s\" ذات التنسيق \"%(format)s\""
+
+#: .\venv\Lib\site-packages\django\views\generic\detail.py:56
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr "لم يتم العثور على %(verbose_name)s مطابقًا للاستعلام"
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:70
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr "الصفحة ليست \"الأخيرة\"، ولا يمكن تحويلها إلى int."
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:77
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr "صفحة غير صالحة (%(page_number)s): %(message)s"
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:173
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr "القائمة الفارغة و\"%(class_name)s.allow_empty\" خطأ."
+
+#: .\venv\Lib\site-packages\django\views\static.py:49
+#, fuzzy
+#| msgid "Duplicate products are not allowed."
+msgid "Directory indexes are not allowed here."
+msgstr "المنتجات المكررة غير مسموح بها."
+
+#: .\venv\Lib\site-packages\django\views\static.py:51
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr "\"%(path)s\" غير موجود"
+
+#: .\venv\Lib\site-packages\django\views\static.py:68
+#: .\venv\Lib\site-packages\django\views\templates\directory_index.html:8
+#: .\venv\Lib\site-packages\django\views\templates\directory_index.html:11
+#, python-format
+msgid "Index of %(directory)s"
+msgstr "فهرس %(الدليل)s"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:7
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:204
+msgid "The install worked successfully! Congratulations!"
+msgstr "تم التثبيت بنجاح! تهانينا!"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:206
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+"عرض <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">ملاحظات الإصدار</a> لـ Django %(version)s"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:208
+#, python-format
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
+msgstr ""
+"أنت تشاهد هذه الصفحة لأن <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> موجود في ملف الإعدادات ولم تقم بتكوين أي "
+"عناوين URL."
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:217
+msgid "Django Documentation"
+msgstr "توثيق جانغو"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:218
+msgid "Topics, references, &amp; how-to’s"
+msgstr "المواضيع والمراجع &amp; كيف"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:226
+msgid "Tutorial: A Polling App"
+msgstr "البرنامج التعليمي: تطبيق الاقتراع"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:227
+msgid "Get started with Django"
+msgstr "ابدأ مع جانغو"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:235
+msgid "Django Community"
+msgstr "مجتمع جانغو"
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
+msgid "Connect, get help, or contribute"
+msgstr "تواصل أو احصل على المساعدة أو ساهم"
 
 #~ msgid "Cannot edit closed bills"
 #~ msgstr "لا يمكن تعديل الفواتير المغلقة"

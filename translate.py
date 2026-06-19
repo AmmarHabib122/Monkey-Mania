@@ -8,7 +8,10 @@ translator = GoogleTranslator(source="en", target="ar")
 
 for entry in po:
     if not entry.msgstr:  # Only translate empty entries
-        entry.msgstr = translator.translate(entry.msgid)
+        translation = translator.translate(entry.msgid)
+        if translation is None:
+            translation = ""
+        entry.msgstr = translation
         print(f"Translated: {entry.msgid} -> {entry.msgstr}")
 
 po.save()

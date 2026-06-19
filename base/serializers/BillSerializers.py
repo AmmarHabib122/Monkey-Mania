@@ -77,6 +77,8 @@ class BillSerializer(serializers.ModelSerializer):
             'calculations_updated_by',
             'created_by',
             'finished_by',
+            'notes',
+            'has_notes',
         ]
         read_only_fields = [
             'subscription',
@@ -98,6 +100,7 @@ class BillSerializer(serializers.ModelSerializer):
             'calculations_updated_by',
             'created_by',
             'finished_by',
+            'has_notes',
         ]
 
     def to_representation(self, instance):

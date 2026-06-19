@@ -30,6 +30,7 @@ class Bill(models.Model):
     finished                = models.DateTimeField(null = True)
     created                 = models.DateTimeField(auto_now_add = True)
     updated                 = models.DateTimeField(auto_now = True)
+    notes                   = models.TextField(null = True, blank = True, default = None)
     #reservations
     #shift
 
@@ -37,6 +38,10 @@ class Bill(models.Model):
     @property
     def money_unbalance(self):
         return libs.calculate_money_unbalance(self.total_price, self.cash, self.visa, self.instapay)
+
+    @property
+    def has_notes(self):
+        return bool(self.notes)
     
 
 

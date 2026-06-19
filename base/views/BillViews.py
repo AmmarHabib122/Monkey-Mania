@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from decimal import Decimal
 from django.db.models import Q
+from django.utils import timezone
 
 
 from base import serializers
@@ -25,6 +26,7 @@ bill_filters = {
     'subscription_bills'        : lambda qs: qs.filter(is_subscription = True),
     'updated_bills_by_admins'   : lambda qs: qs.filter(is_calculations_updated = True),
     'has_discount'              : lambda qs: qs.filter(Q(discount__isnull=False) | Q(discount_type__isnull=False) | Q(discount_value__gt=0)),
+    'has_notes'                 : lambda qs: qs.exclude(notes__isnull=True).exclude(notes__exact=''),
 }
 
 
@@ -243,6 +245,36 @@ class ListBillFiltersAPI(APIView):
 List_Bill_FILTERS = ListBillFiltersAPI.as_view()
 
 
+
+
+class UpdateBillNotesAPI(RoleAccessList, generics.UpdateAPIView):
+    queryset           = models.Bill.objects.all()
+    serializer_class   = serializers.BillSerializer
+    role_access_list   = ['owner', 'admin', 'manager', 'reception']
+    permission_classes = [permissions.Authenticated, permissions.RoleAccess]
+    lookup_field       = "pk"
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = request.user
+
+        if user.branch and instance.branch != user.branch:
+            raise PermissionDenied(_("You cannot edit notes for a bill from a different branch"))
+
+        if user.role == 'reception' and instance.finished:
+            time_diff = timezone.now() - instance.finished
+            if time_diff.total_seconds() > 3600:
+                raise PermissionDenied(_("You cannot edit notes for a bill that has been closed for more than one hour"))
+
+        instance.notes = request.data.get('notes')
+        instance.save(update_fields=['notes'])
+
+        serializer = serializers.BillSerializer(instance, context={'request': request})
+        data = serializer.data
+        data['message'] = _("Notes updated successfully")
+        return Response(data)
+
+Update_Bill_Notes = UpdateBillNotesAPI.as_view()
 
 
 
