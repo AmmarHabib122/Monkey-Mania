@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework.exceptions import ValidationError, PermissionDenied
+from rest_framework.response import Response
 from django.utils.translation import gettext as _
 from rest_framework.filters import SearchFilter
 
@@ -58,6 +59,16 @@ class GetChildAPI(RoleAccessList, generics.RetrieveAPIView):
     serializer_class   = serializers.ChildSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     lookup_field       = "pk"
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        data = serializer.data
+        bills = instance.child_bills_set.select_related('branch').only(
+            'id', 'created', 'children_count', 'branch__name'
+        ).order_by('-id')[:25]
+        data['bills'] = serializers.ChildBillSerializer(bills, many=True).data
+        return Response(data)
 Get_Child = GetChildAPI.as_view()
 
 

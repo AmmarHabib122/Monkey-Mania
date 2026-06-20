@@ -215,6 +215,9 @@ class ListBillAPI(RoleAccessList, generics.ListAPIView):
         branches    = libs.get_branch_ids(self)
         query       = super().get_queryset().filter(branch__in = branches) if branches != ['all'] else super().get_queryset()
         query       = libs.query_filter_by_single_field_from_filter_dict(self.request, query, bill_filters)
+        child_id    = self.request.query_params.get('child_id')
+        if child_id:
+            query = query.filter(children__id=child_id)
         start_date, end_date, is_date_range = libs.get_date_range(self)
         if is_date_range   and   start_date == end_date:
             query = libs.get_all_instances_in_a_day_query(query, start_date)
