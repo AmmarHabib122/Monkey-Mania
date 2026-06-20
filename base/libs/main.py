@@ -202,6 +202,8 @@ def apply_discount_to_price(original_price, discount_value, discount_type):
 
 
 def get_all_instances_in_a_day_query(query, date):
+    if isinstance(date, datetime):
+        return query.filter(created__range=(date, date + timedelta(days=1)))
     app_tz = timezone.get_current_timezone()
     start_of_day = timezone.make_aware(datetime.combine(date, time(7, 0)), app_tz)
     end_of_day = start_of_day + timedelta(days=1)
@@ -209,6 +211,8 @@ def get_all_instances_in_a_day_query(query, date):
 
 
 def get_all_instances_in_a_date_range_query(query, start_date, end_date):
+    if isinstance(start_date, datetime):
+        return query.filter(created__range=(start_date, end_date))
     app_tz = timezone.get_current_timezone()
     start_dt = timezone.make_aware(datetime.combine(start_date, time(7, 0)), app_tz)
     end_dt = timezone.make_aware(datetime.combine(end_date + timedelta(days=1), time(7, 0)), app_tz)
@@ -250,19 +254,22 @@ def get_all_instances_in_a_month_based_on_created_field(instance, query):
 
 
 def get_date_range(self):
-    start_date        = self.request.query_params.get("start_date")
-    end_date          = self.request.query_params.get("end_date")
-    if start_date and end_date:
-        start_date        = datetime.strptime(start_date, "%Y-%m-%d").date()
-        end_date          = datetime.strptime(end_date, "%Y-%m-%d").date()
-        is_date_range     = True
-        if start_date > end_date:
+    start_str = self.request.query_params.get("start_date")
+    end_str   = self.request.query_params.get("end_date")
+    if start_str and end_str:
+        start_val = parse_date(start_str) or datetime.fromisoformat(start_str)
+        end_val   = parse_date(end_str) or datetime.fromisoformat(end_str)
+        if isinstance(start_val, datetime):
+            if timezone.is_naive(start_val):
+                start_val = timezone.make_aware(start_val)
+            if timezone.is_naive(end_val):
+                end_val = timezone.make_aware(end_val)
+        if start_val > end_val:
             raise ValidationError(_("Start date cannot be bigger than the end date"))
-    elif start_date or end_date:
+        return start_val, end_val, True
+    if start_str or end_str:
         raise ValidationError(_("Start and End dates must be provided together"))
-    else:
-        is_date_range = False         #to know that the user want all table records not filtered by date interval
-    return start_date, end_date, is_date_range
+    return None, None, False
 
 
 
