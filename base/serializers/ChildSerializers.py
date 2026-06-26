@@ -11,15 +11,10 @@ from base import libs
 
 
 class ChildBillSerializer(serializers.ModelSerializer):
-    branch_name = serializers.SerializerMethodField()
-    created_at = serializers.DateTimeField(source='created')
-
     class Meta:
         model = models.Bill
-        fields = ['id', 'created_at', 'children_count', 'branch_name']
+        fields = ['id', 'created', 'children_count', 'branch_name']
 
-    def get_branch_name(self, obj):
-        return obj.branch.name if obj.branch else None
 
 
 
