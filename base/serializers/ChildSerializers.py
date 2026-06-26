@@ -11,9 +11,10 @@ from base import libs
 
 
 class ChildBillSerializer(serializers.ModelSerializer):
+    branch_name = serializers.CharField(source='branch.name', read_only=True)
     class Meta:
         model = models.Bill
-        fields = ['id', 'created', 'children_count', 'branch_name']
+        fields = ['id', 'created', 'children_count', 'branch_name', 'finished', 'spent_time']
 
 
 

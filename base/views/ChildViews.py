@@ -65,8 +65,8 @@ class GetChildAPI(RoleAccessList, generics.RetrieveAPIView):
         serializer = self.get_serializer(instance)
         data = serializer.data
         bills = instance.child_bills_set.select_related('branch').only(
-            'id', 'created', 'children_count', 'branch__name'
-        ).order_by('-id')[:25]
+            'id', 'created', 'children_count', 'branch_id', 'branch__name', 'finished', 'spent_time'
+        ).order_by('-id')[:10]
         data['bills'] = serializers.ChildBillSerializer(bills, many=True).data
         return Response(data)
 Get_Child = GetChildAPI.as_view()
