@@ -47,7 +47,7 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
 
             children_phone_numbers = (
                 models.ChildPhoneNumber.objects
-                .filter(child__bills__in=bills_query)
+                .filter(child__child_bills_set__in=bills_query)
                 .select_related('child', 'phone_number')
                 .only(
                     'child__name',
