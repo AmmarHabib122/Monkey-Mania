@@ -13,5 +13,11 @@ media/
 # VS Code config
 .vscode/
 
+# Environment variables
+.env
+
+# Local dev scripts
+run.ps1
+
 # Optional: ignore all .pyc files in any subfolder
 **/*.pyc

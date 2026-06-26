@@ -95,7 +95,7 @@ class ListChildAPI(RoleAccessList, generics.ListAPIView):
     serializer_class   = serializers.ChildSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
-    search_fields      = ['name', 'child_phone_numbers_set__phone_number__value', 'school__name']
+    search_fields      = ['name', 'child_phone_numbers_set__phone_number__value']
     
     def get_queryset(self):
         query     = super().get_queryset()
