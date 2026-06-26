@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'EXCEPTION_HANDLER': 'base.utils.custom_exception_handler.custom_exception_handler',
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+        'DEFAULT_PAGINATION_CLASS': 'base.utils.pagination.CustomPageNumberPagination',
     'PAGE_SIZE': 20  # Number of items per page
     
 }
