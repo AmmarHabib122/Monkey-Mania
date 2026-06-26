@@ -6,6 +6,8 @@ from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from django.db.models.functions import Coalesce
 from datetime import date, datetime, time, timedelta
+import re
+from collections import defaultdict
 from django.db.models import Sum, IntegerField, DecimalField
 from django.db.models import OuterRef, Subquery, Q
 
@@ -31,6 +33,8 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
         
         
         if type == 'phone_number':
+            phone_regex = re.compile(r"\D")
+
             bills_query = models.Bill.objects.all()
             if is_date_range   and   start_date == end_date:
                 bills_query = libs.get_all_instances_in_a_day_query(bills_query, start_date)
@@ -41,17 +45,56 @@ class CsvAnalyticsFile(RoleAccessList, APIView):
             if branches != ['all']:
                 bills_query = bills_query.filter(branch_id__in=branches)
 
-            visiting_children_ids = bills_query.values_list('children__id', flat=True).distinct()
-                
-            children_phone_numbers = models.ChildPhoneNumber.objects.filter(child_id__in=visiting_children_ids)
-            
-            phone_numbers_qs = models.PhoneNumber.objects.filter(
-                id__in=children_phone_numbers.values_list('phone_number_id', flat=True)
+            children_phone_numbers = (
+                models.ChildPhoneNumber.objects
+                .filter(child__bills__in=bills_query)
+                .select_related('child', 'phone_number')
+                .only(
+                    'child__name',
+                    'phone_number__id',
+                    'phone_number__value',
+                    'phone_number__created',
+                )
+                .distinct()
             )
-            
-            data = serializers.PhoneNumberSerializer(phone_numbers_qs, many = True).data
-            return libs.send_csv_file_response(data, 'phone_numbers.csv', ['value', 'created'])
-        
+
+            phone_data = {}
+
+            for cpn in children_phone_numbers.iterator(chunk_size=1000):
+                phone = cpn.phone_number
+
+                if phone.id not in phone_data:
+                    phone_data[phone.id] = {
+                        'phone': phone,
+                        'children': set(),
+                    }
+
+                phone_data[phone.id]['children'].add(cpn.child.name)
+
+            data = []
+
+            for item in phone_data.values():
+                phone = item['phone']
+
+                clean_number = phone_regex.sub('', phone.value)
+
+                if clean_number.startswith('0'):
+                    clean_number = '+20' + clean_number[1:]
+                elif not clean_number.startswith('+'):
+                    clean_number = '+' + clean_number
+
+                data.append({
+                    'value': phone.value,
+                    'children_names': ', '.join(sorted(item['children'])),
+                    'whatsapp_link': f'https://wa.me/{clean_number}',
+                    'created': phone.created,
+                })
+
+            return libs.send_csv_file_response(
+                data,
+                'phone_numbers.csv',
+                ['value', 'children_names', 'whatsapp_link', 'created'],
+            )
         
         elif type == 'products_sales':
             data = []
