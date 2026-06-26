@@ -1,9 +1,11 @@
 from django.db import models
+import datetime
 
 from base import libs
 
 
 class Bill(models.Model):
+    serial                  = models.CharField(max_length = 50, null = True, blank = True, unique = True)
     cash                    = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
     instapay                = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0) 
     visa                    = models.DecimalField(max_digits = 20, decimal_places = 2, default = 0)
@@ -34,6 +36,27 @@ class Bill(models.Model):
     #reservations
     #shift
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        # 1. Save first to let the database handle the auto-increment ID safely
+        is_new = self.pk is None
+        super().save(force_insert, force_update, using, update_fields)
+        
+        # 2. Generate the combined 6-digit serial
+        if is_new and not self.serial:
+            # A. Get the last digit of the current year (e.g., '6' for 2026)
+            year_prefix = datetime.datetime.now().strftime('%y')[-1]
+            
+            # B. Scramble the database ID into a 5-digit number (10000 to 99999)
+            # 17389 is our prime key multiplier
+            scrambled_suffix = (self.id * 17389) % 90000 + 10000
+            
+            # C. Combine them into a perfect 6-digit string
+            self.serial = f"{scrambled_suffix}{year_prefix}{self.children_count}"
+            
+            # Save only the serial field back to the database
+            update_fields = set(update_fields) if update_fields else set()
+            update_fields.add('serial')
+            super().save(update_fields=update_fields)
 
     @property
     def money_unbalance(self):

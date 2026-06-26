@@ -190,6 +190,7 @@ class ProductBillSerializer(serializers.ModelSerializer):
         data['first_child'] = bill.children.all().first().name if bill.children.exists() else None
         data['branch'] = bill.branch.name if bill.branch else None
         data['branch_id'] = bill.branch.id if bill.branch else None
+        data['child_bill_serial'] = bill.serial
         # Process products
         new_products_data = []
         for product_data in data.get('products', []):

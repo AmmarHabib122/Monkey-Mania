@@ -267,7 +267,7 @@ class UpdateBillNotesAPI(RoleAccessList, generics.UpdateAPIView):
         if user.role == 'reception' and instance.finished:
             time_diff = timezone.now() - instance.finished
             if time_diff.total_seconds() > 3600:
-                raise PermissionDenied(_("You cannot edit notes for a bill that has been closed for more than one hour"))
+                raise PermissionDenied(_("You cannot edit notes for a bill that has been closed for more than one hour, ask your manager to do it"))
 
         instance.notes = request.data.get('notes')
         instance.save(update_fields=['notes'])
