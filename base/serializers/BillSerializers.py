@@ -230,6 +230,8 @@ class BillSerializer(serializers.ModelSerializer):
         obj = models.Discount.objects.filter(name = value).first()
         if not obj:
             raise ValidationError(_("Couldn't find a discount available to this branch with the given credentials."))
+        if not obj.is_active:
+            raise ValidationError(_("The selected discount is currently not active."))
         return obj
     
     def validate_time_price(self, value):

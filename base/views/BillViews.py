@@ -125,7 +125,7 @@ class ApplyDiscountBillAPI(RoleAccessList, generics.UpdateAPIView):
             raise ValidationError(_("Discount must be provided"))
         
         discount_instance = models.Discount.objects.filter(name = discount).first()
-        if not discount_instance    or    instance.branch not in discount_instance.branches.all():
+        if not discount_instance    or   discount_instance.is_active == False   or   instance.branch not in discount_instance.branches.all():
             raise ValidationError(_("Couldn't find a discount available to this branch with the given credentials."))
         
         instance.discount_value = discount_instance.value
