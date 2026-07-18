@@ -27,6 +27,10 @@ bill_filters = {
     'updated_bills_by_admins'   : lambda qs: qs.filter(is_calculations_updated = True),
     'has_discount'              : lambda qs: qs.filter(Q(discount__isnull=False) | Q(discount_type__isnull=False) | Q(discount_value__gt=0)),
     'has_notes'                 : lambda qs: qs.exclude(notes__isnull=True).exclude(notes__exact=''),
+    'has_more_than_1_child'     : lambda qs: qs.filter(children_count__gt = 1),
+    'has_more_than_2_child'     : lambda qs: qs.filter(children_count__gt = 2),
+    'has_more_than_3_child'     : lambda qs: qs.filter(children_count__gt = 3),
+    'has_more_than_4_child'     : lambda qs: qs.filter(children_count__gt = 4),
 }
 
 
