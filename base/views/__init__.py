@@ -7,6 +7,7 @@ from .StaffViews import *
 from .ProductViews import *
 from .MaterialViews import *
 from .BillViews import *
+from .BillTimePauseViews import *
 from .ProductBillViews import *
 from .DiscountViews import *
 from .ExpenseViews import *

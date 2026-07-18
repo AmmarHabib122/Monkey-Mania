@@ -8,6 +8,7 @@ from .ProductModels import *
 from .MaterialModels import *
 from .ProductBillModels import *
 from .BillModels import *
+from .BillTimePauseModels import *
 from .OfferModels import *
 from .DiscountsModels import *
 from .ExpenseModels import *

@@ -100,6 +100,11 @@ urlpatterns = [
     path('bill/filter-keys/all/', views.List_Bill_FILTERS, name = 'List_Bill_FILTERS'),
     path('bill/<str:pk>/', views.Get_Bill, name = 'Get_Bill'),
 
+    #BillTimePause
+    path('bill_time_pause/create/', views.Create_Bill_Time_Pause, name = 'Create_Bill_Time_Pause'),
+    path('bill_time_pause/<str:pk>/close/', views.Close_Bill_Time_Pause, name = 'Close_Bill_Time_Pause'),
+    path('bill_time_pause/<str:pk>/', views.Get_Bill_Time_Pause, name = 'Get_Bill_Time_Pause'),
+
     #ProductBill
     path('product_bill/create/', views.Create_ProductBill, name = 'Create_ProductBill'),
     path('product_bill/<str:pk>/update/', views.Update_ProductBill, name = 'Update_ProductBill'),

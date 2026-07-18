@@ -170,6 +170,16 @@ class GetBillAPI(RoleAccessList, generics.RetrieveAPIView):
             raise PermissionDenied(_("You do not have the permission to access this data"))
         return instance
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = self.get_serializer(instance).data
+        data['pauses'] = serializers.BillTimePauseSerializer(
+            instance.pauses.all(),
+            many=True,
+            context={'request': request},
+        ).data
+        return Response(data)
+
 Get_Bill = GetBillAPI.as_view()
 
 
@@ -277,7 +287,7 @@ class UpdateBillNotesAPI(RoleAccessList, generics.UpdateAPIView):
         if new_notes  and  instance.notes != new_notes:
             instance.notes = new_notes
             instance.notes_updated_by = user
-            instance.save(update_fields=['notes', 'notes_updated_by'])
+            instance.save(update_fields=['notes', 'notes_updated_by', 'updated'])
 
         serializer = serializers.BillSerializer(instance, context={'request': request})
         data = serializer.data

@@ -115,7 +115,7 @@ class BillSerializer(serializers.ModelSerializer):
                 raise PermissionDenied(_("You Do Not have the permission to access this data"))
         data = super().to_representation(instance)
         if instance.is_active:
-            data['spent_time']   = libs.calculate_timesince(instance.created)
+            data['spent_time']   = libs.calculate_timesince(instance.created, instance.pauses.all())
             remaining_spent_time = libs.calculate_subscription_time(data['spent_time'], instance.subscription) if instance.is_subscription else data['spent_time'] 
             data["time_price"]   = libs.calculate_time_price(remaining_spent_time, instance.hour_price, instance.half_hour_price)
             data["total_price"]  = Decimal(data["time_price"]) + Decimal(instance.products_price)
@@ -371,6 +371,11 @@ class BillSerializer(serializers.ModelSerializer):
         if user    and    user.branch    and    instance.branch != user.branch:
             raise PermissionDenied(_("You can not close a bill from a different branch"))
 
+        if instance.pauses.filter(finished__isnull=True).exists():
+            raise ValidationError(
+                _("You cannot close a bill while it has an active time pause")
+            )
+
         for child in instance.children.all():
             child.is_active = False
             child.save()
@@ -386,7 +391,7 @@ class BillSerializer(serializers.ModelSerializer):
         validated_data['finished']     = timezone.now()
         validated_data['is_active']    = False
         validated_data['finished_by']  = user
-        validated_data['spent_time']   = libs.calculate_timesince(instance.created)
+        validated_data['spent_time']   = libs.calculate_timesince(instance.created, instance.pauses.all())
         remaining_spent_time           = libs.calculate_subscription_time(validated_data['spent_time'], instance.subscription) if instance.is_subscription else validated_data['spent_time'] 
         instance.subscription.save() if instance.subscription else None
         validated_data['time_price']   = libs.calculate_time_price(remaining_spent_time, instance.hour_price, instance.half_hour_price)

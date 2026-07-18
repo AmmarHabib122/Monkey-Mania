@@ -72,11 +72,11 @@ class Bill(models.Model):
     def update_products_price(self):
         total               = self.product_bills_set.aggregate(total=models.Sum("total_price")).get("total", 0) or 0
         self.products_price = total
-        self.save(update_fields=["products_price"])
+        self.save(update_fields=["products_price", 'updated'])
 
     def update_total_price(self):
         self.total_price = self.products_price + self.time_price
-        self.save(update_fields=["total_price"])
+        self.save(update_fields=["total_price", 'updated'])
     
 
     def __str__(self):

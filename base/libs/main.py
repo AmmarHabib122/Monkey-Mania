@@ -136,9 +136,11 @@ def calculate_money_unbalance(total_money, *payment_types):
 
 
 
-def calculate_timesince(start_time):
-    spent_time = (timezone.now() - start_time).total_seconds() // 60  # time in minutes
-    return spent_time
+def calculate_timesince(start_time, pauses=None):
+    spent_time = (timezone.now() - start_time).total_seconds()
+    pause_time = sum(pause.duration_in_seconds for pause in (pauses or []))
+    effective_time = max(spent_time - pause_time, 0)
+    return effective_time // 60  # time in minutes
 
 
 
