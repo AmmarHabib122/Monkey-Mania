@@ -125,7 +125,10 @@ class ChildSerializer(serializers.ModelSerializer):
                 dict.pop('child', None)
                 dict['phone_number'] = dict['phone_number']['value']
         data["last_visit_date"]                 = getattr(instance, "last_visit_date", None)
+        last_bill                               = instance.child_bills_set.order_by('-created').only('id', 'notes').first()
         data["last_bill_id"]                    = getattr(instance, "last_bill_id", None)
+        data["last_bill_has_notes"]             = bool(last_bill and last_bill.notes)
+        data["last_bill_notes"]                 = last_bill.notes if data["last_bill_has_notes"] else None
         return data
     
 

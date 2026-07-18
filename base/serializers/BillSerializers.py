@@ -75,6 +75,7 @@ class BillSerializer(serializers.ModelSerializer):
             'created',
             'updated',
             'calculations_updated_by',
+            'notes_updated_by',
             'created_by',
             'finished_by',
             'notes',
@@ -99,8 +100,10 @@ class BillSerializer(serializers.ModelSerializer):
             'created',
             'updated',
             'calculations_updated_by',
+            'notes_updated_by',
             'created_by',
             'finished_by',
+            'notes',
             'has_notes',
             'serial',
         ]
@@ -119,6 +122,7 @@ class BillSerializer(serializers.ModelSerializer):
         created_by = instance.created_by
         finished_by = instance.finished_by
         calculations_updated_by = instance.calculations_updated_by
+        notes_updated_by = instance.notes_updated_by
         branch = instance.branch
         data['created_by'] = created_by.username if created_by else None
         data['created_by_id'] = created_by.id if created_by else None
@@ -126,6 +130,8 @@ class BillSerializer(serializers.ModelSerializer):
         data['finished_by_id'] = finished_by.id if finished_by else None
         data['calculations_updated_by'] = calculations_updated_by.username if calculations_updated_by else None
         data['calculations_updated_by_id'] = calculations_updated_by.id if calculations_updated_by else None
+        data['notes_updated_by'] = notes_updated_by.username if notes_updated_by else None
+        data['notes_updated_by_id'] = notes_updated_by.id if notes_updated_by else None
         data['branch'] = branch.name if branch else None
         data['branch_id'] = branch.id if branch else None
         first_child = instance.children.all().first() if instance.children.exists() else None

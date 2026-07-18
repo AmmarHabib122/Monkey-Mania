@@ -26,6 +26,7 @@ class Bill(models.Model):
     discount_type           = models.CharField(max_length = 50, null = True, blank = True)
     discount                = models.ForeignKey('base.Discount', on_delete = models.PROTECT, related_name = 'discount_bills_set', null = True, blank = True)
     calculations_updated_by = models.ForeignKey('base.User', on_delete = models.PROTECT, null = True, blank = True, related_name = 'calculations_updated_bills_set')
+    notes_updated_by        = models.ForeignKey('base.User', on_delete = models.PROTECT, null = True, blank = True, related_name = 'notes_updated_bills_set')
     created_by              = models.ForeignKey('base.User', on_delete = models.PROTECT, related_name = 'created_bills_set')
     finished_by             = models.ForeignKey('base.User', on_delete = models.PROTECT, null = True, blank = True, related_name = 'finished_bills_set')
     spent_time              = models.IntegerField(default = 0)

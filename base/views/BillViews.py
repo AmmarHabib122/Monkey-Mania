@@ -257,7 +257,7 @@ List_Bill_FILTERS = ListBillFiltersAPI.as_view()
 class UpdateBillNotesAPI(RoleAccessList, generics.UpdateAPIView):
     queryset           = models.Bill.objects.all()
     serializer_class   = serializers.BillSerializer
-    role_access_list   = ['owner', 'admin', 'manager', 'reception']
+    role_access_list   = ['owner', 'admin', 'manager']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     lookup_field       = "pk"
 
@@ -270,11 +270,14 @@ class UpdateBillNotesAPI(RoleAccessList, generics.UpdateAPIView):
 
         if user.role == 'reception' and instance.finished:
             time_diff = timezone.now() - instance.finished
-            if time_diff.total_seconds() > 3600:
-                raise PermissionDenied(_("You cannot edit notes for a bill that has been closed for more than one hour, ask your manager to do it"))
+            if time_diff.total_seconds() > (60 * 15):
+                raise PermissionDenied(_("You cannot edit notes for a bill that has been closed for more than 15 minutes, ask your manager to do it"))
 
-        instance.notes = request.data.get('notes')
-        instance.save(update_fields=['notes'])
+        new_notes = request.data.get('notes')
+        if new_notes  and  instance.notes != new_notes:
+            instance.notes = new_notes
+            instance.notes_updated_by = user
+            instance.save(update_fields=['notes', 'notes_updated_by'])
 
         serializer = serializers.BillSerializer(instance, context={'request': request})
         data = serializer.data
