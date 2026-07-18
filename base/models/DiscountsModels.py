@@ -14,7 +14,7 @@ class Discount(models.Model):
 
     @property
     def is_active(self):
-        return self.expire_date < timezone.now().date()
+        return self.expire_date >= timezone.now().date()
     
     def __str__(self):
         return f"#{self.id} {self.name}"
