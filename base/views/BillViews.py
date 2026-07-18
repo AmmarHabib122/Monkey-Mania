@@ -179,7 +179,7 @@ class ListActiveBillAPI(RoleAccessList, generics.ListAPIView):
     role_access_list   = ['owner', 'admin', 'manager', 'reception', 'waiter']
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
-    search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 
+    search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value', 'serial'] 
 
     def get_queryset(self):
         branches    = libs.get_branch_ids(self)
@@ -209,7 +209,7 @@ class ListBillAPI(RoleAccessList, generics.ListAPIView):
     serializer_class   = serializers.BillSerializer
     permission_classes = [permissions.Authenticated, permissions.RoleAccess]
     filter_backends    = [SearchFilter]
-    search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value'] 
+    search_fields      = ['children__name', 'children__child_phone_numbers_set__phone_number__value', 'serial'] 
 
     def get_queryset(self):
         branches    = libs.get_branch_ids(self)
