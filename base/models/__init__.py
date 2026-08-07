@@ -9,6 +9,7 @@ from .MaterialModels import *
 from .ProductBillModels import *
 from .BillModels import *
 from .WhatsAppMessageModels import *
+from .WebhookCallModels import *
 from .BillTimePauseModels import *
 from .OfferModels import *
 from .DiscountsModels import *
