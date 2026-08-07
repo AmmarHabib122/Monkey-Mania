@@ -51,7 +51,7 @@ class OutboundMessage(models.Model):
         db_table = 'outbound_messages'
         constraints = [
             models.UniqueConstraint(
-                fields=['bill', 'phone_number', 'channel'],
+                fields=['channel', 'phone_number', 'bill'],
                 name='unique_outbound_message_per_bill_phone_channel',
             ),
         ]

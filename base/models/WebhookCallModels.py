@@ -17,9 +17,5 @@ class WebhookCall(models.Model):
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     updated = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        db_table = 'webhook_calls'
-        ordering = ['-created']
-
     def __str__(self):
         return f"{self.method} {self.route} - {self.response_status}"
