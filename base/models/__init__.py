@@ -8,7 +8,7 @@ from .ProductModels import *
 from .MaterialModels import *
 from .ProductBillModels import *
 from .BillModels import *
-from .WhatsAppMessageModels import *
+from .OutboundMessageModels import *
 from .WebhookCallModels import *
 from .BillTimePauseModels import *
 from .OfferModels import *
