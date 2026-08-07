@@ -71,7 +71,7 @@ class CloseBillAPI(RoleAccessList, generics.UpdateAPIView):
         response                 = super().update(request, *args, **kwargs)
         response.data['message'] = _("Bill Closed successfully")
         try:
-            services.whatsapp.send_bill_experience_messages(self.get_object())
+            services.WhatsappServices.send_bill_experience_messages(self.get_object())
         except Exception as e:
             response.data['message'] = "Bill Closed successfully, but failed to send WhatsApp messages : " + str(e)
             pass
