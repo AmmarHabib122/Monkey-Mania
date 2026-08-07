@@ -1,7 +1,11 @@
 from django.db import models
 
 
-class WhatsAppMessage(models.Model):
+class OutboundMessage(models.Model):
+    class Channel(models.TextChoices):
+        WHATSAPP = 'whatsapp', 'WhatsApp'
+        SMS = 'sms', 'SMS'
+
     class Status(models.TextChoices):
         PENDING = 'pending', 'Pending'
         SENT = 'sent', 'Sent'
@@ -13,14 +17,19 @@ class WhatsAppMessage(models.Model):
     bill = models.ForeignKey(
         'base.Bill',
         on_delete=models.CASCADE,
-        related_name='whatsapp_messages',
+        related_name='outbound_messages',
     )
     child = models.ForeignKey(
         'base.Child',
         on_delete=models.CASCADE,
-        related_name='bill_whatsapp_messages',
+        related_name='bill_outbound_messages',
     )
     phone_number = models.CharField(max_length=20, db_index=True)
+    channel = models.CharField(
+        max_length=20,
+        choices=Channel.choices,
+        default=Channel.WHATSAPP,
+    )
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
@@ -30,7 +39,7 @@ class WhatsAppMessage(models.Model):
     sent_by = models.ForeignKey(
         'base.User',
         on_delete=models.SET_NULL,
-        related_name='sent_whatsapp_messages',
+        related_name='sent_outbound_messages',
         null=True,
         blank=True,
     )
@@ -39,12 +48,10 @@ class WhatsAppMessage(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
+        db_table = 'outbound_messages'
         constraints = [
             models.UniqueConstraint(
-                fields=['bill', 'phone_number'],
-                name='unique_whatsapp_message_per_bill_phone',
+                fields=['bill', 'phone_number', 'channel'],
+                name='unique_outbound_message_per_bill_phone_channel',
             ),
         ]
-
-    def __str__(self):
-        return f"Bill #{self.bill_id} - Child #{self.child_id} - {self.status} -  {self.phone_number}"
