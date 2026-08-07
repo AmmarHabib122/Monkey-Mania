@@ -13,7 +13,7 @@ from base import serializers
 from base import models
 from base import permissions
 from base import libs
-
+from base import services
 
 
 
@@ -70,6 +70,10 @@ class CloseBillAPI(RoleAccessList, generics.UpdateAPIView):
                 raise ValidationError(_("Wrong data for closing the bill"))
         response                 = super().update(request, *args, **kwargs)
         response.data['message'] = _("Bill Closed successfully")
+        try:
+            services.whatsapp.send_bill_experience_messages(self.get_object())
+        except Exception:
+            pass
         return response
 
 Close_Bill = CloseBillAPI.as_view()
