@@ -9,6 +9,17 @@ from base import models
 
 
 RELATIONSHIP_PRIORITY = ('mother', 'father', 'sibling')
+WEBHOOK_STATUS_PRIORITY = {
+    models.OutboundMessage.Status.SENT: 1,
+    models.OutboundMessage.Status.DELIVERED: 2,
+    models.OutboundMessage.Status.READ: 3,
+    models.OutboundMessage.Status.FAILED: 4,
+    models.OutboundMessage.Status.DELETED: 4,
+}
+
+
+class InvalidWhatsAppWebhookPayload(ValueError):
+    pass
 
 
 def normalize_phone_number(phone_number):
@@ -70,7 +81,9 @@ def _reserve_recipients(bill):
             'child_phone_numbers_set__phone_number',
         ).order_by('id')
         existing_phone_numbers = set(
-            bill.whatsapp_messages.values_list('phone_number', flat=True)
+            bill.outbound_messages.filter(
+                channel=models.OutboundMessage.Channel.WHATSAPP,
+            ).values_list('phone_number', flat=True)
         )
         phone_groups = {}
 
@@ -84,10 +97,11 @@ def _reserve_recipients(bill):
                 phone_groups[normalized_phone]['child_names'].append(child.name)
                 continue
 
-            recipient = models.WhatsAppMessage.objects.create(
+            recipient = models.OutboundMessage.objects.create(
                 bill=bill,
                 child=child,
                 phone_number=normalized_phone,
+                channel=models.OutboundMessage.Channel.WHATSAPP,
             )
             phone_groups[normalized_phone] = {
                 'message': recipient,
@@ -173,7 +187,7 @@ def send_bill_experience_messages(bill):
                     'event': 'api_success',
                     'response': response_data,
                 },
-                status=models.WhatsAppMessage.Status.SENT,
+                status=models.OutboundMessage.Status.SENT,
                 provider_message_id=provider_message_id,
             )
             sent_count += 1
@@ -195,3 +209,116 @@ def send_bill_experience_messages(bill):
             )
 
     return sent_count
+
+
+def _provider_timestamp(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _apply_webhook_status(status_payload):
+    provider_message_id = status_payload.get('id')
+    status = status_payload.get('status')
+    if not provider_message_id or status not in WEBHOOK_STATUS_PRIORITY:
+        return 0
+
+    incoming_timestamp = _provider_timestamp(status_payload.get('timestamp'))
+    received_at = timezone.now()
+    updated_count = 0
+
+    with transaction.atomic():
+        messages = models.OutboundMessage.objects.select_for_update().filter(
+            provider_message_id=provider_message_id,
+            channel=models.OutboundMessage.Channel.WHATSAPP,
+        )
+        for message in messages:
+            webhook_logs = [
+                log
+                for log in message.logs
+                if log.get('event') == 'webhook_status'
+            ]
+            is_duplicate = any(
+                log.get('status') == status
+                and _provider_timestamp(log.get('provider_timestamp')) == incoming_timestamp
+                for log in webhook_logs
+            )
+            if is_duplicate:
+                continue
+
+            previous_timestamps = [
+                timestamp
+                for timestamp in (
+                    _provider_timestamp(log.get('provider_timestamp'))
+                    for log in webhook_logs
+                )
+                if timestamp is not None
+            ]
+            latest_timestamp = max(previous_timestamps, default=None)
+            should_update_status = (
+                latest_timestamp is None
+                or (
+                    incoming_timestamp is not None
+                    and (
+                        incoming_timestamp > latest_timestamp
+                        or (
+                            incoming_timestamp == latest_timestamp
+                            and WEBHOOK_STATUS_PRIORITY[status]
+                            >= WEBHOOK_STATUS_PRIORITY.get(message.status, 0)
+                        )
+                    )
+                )
+            )
+
+            message.logs = [
+                *message.logs,
+                {
+                    'event': 'webhook_status',
+                    'timestamp': received_at.isoformat(),
+                    'provider_timestamp': status_payload.get('timestamp'),
+                    'status': status,
+                    'data': status_payload,
+                },
+            ]
+            update_fields = ['logs', 'updated']
+            if should_update_status:
+                message.status = status
+                update_fields.append('status')
+            message.updated = received_at
+            message.save(update_fields=update_fields)
+            updated_count += 1
+
+    return updated_count
+
+
+def process_whatsapp_status_webhook(payload):
+    if not isinstance(payload, dict):
+        raise InvalidWhatsAppWebhookPayload('Payload must be a JSON object')
+    if payload.get('object') != 'whatsapp_business_account':
+        raise InvalidWhatsAppWebhookPayload(
+            'Payload object must be whatsapp_business_account'
+        )
+
+    updated_count = 0
+    for entry in payload.get('entry') or []:
+        if not isinstance(entry, dict):
+            raise InvalidWhatsAppWebhookPayload(
+                'Entry object must be a JSON object'
+            )
+        for change in entry.get('changes') or []:
+            if not isinstance(change, dict):
+                raise InvalidWhatsAppWebhookPayload(
+                    'Change object must be a JSON object'
+                )
+            if change.get('field') != 'messages':
+                continue
+            value = change.get('value') or {}
+            if not isinstance(value, dict):
+                raise InvalidWhatsAppWebhookPayload(
+                    'Value object must be a JSON object'
+                )
+            for status_payload in value.get('statuses') or []:
+                if isinstance(status_payload, dict):
+                    updated_count += _apply_webhook_status(status_payload)
+    return updated_count

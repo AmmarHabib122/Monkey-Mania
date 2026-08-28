@@ -3,6 +3,9 @@ from base import views
 
 # from .authentication import login
 urlpatterns = [
+    # Webhook
+    path('webhooks/whatsapp/status-webhook/', views.Update_WhatsappMessageStatus, name='Update_WhatsappMessageStatus'),
+
     #Authentication
     path('token/obtain/', views.Obtain_Token, name='token_obtain_pair'),
     path('token/refresh/', views.Refresh_Token, name='token_refresh'),

@@ -176,6 +176,8 @@ WHATSAPP_REQUEST_TIMEOUT_SECONDS = config(
     default=10,
     cast=int,
 )
+WHATSAPP_WEBHOOK_VERIFY_TOKEN = config('WHATSAPP_WEBHOOK_VERIFY_TOKEN', default='')
+WHATSAPP_APP_SECRET = config('WHATSAPP_APP_SECRET', default='')
 
 
 MEDIA_URL = '/media/'
