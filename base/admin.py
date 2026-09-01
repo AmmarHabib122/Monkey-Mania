@@ -270,16 +270,32 @@ admin.site.register(models.BranchProduct, BranchProductAdmin)
 
 
 class MaterialAdmin(admin.ModelAdmin):
+    csv_columns = ['name', 'measure_unit']
+
     def get_urls(self):
         urls = super().get_urls()
-        new_urls = [path('upload_csv/', self.admin_site.admin_view(self.upload_csv), name="base_material_upload_csv")]
+        new_urls = [
+            path('upload_csv/', self.admin_site.admin_view(self.upload_csv), name="base_material_upload_csv"),
+            path('export_csv/', self.admin_site.admin_view(self.export_csv), name="base_material_export_csv"),
+        ]
         return new_urls + urls
+
+    def export_csv(self, request):
+        if not self.has_view_or_change_permission(request):
+            raise DjangoPermissionDenied
+
+        records = models.Material.objects.order_by('name').values('name', 'measure_unit')
+        return libs.send_csv_file_response(
+            records,
+            'materials.csv',
+            columns=self.csv_columns,
+        )
     
     def upload_csv(self, request):
         form = CsvImport()   
         data = {'form': form}
         if request.method == 'POST':
-            required_columns = ['name', 'measure_unit']
+            required_columns = self.csv_columns
             try:
                 records = libs.get_csv_file_records(request, required_columns)
                 if not records:
@@ -322,16 +338,44 @@ admin.site.register(models.Material, MaterialAdmin)
 
 
 class BranchMaterialAdmin(admin.ModelAdmin):
+    csv_columns = ['material', 'branch', 'available_units']
+
     def get_urls(self):
         urls = super().get_urls()
-        new_urls = [path('upload_csv/', self.admin_site.admin_view(self.upload_csv), name="base_branch_material_upload_csv")]
+        new_urls = [
+            path('upload_csv/', self.admin_site.admin_view(self.upload_csv), name="base_branch_material_upload_csv"),
+            path('export_csv/', self.admin_site.admin_view(self.export_csv), name="base_branch_material_export_csv"),
+        ]
         return new_urls + urls
+
+    def export_csv(self, request):
+        if not self.has_view_or_change_permission(request):
+            raise DjangoPermissionDenied
+
+        branch_materials = (
+            models.BranchMaterial.objects
+            .select_related('material', 'branch')
+            .order_by('branch__name', 'material__name', 'id')
+        )
+        records = [
+            {
+                'material': branch_material.material.name,
+                'branch': branch_material.branch.name,
+                'available_units': str(branch_material.available_units),
+            }
+            for branch_material in branch_materials
+        ]
+        return libs.send_csv_file_response(
+            records,
+            'branch_materials.csv',
+            columns=self.csv_columns,
+        )
     
     def upload_csv(self, request):
         form = CsvImport()   
         data = {'form': form}
         if request.method == 'POST':
-            required_columns = ['material', 'branch', 'available_units']
+            required_columns = self.csv_columns
             try:
                 records = libs.get_csv_file_records(request, required_columns)
                 if not records:
@@ -367,7 +411,7 @@ class BranchMaterialAdmin(admin.ModelAdmin):
                             first_error = first_messages[0]
                             raise ValidationError(f"There is error : {first_error} In Record : {record}")
                         serializer.save() 
-                self.message_user(request, "BranchMaterial created using CSV file successfully!", level=messages.SUCCESS)
+                self.message_user(request, "Branch materials processed using CSV file successfully!", level=messages.SUCCESS)
                 return redirect(reverse('admin:base_branchmaterial_changelist'))
             except ValidationError as e:
                 error_text = e.detail[0] if isinstance(e.detail, list) else str(e.detail)
