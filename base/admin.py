@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.shortcuts import render
 from django import forms
+from django.core.exceptions import PermissionDenied as DjangoPermissionDenied
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.contrib import messages
 from django.utils.translation import gettext as _
@@ -101,20 +102,80 @@ admin.site.register(models.Product, ProductAdmin)
 
 
 class BranchProductAdmin(admin.ModelAdmin):
+    csv_columns = [
+        'layer1',
+        'layer2',
+        'layer3',
+        'branch',
+        'warning_units',
+        'price',
+        'material_consumptions_set',
+        'is_active',
+    ]
+
     def get_urls(self):
         urls = super().get_urls()
-        new_urls = [path('upload_csv/', self.admin_site.admin_view(self.upload_csv), name="base_branch_product_upload_csv")]
+        new_urls = [
+            path('upload_csv/', self.admin_site.admin_view(self.upload_csv), name="base_branch_product_upload_csv"),
+            path('export_csv/', self.admin_site.admin_view(self.export_csv), name="base_branch_product_export_csv"),
+        ]
         return new_urls + urls
+
+    def export_csv(self, request):
+        if not self.has_view_or_change_permission(request):
+            raise DjangoPermissionDenied
+
+        branch_products = (
+            models.BranchProduct.objects
+            .select_related('product', 'branch')
+            .prefetch_related('material_consumptions_set__material__material')
+            .order_by('branch__name', 'product__layer1', 'product__layer2', 'product__layer3', 'id')
+        )
+        records = []
+        for branch_product in branch_products:
+            material_consumptions = [
+                {
+                    'material': material_consumption.material.material.name,
+                    'consumption': str(material_consumption.consumption),
+                }
+                for material_consumption in branch_product.material_consumptions_set.all()
+            ]
+            records.append({
+                'layer1': branch_product.product.layer1,
+                'layer2': branch_product.product.layer2,
+                'layer3': branch_product.product.layer3,
+                'branch': branch_product.branch.name,
+                'warning_units': branch_product.warning_units,
+                'price': str(branch_product.price),
+                'material_consumptions_set': json.dumps(material_consumptions, ensure_ascii=False),
+                'is_active': branch_product.product.is_active,
+            })
+
+        return libs.send_csv_file_response(
+            records,
+            'branch_products.csv',
+            columns=self.csv_columns,
+        )
+
+    @staticmethod
+    def parse_is_active(value):
+        normalized_value = str(value).strip().lower()
+        if normalized_value in ['true', '1', 'yes']:
+            return True
+        if normalized_value in ['false', '0', 'no']:
+            return False
+        raise ValidationError(_("is_active must be True or False"))
     
     def upload_csv(self, request):
         form = CsvImport()   
         data = {'form': form}
         if request.method == 'POST':
-            required_columns = ['layer1', 'layer2', 'layer3', 'branch', 'warning_units', 'price', 'material_consumptions_set']
+            required_columns = self.csv_columns
             try:
                 records = libs.get_csv_file_records(request, required_columns)
                 if not records:
                     raise ValidationError(_("CSV file is empty or invalid"))
+                product_active_values = {}
                 with transaction.atomic():
                     for record in records:
                         # normalize values
@@ -122,6 +183,9 @@ class BranchProductAdmin(admin.ModelAdmin):
                         layer1 = str(record.pop('layer1')).strip()
                         layer2 = str(record.pop('layer2')).strip()
                         layer3 = str(record.pop('layer3')).strip()
+                        if 'is_active' not in record:
+                            raise ValidationError(_("is_active must be provided for every record"))
+                        is_active = self.parse_is_active(record.pop('is_active'))
 
                         try:
                             record['branch'] = models.Branch.objects.get(name=branch_name).id
@@ -129,9 +193,17 @@ class BranchProductAdmin(admin.ModelAdmin):
                             raise ValidationError(f"Branch '{branch_name}' does not exist. In Record: {record}")
 
                         try:
-                            record['product'] = models.Product.objects.get(layer1=layer1, layer2=layer2, layer3=layer3).id
+                            product = models.Product.objects.get(layer1=layer1, layer2=layer2, layer3=layer3)
+                            record['product'] = product.id
                         except models.Product.DoesNotExist:
                             raise ValidationError(f"Product '{layer2} {layer3}' with layer3 equals '{layer3}' does not exist. In Record: {record}")
+
+                        previous_is_active = product_active_values.get(product.id)
+                        if previous_is_active is not None and previous_is_active != is_active:
+                            raise ValidationError(
+                                f"Product '{product.name}' has conflicting is_active values in the CSV file."
+                            )
+                        product_active_values[product.id] = is_active
                         
                         existing_instance = models.BranchProduct.objects.filter(
                             branch_id=record['branch'], 
@@ -139,15 +211,20 @@ class BranchProductAdmin(admin.ModelAdmin):
                         ).first()
 
                         # parse material_consumptions_set from JSON string
+                        if 'material_consumptions_set' not in record:
+                            raise ValidationError(_("material_consumptions_set must be provided for every record"))
                         try:
                             material_list = json.loads(record['material_consumptions_set'])
                         except Exception as e:
                             raise ValidationError(f"Invalid JSON for material_consumptions_set: {record['material_consumptions_set']}. Error: {e}")
 
+                        if not isinstance(material_list, list):
+                            raise ValidationError(f"material_consumptions_set must be a JSON list. In Record: {record}")
+
                         # replace material names with IDs
                         converted_materials = []
                         for material in material_list:
-                            if "material" not in material or "consumption" not in material:
+                            if not isinstance(material, dict) or "material" not in material or "consumption" not in material:
                                 raise ValidationError(f"Each material_consumptions_set item must contain 'material' and 'consumption'. Invalid item: {material}. In Record: {record}")
                             material_name = str(material.get("material")).strip()
                             try:
@@ -163,15 +240,19 @@ class BranchProductAdmin(admin.ModelAdmin):
                         serializer = serializers.BranchProductSerializer(
                             instance=existing_instance, 
                             data=record, 
-                            context={'request': request}
+                            context={'request': request},
                         )
                         if not serializer.is_valid():
                             errors = serializer.errors
                             first_field, first_messages = next(iter(errors.items()))
                             first_error = first_messages[0]
                             raise ValidationError(f"There is error : {first_error} In Record : {record}")
-                        serializer.save() 
-                self.message_user(request, "BranchProduct created using CSV file successfully!", level=messages.SUCCESS)
+                        serializer.save()
+
+                        if product.is_active != is_active:
+                            product.is_active = is_active
+                            product.save(update_fields=['is_active', 'updated'])
+                self.message_user(request, "Branch products processed using CSV file successfully!", level=messages.SUCCESS)
                 return redirect(reverse('admin:base_branchproduct_changelist'))
             
             except ValidationError as e:
