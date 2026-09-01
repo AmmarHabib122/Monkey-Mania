@@ -48,16 +48,37 @@ class CsvImport(forms.Form):
 
 
 class ProductAdmin(admin.ModelAdmin):
+    csv_columns = ['layer1', 'layer2', 'layer3', 'is_active']
+
     def get_urls(self):
         urls = super().get_urls()
-        new_urls = [path('upload_csv/', self.admin_site.admin_view(self.upload_csv), name="base_product_upload_csv")]
+        new_urls = [
+            path('upload_csv/', self.admin_site.admin_view(self.upload_csv), name="base_product_upload_csv"),
+            path('export_csv/', self.admin_site.admin_view(self.export_csv), name="base_product_export_csv"),
+        ]
         return new_urls + urls
+
+    def export_csv(self, request):
+        if not self.has_view_or_change_permission(request):
+            raise DjangoPermissionDenied
+
+        records = models.Product.objects.order_by('layer1', 'layer2', 'layer3').values(
+            'layer1',
+            'layer2',
+            'layer3',
+            'is_active',
+        )
+        return libs.send_csv_file_response(
+            records,
+            'products.csv',
+            columns=self.csv_columns,
+        )
     
     def upload_csv(self, request):
         form = CsvImport()   
         data = {'form': form}
         if request.method == 'POST':
-            required_columns = ['layer1', 'layer2', 'layer3']
+            required_columns = self.csv_columns
             try:
                 records = libs.get_csv_file_records(request, required_columns)
                 if not records:
@@ -84,7 +105,7 @@ class ProductAdmin(admin.ModelAdmin):
                             first_error = first_messages[0]
                             raise ValidationError(f"There is error : {first_error} In Record : {record}")
                         serializer.save() 
-                self.message_user(request, "Products created using CSV file successfully!", level=messages.SUCCESS)
+                self.message_user(request, "Products processed using CSV file successfully!", level=messages.SUCCESS)
                 return redirect(reverse('admin:base_product_changelist'))
             except ValidationError as e:
                 error_text = e.detail[0] if isinstance(e.detail, list) else str(e.detail)
@@ -110,7 +131,6 @@ class BranchProductAdmin(admin.ModelAdmin):
         'warning_units',
         'price',
         'material_consumptions_set',
-        'is_active',
     ]
 
     def get_urls(self):
@@ -148,7 +168,6 @@ class BranchProductAdmin(admin.ModelAdmin):
                 'warning_units': branch_product.warning_units,
                 'price': str(branch_product.price),
                 'material_consumptions_set': json.dumps(material_consumptions, ensure_ascii=False),
-                'is_active': branch_product.product.is_active,
             })
 
         return libs.send_csv_file_response(
@@ -157,15 +176,6 @@ class BranchProductAdmin(admin.ModelAdmin):
             columns=self.csv_columns,
         )
 
-    @staticmethod
-    def parse_is_active(value):
-        normalized_value = str(value).strip().lower()
-        if normalized_value in ['true', '1', 'yes']:
-            return True
-        if normalized_value in ['false', '0', 'no']:
-            return False
-        raise ValidationError(_("is_active must be True or False"))
-    
     def upload_csv(self, request):
         form = CsvImport()   
         data = {'form': form}
@@ -175,7 +185,6 @@ class BranchProductAdmin(admin.ModelAdmin):
                 records = libs.get_csv_file_records(request, required_columns)
                 if not records:
                     raise ValidationError(_("CSV file is empty or invalid"))
-                product_active_values = {}
                 with transaction.atomic():
                     for record in records:
                         # normalize values
@@ -183,9 +192,6 @@ class BranchProductAdmin(admin.ModelAdmin):
                         layer1 = str(record.pop('layer1')).strip()
                         layer2 = str(record.pop('layer2')).strip()
                         layer3 = str(record.pop('layer3')).strip()
-                        if 'is_active' not in record:
-                            raise ValidationError(_("is_active must be provided for every record"))
-                        is_active = self.parse_is_active(record.pop('is_active'))
 
                         try:
                             record['branch'] = models.Branch.objects.get(name=branch_name).id
@@ -197,13 +203,6 @@ class BranchProductAdmin(admin.ModelAdmin):
                             record['product'] = product.id
                         except models.Product.DoesNotExist:
                             raise ValidationError(f"Product '{layer2} {layer3}' with layer3 equals '{layer3}' does not exist. In Record: {record}")
-
-                        previous_is_active = product_active_values.get(product.id)
-                        if previous_is_active is not None and previous_is_active != is_active:
-                            raise ValidationError(
-                                f"Product '{product.name}' has conflicting is_active values in the CSV file."
-                            )
-                        product_active_values[product.id] = is_active
                         
                         existing_instance = models.BranchProduct.objects.filter(
                             branch_id=record['branch'], 
@@ -248,10 +247,6 @@ class BranchProductAdmin(admin.ModelAdmin):
                             first_error = first_messages[0]
                             raise ValidationError(f"There is error : {first_error} In Record : {record}")
                         serializer.save()
-
-                        if product.is_active != is_active:
-                            product.is_active = is_active
-                            product.save(update_fields=['is_active', 'updated'])
                 self.message_user(request, "Branch products processed using CSV file successfully!", level=messages.SUCCESS)
                 return redirect(reverse('admin:base_branchproduct_changelist'))
             
