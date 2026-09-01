@@ -21,6 +21,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'layer1',
             'layer2',
             'layer3',
+            'is_active',
             'sold_units',
             'created',
             'updated',
