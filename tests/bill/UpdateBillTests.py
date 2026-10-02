@@ -17,11 +17,15 @@ class TestBillClosing(SetUpDataClass):
         
         url = reverse('Close_Bill', kwargs = {'pk' : 1})
         data = {
-            'visa' : 255
+            'visa' : 0
         }
         response = self.client.patch(url, data, format = 'json') #admin close bill
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['money_unbalance'], 255)
+        self.assertEqual(response.data['money_unbalance'], 0)
+        bill = models.Bill.objects.get(pk=1)
+        self.assertFalse(bill.is_active)
+        self.assertEqual(bill.visa, 0)
+        self.assertIsNotNone(bill.finished)
 
 
 
@@ -34,11 +38,12 @@ class TestBillClosing(SetUpDataClass):
         
         url = reverse('Close_Bill', kwargs = {'pk' : 1})
         data = {
-            'visa' : 255
+            'visa' : 0
         }
         response = self.client.patch(url, data, format = 'json') #recpeiton close bill
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['money_unbalance'], 255)
+        self.assertEqual(response.data['money_unbalance'], 0)
+        self.assertEqual(models.Bill.objects.get(pk=1).finished_by, self.reception_user_1)
 
 
 
@@ -52,7 +57,7 @@ class TestBillClosing(SetUpDataClass):
 
         url = reverse('Close_Bill', kwargs = {'pk' : 1})
         data = {
-            'visa' : 255
+            'visa' : 0
         }
         response = self.client.patch(url, data, format = 'json') #recpeiton close bill 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

@@ -1,4 +1,4 @@
-from django.test import TestCase
+from tests.support import TestCase
 from rest_framework.test import APIClient
 
 from base import models

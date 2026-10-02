@@ -1,4 +1,6 @@
-from django.test import TestCase
+from datetime import timedelta
+from django.utils import timezone
+from tests.support import TestCase
 from rest_framework.test import APIClient
 
 from base import models
@@ -240,11 +242,12 @@ class SetUpDataClass(TestCase):
             visa              = 50,
             instapay          = 50,
             price             = 150,
-            hours             = 15,
+            base_hours       = 15,
+            remaining_hours  = 15,
             subscription      = cls.subscription_1,
             child             = cls.child_1,
             branch            = cls.branch_1,
-            expire_date       = '2026-5-3',
+            expire_date       = (timezone.now().date() + timedelta(days=365)).isoformat(),
             created_by        = cls.admin_user_1,
         )
         cls.subscription_instance_2 = models.SubscriptionInstance.objects.create(
@@ -252,11 +255,12 @@ class SetUpDataClass(TestCase):
             visa              = 50,
             instapay          = 50,
             price             = 150,
-            hours             = 15,
+            base_hours       = 15,
+            remaining_hours  = 15,
             subscription      = cls.subscription_2,
             child             = cls.child_2,
             branch            = cls.branch_1,
-            expire_date       = '2026-5-3',
+            expire_date       = (timezone.now().date() + timedelta(days=365)).isoformat(),
             created_by        = cls.admin_user_1,
         )
 

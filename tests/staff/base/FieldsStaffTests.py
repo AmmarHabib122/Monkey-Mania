@@ -49,8 +49,6 @@ class TestStaffFields(SetUpDataClass):
     
 
 
-    def test_phone_number(self):
-        ...
     
 
 
@@ -91,8 +89,6 @@ class TestStaffFields(SetUpDataClass):
 
     
 
-    def test_branch(self):
-        ...
 
 
 
@@ -112,12 +108,13 @@ class TestStaffFields(SetUpDataClass):
         self.test_staff_1.pop('images', None)
         response = self.client.post(url, self.test_staff_1, format = 'multipart')    #admin add staff wih null images
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        created_staff_id = response.data['id']
 
         self.test_staff_2['images'] = []
         response = self.client.post(url, self.test_staff_2, format = 'multipart')    #admin add staff wih empty images
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        url = reverse('Update_Staff', kwargs = {'pk' : 3})
+        url = reverse('Update_Staff', kwargs = {'pk' : created_staff_id})
 
         branch3 = self.test_staff_3.pop('branch', None)
         response = self.client.patch(url, self.test_staff_3, format = 'multipart')  #admin add photos

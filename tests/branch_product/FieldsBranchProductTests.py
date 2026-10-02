@@ -16,24 +16,16 @@ from .SetUpBranchProductTests import SetUpDataClass
 
 
 class TestBranchProductFields(SetUpDataClass):
-    def test_product(self):
-        ...
 
 
 
 
-    def test_branch(self):
-        ...
     
 
 
-    def test_warning_units(self):
-        ...
         
 
 
-    def test_price(self):
-        ...
 
 
 

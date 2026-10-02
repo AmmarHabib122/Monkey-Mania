@@ -22,7 +22,7 @@ class TestDiscountListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data['results']), 1)
 
         resverse_url = reverse('List_Discount')       #admin get all Discountes
         query_params = {
@@ -33,7 +33,7 @@ class TestDiscountListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data['results']), 3)
 
 
 
@@ -50,7 +50,7 @@ class TestDiscountListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data['results']), 1)
 
 
         

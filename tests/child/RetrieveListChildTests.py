@@ -29,7 +29,7 @@ class TestChildListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)
 
         query_params = {                           #admin get all Children with phone starts with 1234
             'search': '1234',  
@@ -38,7 +38,7 @@ class TestChildListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)
 
         query_params = {                           #admin get all Children with phone = 12335678912
             'search': '12335678912',  
@@ -47,8 +47,8 @@ class TestChildListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['name'], 'testchild2')
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]['name'], 'testchild2')
 
 
         query_params = {                            #admin get all Children
@@ -58,7 +58,7 @@ class TestChildListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 5)
+        self.assertEqual(len(response.data['results']), 5)
 
 
         
@@ -74,7 +74,7 @@ class TestChildListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)
 
 
 

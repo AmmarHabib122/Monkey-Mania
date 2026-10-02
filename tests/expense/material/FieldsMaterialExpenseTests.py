@@ -16,20 +16,14 @@ from .SetUpMaterialExpenseTests import SetUpDataClass
 
 
 class TestMaterialExpenseFields(SetUpDataClass):
-    def test_material(self):
-        ...
 
 
 
 
-    def test_unit_price(self):
-       ...
-
-    
 
 
-    def test_total_price(self):
-        ...
+
+
 
 
 
@@ -49,15 +43,3 @@ class TestMaterialExpenseFields(SetUpDataClass):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(float(response.data['available_units']), 25)
-
-        
-
-
-
-    def test_branch(self):
-        ...
-        
-
-
-
-    

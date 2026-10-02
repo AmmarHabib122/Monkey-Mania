@@ -1,4 +1,6 @@
-from django.test import TestCase
+from datetime import timedelta
+from django.utils import timezone
+from tests.support import TestCase
 from rest_framework.test import APIClient
 
 from base import models
@@ -218,7 +220,7 @@ class SetUpDataClass(TestCase):
             name        = 'promo1',
             value       = 0.70,
             type        = 'percentage',
-            expire_date = '2025-5-25',
+            expire_date = (timezone.now().date() + timedelta(days=365)).isoformat(),
             created_by  = cls.admin_user_1,
         )
         cls.discount_1.branches.add(cls.branch_1)
@@ -227,7 +229,7 @@ class SetUpDataClass(TestCase):
             name        = 'promo2',
             value       = 0.70,
             type        = 'fixed',
-            expire_date = '2025-5-25',
+            expire_date = (timezone.now().date() + timedelta(days=365)).isoformat(),
             created_by  = cls.admin_user_1,
         )
         cls.discount_2.branches.add(cls.branch_2)
@@ -236,7 +238,7 @@ class SetUpDataClass(TestCase):
             name        = 'promo3',
             value       = 0.70,
             type        = 'new value',
-            expire_date = '2025-5-25',
+            expire_date = (timezone.now().date() + timedelta(days=365)).isoformat(),
             created_by  = cls.admin_user_1,
         )
         cls.discount_3.branches.add(cls.branch_1, cls.branch_2)

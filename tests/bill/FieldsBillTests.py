@@ -16,25 +16,17 @@ from .SetUpBillTests import SetUpDataClass
 
 
 class TestBillFields(SetUpDataClass):
-    def test_cash(self):
-        ...
 
 
 
 
-    def test_visa(self):
-        ...
 
     
 
 
-    def test_instapay(self):
-        ...
         
 
 
-    def test_time_price(self):
-        ...
 
 
 
@@ -66,7 +58,7 @@ class TestBillFields(SetUpDataClass):
 
         url = reverse('Close_Bill', kwargs = {'pk' : 2})
         data = {
-            'visa' : 255
+            'visa' : 0
         }
         response = self.client.patch(url, data, format = 'json') #admin close bill
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -111,8 +103,9 @@ class TestBillFields(SetUpDataClass):
             'instapay'    : 25,
         }
         response = self.client.patch(url, data, format = 'json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(float(response.data['money_unbalance']), 200)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['message'], 'Total price does not equal the money client paid')
+        self.assertTrue(models.Bill.objects.get(pk=1).is_active)
 
         
 

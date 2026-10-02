@@ -16,8 +16,6 @@ from .SetUpStaffSalaryTests import SetUpDataClass
 
 
 class TestStaffSalaryFields(SetUpDataClass):
-    def test_staff(self):
-        ...
 
 
 
@@ -27,7 +25,7 @@ class TestStaffSalaryFields(SetUpDataClass):
         self.authenticate(user = self.admin_user_1)
         response = self.client.post(url, self.test_staff_salary_1, format = 'json') #admin add StaffSalary
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['branch'], self.staff1.branch.id)
+        self.assertEqual(response.data['branch_id'], self.staff1.branch.id)
 
 
 
@@ -150,8 +148,6 @@ class TestStaffSalaryFields(SetUpDataClass):
 
 
 
-    def test_total_value(self):
-        ...
     #     url = reverse('Create_StaffSalary')
     #     self.authenticate(user = self.admin_user_1)
     #     response = self.client.post(url, self.test_staff_salary_3, format = 'json') #admin add StaffSalary

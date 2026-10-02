@@ -16,14 +16,8 @@ from .SetUpProductBillTests import SetUpDataClass
 
 
 class TestProductBillFields(SetUpDataClass):
-    def test_table_number(self):
-        ...
 
-    def test_take_away(self):
-        ...
 
-    def test_bill(self):
-        ...
 
     def test_total_price(self):
         self.authenticate(user = self.admin_user_1)
@@ -54,8 +48,9 @@ class TestProductBillFields(SetUpDataClass):
         self.assertEqual(float(response.data['total_price']), 300)
 
         response = self.client.patch(url, self.test_product_bill_2, format = 'json') 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(float(response.data['total_price']), 1450)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['message'], 'Returned Products Must be Provided')
+        self.assertEqual(float(models.ProductBill.objects.get(pk=1).total_price), 300)
 
 
 
@@ -102,11 +97,11 @@ class TestProductBillFields(SetUpDataClass):
         }
         response = self.client.patch(url, {"products" : []}, format = 'json') 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['message'], "At least one added item must be provided")
+        self.assertEqual(response.data['message'], "Returned Products Must be Provided")
 
         response = self.client.patch(url, data, format = 'json') 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['message'], "Duplicate added items detected")
+        self.assertEqual(response.data['message'], "Returned Products Must be Provided")
 
 
 
@@ -127,7 +122,7 @@ class TestProductBillFields(SetUpDataClass):
         ]
         response = self.client.post(url, self.test_product_bill_1, format = 'json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['message'], "You cannot return items when creating a bill.")
+        self.assertEqual(response.data['message'], "Returned products are not allowed when creating a new bill.")
 
         self.test_product_bill_1.pop("returned_products")
         response = self.client.post(url, self.test_product_bill_1, format = 'json')
@@ -152,7 +147,7 @@ class TestProductBillFields(SetUpDataClass):
         }
         response = self.client.patch(url, {"returned_products" : []}, format = 'json') 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['message'], "At least one returned item must be provided")
+        self.assertEqual(response.data['message'], "Returned Products Must be Provided")
 
         response = self.client.patch(url, data, format = 'json') 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

@@ -1,4 +1,6 @@
-from django.test import TestCase
+from datetime import timedelta
+from django.utils import timezone
+from tests.support import TestCase
 from rest_framework.test import APIClient
 from django.urls import reverse
 from rest_framework import status
@@ -289,7 +291,7 @@ class SetUpDataClass(TestCase):
             'offer' : 3,
             'branch' : 1,
             'price' : 300,
-            'expire_date' : '2026-5-3',
+            'expire_date' : (timezone.now().date() + timedelta(days=365)).isoformat(),
             'products_set' : [
                 {
                     'product' : 1,
@@ -310,7 +312,7 @@ class SetUpDataClass(TestCase):
             "offer" : 1,
             "branch" : 1,
             "price" : 300,
-            "expire_date" : "2026-5-3",
+            "expire_date" : (timezone.now().date() + timedelta(days=365)).isoformat(),
             "products_set" : [
                 {
                     "product" : 1,
@@ -326,7 +328,7 @@ class SetUpDataClass(TestCase):
             'offer' : 2,
             'branch' : 1,
             'price' : 200,
-            'expire_date' : '2026-5-3',
+            'expire_date' : (timezone.now().date() + timedelta(days=365)).isoformat(),
             'products_set' : [
                 {
                     'product' : 1,

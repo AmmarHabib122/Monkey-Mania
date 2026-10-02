@@ -18,7 +18,7 @@ class TestBillListRetrieve(SetUpDataClass):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         url = reverse('Close_Bill', kwargs = {'pk' : 1})
         data = {
-            'cash'        : 150,
+            'cash'        : 0,
             'visa'        : 0,
             'instapay'    : 0,
         }
@@ -34,7 +34,8 @@ class TestBillListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(len(response.data['results']), 1)
 
         resverse_url = reverse('List_Bill')       #admin get all Billes
         query_params = {
@@ -45,7 +46,8 @@ class TestBillListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data['count'], 2)
+        self.assertEqual(len(response.data['results']), 2)
 
 
 
@@ -62,7 +64,7 @@ class TestBillListRetrieve(SetUpDataClass):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         url = reverse('Close_Bill', kwargs = {'pk' : 1})
         data = {
-            'cash'        : 150,
+            'cash'        : 0,
             'visa'        : 0,
             'instapay'    : 0,
         }

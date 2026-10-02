@@ -16,20 +16,14 @@ from .SetUpStaffFineTests import SetUpDataClass
 
 
 class TestStaffFineFields(SetUpDataClass):
-    def test_staff(self):
-        ...
 
 
 
 
-    def test_branch(self):
-        ...
 
     
 
 
-    def test_reason(self):
-        ...
         
 
 

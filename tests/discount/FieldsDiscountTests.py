@@ -16,14 +16,10 @@ from .SetUpDiscountTests import SetUpDataClass
 
 
 class TestDiscountFields(SetUpDataClass):
-    def test_name(self):
-        ...
 
 
 
 
-    def test_address(self):
-        ...
 
     
 

@@ -4,14 +4,3 @@ from django.utils.http import urlencode
 
 from base import models
 from .SetUpProductBillTests import SetUpDataClass
-
-
-
-
-
-...
-
-        
-
-    
-

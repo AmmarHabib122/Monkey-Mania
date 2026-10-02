@@ -67,7 +67,7 @@ class TestChildFields(SetUpDataClass):
         self.authenticate(self.admin_user_1)
 
         #test correct age
-        self.test_child_3['birth_date'] = "2026-2-6"
+        self.test_child_3['birth_date'] = "2099-02-06"
         response = self.client.post(url, self.test_child_3, format = 'json') 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('Birth-Date can not be in the future.', response.data['message'])
@@ -97,8 +97,6 @@ class TestChildFields(SetUpDataClass):
 
 
 
-    def test_school(self):
-        ...
 
         
 

@@ -22,7 +22,7 @@ class TestUserListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 6)
+        self.assertEqual(len(response.data['results']), 7)
 
         resverse_url = reverse('List_User')       #get users from all branches with user name contains manager
         query_params = {
@@ -33,7 +33,7 @@ class TestUserListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)
 
         resverse_url = reverse('List_User')       #get users with invalid branches
         query_params = {
@@ -60,7 +60,7 @@ class TestUserListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 3)
 
         resverse_url = reverse('List_User')       #get users from the manager branch although multiple branch ids are provided with user name contains waiter
         query_params = {
@@ -71,7 +71,7 @@ class TestUserListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data['results']), 1)
 
         
         

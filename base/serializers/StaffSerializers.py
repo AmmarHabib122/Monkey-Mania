@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from django.utils.translation import gettext as _
-from django.contrib.contenttypes.models import ContentType
 import math
 
 from base import models
@@ -198,23 +197,12 @@ class StaffWithdrawSerializer(serializers.ModelSerializer):
         user                           = self.context['request'].user
         validated_data['created_by']   = user
         validated_data['branch']       = validated_data['staff'].branch
-        instance                       =  super().create(validated_data)
-        withdraw_content_type          = ContentType.objects.get_for_model(instance)
-        models.Cashier.objects.create(
-            transaction_type   = withdraw_content_type,  
-            transaction_id     = instance.id,
-            branch             = instance.branch,
-            value              = instance.value * -1,
-            created_by         = user
-        )
-        return instance
+        return super().create(validated_data)
     
 
 
     def update(self, instance, validated_data):
         user                = self.context['request'].user
-        value               = validated_data.get('value')
-        difference_in_value = value - instance.value if value else 0
 
         if user    and    user.branch    and   instance.branch != user.branch:
             raise PermissionDenied(_("You can not update a staff withdraw from another branch"))
@@ -222,16 +210,6 @@ class StaffWithdrawSerializer(serializers.ModelSerializer):
         instance = super().update(instance, validated_data)
 
             
-        if difference_in_value != 0:
-            withdraw_content_type = ContentType.objects.get_for_model(instance)
-            models.Cashier.objects.create(
-                transaction_type   = withdraw_content_type,  
-                transaction_id     = instance.id,
-                branch             = instance.branch,
-                value              = instance.value * -1,
-                created_by         = user
-            )
-
         return instance
 
 

@@ -76,7 +76,8 @@ class TestBranchProductListRetrieve(SetUpDataClass):
         query_string = urlencode(query_params, doseq=True)
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
 
         
 

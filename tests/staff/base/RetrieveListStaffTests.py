@@ -34,7 +34,7 @@ class TestStaffListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data['results']), 1)
 
         query_params = {                          #admin get all Staff with name = staff1 from a branch he is not in 
             'search' : 'staff1',  
@@ -44,7 +44,7 @@ class TestStaffListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 0)
+        self.assertEqual(len(response.data['results']), 0)
 
         query_params = {                          #admin get all Staff with name = staff1 from a branch  which is invlid
             'search' : 'staff1',  
@@ -64,7 +64,7 @@ class TestStaffListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data['results']), 1)
 
         query_params = {                          #admin get all not active Staff 
             'search' : '',  
@@ -75,7 +75,7 @@ class TestStaffListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data['results']), 1)
 
         query_params = {                         #admin get all Staff
             'search': '',  
@@ -85,7 +85,7 @@ class TestStaffListRetrieve(SetUpDataClass):
         url = f"{resverse_url}?{query_string}"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data['results']), 1)
 
 
 
