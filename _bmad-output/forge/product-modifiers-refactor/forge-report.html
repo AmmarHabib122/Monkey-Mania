@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Forge Report: Options-Based Product Refactor</title>
+<style>
+:root{--bg:#faf7f2;--ink:#1f1b16;--mut:#6b6459;--card:#fff;--line:#e4ddd0;--seal:#1d6b3a}
+@media(prefers-color-scheme:dark){:root{--bg:#171410;--ink:#f1ebe0;--mut:#a79f90;--card:#211d17;--line:#383126;--seal:#4cc27a}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:1.7rem;margin:0 0 4px}h2{margin-top:36px;font-size:1.2rem;border-bottom:1px solid var(--line);padding-bottom:6px}
+.sub{color:var(--mut);margin:0}.head{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:10px 0}
+ul{padding-left:20px}li{margin:4px 0}code{background:var(--line);padding:1px 5px;border-radius:4px;font-size:.9em}
+.p{display:flex;gap:12px;align-items:flex-start}.p b{white-space:nowrap}
+</style></head><body><main>
+<div class="head"><div>
+<h1>Options-based product refactor</h1>
+<p class="sub">Monkey Mania backend (Django/DRF) with Angular front end. Forge session, goal: make it better.</p></div>
+<svg width="150" height="150" viewBox="0 0 150 150" role="img" aria-label="Hardened stamp">
+<circle cx="75" cy="75" r="68" fill="none" stroke="var(--seal)" stroke-width="5"/>
+<circle cx="75" cy="75" r="58" fill="none" stroke="var(--seal)" stroke-width="1.5" stroke-dasharray="3 4"/>
+<g transform="rotate(-12 75 75)"><text x="75" y="70" text-anchor="middle" font-size="22" font-weight="800" fill="var(--seal)" font-family="system-ui">HARDENED</text>
+<text x="75" y="92" text-anchor="middle" font-size="11" fill="var(--seal)" font-family="system-ui">READY TO PLAN</text></g></svg></div>
+
+<h2>Outcome</h2>
+<div class="card">The idea survived and got sharper. A waiter can now pick several sauces (as parts of one dish) and add-ons on a single product, and stock, price and returns follow exactly what was picked. Work is staged to protect every bill and product already in the system.</div>
+
+<h2>Locked decisions</h2>
+<div class="card"><ul>
+<li>Hierarchy <code>ProductCategory &gt; ProductFamily &gt; Product (variant)</code>, refactoring the existing product table in place, with images on category, family, variant and option.</li>
+<li>Options are <code>mandatory</code> or <code>addon</code>; priced per branch; allowed options are set per variant.</li>
+<li>Variant columns <code>mandatory_parts</code> and <code>mandatory_qty_total</code>: parts always sum exactly; a total of 0 skips stock use but keeps the pick and its price.</li>
+<li>One <code>Recipe</code> table (variant or option to material, global across branches) and a <code>MaterialTransaction</code> history with branch, reason and bill link.</li>
+<li>Each pick is frozen on the bill in <code>ProductBillProductOption</code>; one option can be returned alone, refunded at its own price, with an optional waste flag.</li>
+<li>Whole-unit money, rounded down; <code>request_id</code> idempotency on orders, additions and returns.</li>
+<li>One-call <code>GET menu</code> cached in Redis with versioning; image URLs only.</li>
+</ul></div>
+
+<h2>Rejected, and why</h2>
+<div class="card"><ul>
+<li>Parallel old/new product tables or a mapping table: the user wants one table to query.</li>
+<li>An OptionGroup table and a rules table: a type column and two product columns do the job.</li>
+<li>Offline order queue: not wanted; online retry with idempotency instead.</li>
+<li>Per-variant option prices, a flavour option type, table renaming: dropped for now.</li>
+<li>Two older branches that used many-to-many sauces: outdated, and they cannot store parts.</li>
+</ul></div>
+
+<h2>Weak points that survived</h2>
+<div class="card"><ul>
+<li>Merging per-branch recipes into a global one: collisions are possible on production, so the migration prints every conflict.</li>
+<li>Stock data is corrupted today, so an opening stock count is required after migration.</li>
+<li>Production media serving depends on <code>DEBUG</code> being hardcoded to true in the docker branch.</li>
+<li>An offer-quantity bug (<code>ProductBillSerializers.py:376</code>) is suspected and still needs a test to confirm.</li>
+</ul></div>
+
+<h2>Parked for phase 2</h2>
+<div class="card">Discounts and offers: specific or generic bundles (buy 2 waffles, get a mango or any drink free), buy-N-get-one-free, and one manual bill discount; one mechanism per bill. Not part of the current plan.</div>
+
+<h2>Voices that pressure-tested it</h2>
+<div class="card">
+<div class="p"><b>🏗️ Winston</b><span>Architect. Pushed on migration safety, order-line identity, discount ordering and the weak-connection gap.</span></div>
+<div class="p"><b>📋 John</b><span>Product manager. Forced a precise meaning for "option": price, stock and per-dish quantity.</span></div>
+<div class="p"><b>🎨 Sally</b><span>UX designer. Insisted half-and-half be visible to the waiter.</span></div>
+<div class="p"><b>☕ Dana</b><span>Rival café owner (generated). Demanded speed at the table, shared options and idempotent retries.</span></div>
+</div>
+<p class="sub">Files: <code>forged-idea.md</code> (plan and work items), <code>.memlog.md</code> (full decision log).</p>
+</main></body></html>
